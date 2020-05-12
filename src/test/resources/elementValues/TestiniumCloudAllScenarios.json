@@ -1,0 +1,282 @@
+[
+  {
+    "key": "createScenarioInAllScenarios",
+    "value": "a[class*='create-button'][href='/scenario/create']",
+    "type": "css"
+  },
+  {
+    "key": "projectSelectInAllScenarios",
+    "value": "//label[text()='PROJECT']/following-sibling::select",
+    "type": "xpath"
+  },
+  {
+    "key": "suiteSelectInAllScenarios",
+    "value": "//label[contains(text(),'SUITES')]/following-sibling::select",
+    "type": "xpath"
+  },
+  {
+    "key": "suiteSelectOptionInAllScenarios",
+    "value": "//label[contains(text(),'SUITES')]/following-sibling::select/option[contains(@value,\"%s\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableInAllScenarios",
+    "value": "//table[.//tr[./th[text()='SCENARIO NAME'] and ./th[text()='PROJECT']]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableProjectNameInAllScenarios",
+    "value": "(//table[contains(@class,\"table\")]/tbody/tr/td[./span[text()=\"PROJECT\"]])[%s]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableProjectNameWithNotProjectNameInAllScenarios",
+    "value": "(//table[contains(@class,\"table\")]/tbody/tr/td[./span[text()=\"PROJECT\"] and not(text()=\"%s\")])[%s]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableScenarioNameInAllScenarios",
+    "value": "(//table[contains(@class,\"table\")]/tbody/tr/td[./span[text()=\"SCENARIO NAME\"]])[%s]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableScenarioNameWithNotProjectNameInAllScenarios",
+    "value": "(//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and not(text()=\"%s\")]]/td[./span[text()=\"SCENARIO NAME\"]])[%s]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioForTableInAllScenarios",
+    "value": "//table[.//tr[./th[text()='SCENARIO NAME'] and ./th[text()='PROJECT']]]/tbody/tr",
+    "type": "xpath"
+  },
+  {
+    "key": "syncScenariosInAllScenarios",
+    "value": "button[routerlink='/scenario/sync']",
+    "type": "css"
+  },
+  {
+    "key": "createNewGroupInAllScenarios",
+    "value": "button[routerlink='/scenario/group/create']",
+    "type": "css"
+  },
+  {
+    "key": "exportTableInAllScenarios",
+    "value": "//button[text()[contains(.,'EXPORT TABLE')]]",
+    "type": "xpath"
+  },
+  {
+    "key": "allScenariosLogoTitleInAllScenarios",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li/a[@href='/scenario' and text()='All Scenarios']",
+    "type": "xpath"
+  },
+  {
+    "key": "tableViewModeNormalInAllScenarios",
+    "value": "//div[@class=\"button-area\"]/div[@class=\"view-group\"]/button[./i[contains(@class,\"fa-bars\")]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableViewModeFileInAllScenarios",
+    "value": "//div[@class=\"button-area\"]/div[@class=\"view-group\"]/button[./i[contains(@class,\"fa-file\")]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableScenarioNameKeyValueInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and text()=\"%s\"]]/td[./span[text()=\"SCENARIO NAME\"] and text()[contains(.,\"%s\")]]",
+    "type": "xpath"
+  },
+  {
+    "key": "selectProjectNameKeyValueInAllScenarios",
+    "value": "//div[@class=\"form-group\" and ./label[text()=\"PROJECT\"]]/select/option[text()=\"%s\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "nextPageInAllScenarios",
+    "value": "//pagination//li[contains(@class,\"pagination-next\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "deleteButtonInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"]] and ./td[./span[text()=\"SCENARIO NAME\"]]]//button[@tooltip=\"Delete\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "deleteButtonTableScenarioKeyValueInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and text()=\"%s\"] and ./td[./span[text()=\"SCENARIO NAME\"] and text()[contains(.,\"%s\")]]]//button[@tooltip=\"Delete\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "deleteButtonTableScenarioWithProjectNameInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and text()=\"%s\"] and ./td[./span[text()=\"SCENARIO NAME\"]]]//button[@tooltip=\"Delete\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "deleteButtonTableScenarioWithNotProjectNameInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and not(text()=\"%s\")] and ./td[./span[text()=\"SCENARIO NAME\"]]]//button[@tooltip=\"Delete\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "editButtonTableScenarioKeyValueInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and text()=\"%s\"] and ./td[./span[text()=\"SCENARIO NAME\"] and text()[contains(.,\"%s\")]]]//button[@tooltip=\"Edit\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "popupTitleInAllScenarios",
+    "value": "swal2-title",
+    "type": "id"
+  },
+  {
+    "key": "popupYesButtonInAllScenarios",
+    "value": "div.swal2-actions > button.swal2-confirm",
+    "type": "css"
+  },
+  {
+    "key": "popupNoButtonInAllScenarios",
+    "value": "div.swal2-actions > button.swal2-cancel",
+    "type": "css"
+  },
+  {
+    "key": "5",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SCENARIO NAME\"]]/following-sibling::td[./span[text()=\"PROJECT\"]]/following-sibling::td[./*[1][not(@tooltip=\"Add Sub-Scenario\")]]]",
+    "type": ""
+  },
+  {
+    "key": "scenarioWithTableNotProjectInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and not(text()=\"%s\")]]/td[./span[text()=\"SCENARIO NAME\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioWithTableProjectInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and text()=\"%s\"]]/td[./span[text()=\"SCENARIO NAME\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableScenarioWithProjectNameInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and text()=\"%s\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableScenarioWithNotProjectNameInAllScenarios",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"PROJECT\"] and not(text()=\"%s\")]]",
+    "type": "xpath"
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  }
+]

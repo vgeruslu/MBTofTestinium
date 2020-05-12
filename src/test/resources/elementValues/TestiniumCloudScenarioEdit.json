@@ -1,0 +1,122 @@
+[
+  {
+    "key": "logoTitleWithProjectNameInScenarioEdit",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li[./a[@href='/scenario' and text()='All Scenarios']]/following-sibling::li[.//span[text()=\"%s\"]]/following-sibling::li[./a[contains(@href,\"/scenario/edit/\") and contains(@href,\"/properties\") and text()=\"Properties\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "propertiesTabInScenarioEdit",
+    "value": "//ul[contains(@class,\"navbar sub-navbar\")]/li[./a[contains(@href,\"/scenario/edit/\") and contains(@href,\"/properties\") and text()=\"PROPERTIES\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "ideTabInScenarioEdit",
+    "value": "//ul[contains(@class,\"navbar sub-navbar\")]/li[./a[contains(@href,\"/scenario/edit/\") and contains(@href,\"/ide\") and text()=\"IDE\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "copyUrlButtonInScenarioEdit",
+    "value": "//div[@class=\"copy-button\"]/button[text()=\"COPY URL\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "projectNameInScenarioEdit",
+    "value": "projectName",
+    "type": "id"
+  },
+  {
+    "key": "scenarioNameInScenarioEdit",
+    "value": "scenarioName",
+    "type": "id"
+  },
+  {
+    "key": "scenarioDescriptionInScenarioEdit",
+    "value": "scenarioDescription",
+    "type": "id"
+  },
+  {
+    "key": "selectGroupInScenarioEdit",
+    "value": "select[name=\"group\"]",
+    "type": "css"
+  },
+  {
+    "key": "selectMaxExecutionTimeInScenarioEdit",
+    "value": "select[name=\"maxExecutionTime\"]",
+    "type": "css"
+  },
+  {
+    "key": "fileContentPanelInScenarioEdit",
+    "value": "//div[contains(@class,\"panel \") and .//*[text()=\"FILE CONTENT\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "cancelButtonInScenarioEdit",
+    "value": "//button[@routerlink=\"/scenario\" and text()=\"CANCEL\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "applyButtonInScenarioEdit",
+    "value": "//button[contains(@class,\"btn\") and @type=\"button\" and ./span[text()=\"APPLY\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "saveButtonInScenarioEdit",
+    "value": "//button[contains(@class,\"btn\") and @type=\"button\" and ./span[text()=\"SAVE\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "logoTitleWithProjectNameForIdeTabInScenarioEdit",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li[./a[@href='/scenario' and text()='All Scenarios']]/following-sibling::li[.//span[text()=\"%s\"]]/following-sibling::li[./a[contains(@href,\"/scenario/edit/\") and contains(@href,\"/ide\") and text()=\"Ide\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "saveButtonForIdeTabInScenarioEdit",
+    "value": "//button[contains(@class,\"btn\") and @type=\"button\" and text()=\"SAVE\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "aceEditorForIdeTabInScenarioEdit",
+    "value": "aceEditor",
+    "type": "id"
+  },
+  {
+    "key": "explorerPanelForIdeTabInScenarioEdit",
+    "value": "//div[contains(@class,\"panel\")]/div[@class=\"panel-heading\" and ./*[text()=\"EXPLORER\"]]/following-sibling::div[@class=\"panel-body\"]/div[@class=\"source-tree-parent\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioSuccessfullyUpdated",
+    "value": "//div[text()=\"Scenario successfully updated.\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "testSuccessfullyStarted",
+    "value": "//div[text()=\"Test successfully started.\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "InScenarioEdit",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "InScenarioEdit",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "InScenarioEdit",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "InScenarioEdit",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "InScenarioEdit",
+    "value": "",
+    "type": ""
+  }
+]

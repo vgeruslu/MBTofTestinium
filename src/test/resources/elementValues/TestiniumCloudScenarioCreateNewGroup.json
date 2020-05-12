@@ -1,0 +1,212 @@
+[
+  {
+    "key": "logoTitleInCreateNewGroup",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li[./a[@href='/scenario' and text()='All Scenarios']]/following-sibling::li[./a[@href=\"/scenario/group/create\" and text()=\"Create\"]]/following-sibling::li/a[@href=\"/scenario/group/create\" and text()=\"Group\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "projectNameInCreateNewGroup",
+    "value": "projectName",
+    "type": "id"
+  },
+  {
+    "key": "scenarioNameInCreateNewGroup",
+    "value": "scenarioName",
+    "type": "id"
+  },
+  {
+    "key": "scenarioDescriptionInCreateNewGroup",
+    "value": "scenarioDescription",
+    "type": "id"
+  },
+  {
+    "key": "cancelButtonInCreateNewGroup",
+    "value": "//a[@href=\"/scenario\" and @routerlink=\"/scenario\" and @type=\"button\" and text()=\"CANCEL\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "saveButtonInCreateNewGroup",
+    "value": "//button[@type=\"button\" and ./span[@class=\"ladda-label\" and text()=\"SAVE\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "projectNameErrorBlockInCreateNewGroup",
+    "value": "select#projectName ~ span.error-block",
+    "type": "css"
+  },
+  {
+    "key": "scenarioNameErrprBlockInCreateNewGroup",
+    "value": "input#scenarioName ~ span.error-block",
+    "type": "css"
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  }
+]

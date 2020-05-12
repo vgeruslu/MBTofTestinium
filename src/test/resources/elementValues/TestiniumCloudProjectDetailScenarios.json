@@ -1,0 +1,187 @@
+[
+  {
+    "key": "logoWithProjectNameInProjectDetailScenarios",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li[./a[@href='/project' and text()='Projects']]/following-sibling::li[.//span[@class=\"text\" and text()=\"%s\"]]/following-sibling::li[./a[contains(@href,\"/project/detail/\") and contains(@href,\"/scenarios\") and text()=\"Scenarios\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "exportTableInProjectDetailScenarios",
+    "value": "//div[@class=\"button-area\"]//button[text()=\"EXPORT TABLE\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "suitesSelectInProjectDetailScenarios",
+    "value": "//div[@class=\"form-group\" and ./label[text()=\"SUITES (CONTAINING)\"]]/select",
+    "type": "xpath"
+  },
+  {
+    "key": "suitesSelectWithOptionNameInProjectDetailScenarios",
+    "value": "//div[@class=\"form-group\" and ./label[text()=\"SUITES (CONTAINING)\"]]/select/option[text()=\"%s\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "suitesSelectWithOptionValueInProjectDetailScenarios",
+    "value": "//div[@class=\"form-group\" and ./label[text()=\"SUITES (CONTAINING)\"]]/select/option[contains(@value,\"%s: \")]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody",
+    "type": "xpath"
+  },
+  {
+    "key": "tableScenarioNameInProjectDetailScenarios",
+    "value": "(//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr/td[./span[text()=\"SCENARIO NAME\"]])[%s]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioWithScenarioNameInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr[./td[text()[contains(.,\"%s\")] and ./span[text()=\"SCENARIO NAME\"]]]",
+    "type": "xpath"
+  },
+  {
+    "key": "editButtonWithScenarioNameInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr[./td[text()[contains(.,\"%s\")] and ./span[text()=\"SCENARIO NAME\"]]]//button[@tooltip=\"Edit\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "deleteButtonWithScenarioNameInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr[./td[text()[contains(.,\"%s\")] and ./span[text()=\"SCENARIO NAME\"]]]//button[@tooltip=\"Delete\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr[./td[./span[text()=\"SCENARIO NAME\"]]]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioElementInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr[./td[./span[text()=\"SCENARIO NAME\"]] and ./td/button[@tooltip=\"Edit\" and ./*[@class=\"fa fa-pencil\"]]]",
+    "type": "xpath"
+  },
+  {
+    "key": "editButtonInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr[./td[./span[text()=\"SCENARIO NAME\"]]]//button[@tooltip=\"Edit\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "deleteButtonInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr[./td[./span[text()=\"SCENARIO NAME\"]]]//button[@tooltip=\"Delete\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioNameInProjectDetailScenarios",
+    "value": "//table[.//tr/th[text()=\"SCENARIO NAME\"]]/tbody/tr[./td/button[@tooltip=\"Edit\" and ./*[@class=\"fa fa-pencil\"]]]/td[./span[text()=\"SCENARIO NAME\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  }
+]
