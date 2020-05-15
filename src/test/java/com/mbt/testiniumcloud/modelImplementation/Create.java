@@ -10,12 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @GraphWalker(value = "random(edge_coverage(100))")
-public class TestiniumCloudCreate extends ExecutionContext implements org.graphwalker.Create {
+public class Create extends ExecutionContext implements org.graphwalker.Create {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestiniumCloudCreate.class);
+    private static final Logger logger = LoggerFactory.getLogger(Create.class);
     Methods methods;
 
-    public TestiniumCloudCreate() {
+    public Create() {
 
         methods = new Methods();
     }

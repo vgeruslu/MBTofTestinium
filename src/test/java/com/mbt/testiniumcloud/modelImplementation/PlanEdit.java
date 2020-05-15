@@ -10,12 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @GraphWalker(value = "random(edge_coverage(100))")
-public class TestiniumCloudPlanEdit extends ExecutionContext implements org.graphwalker.Plan_Edit {
+public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_Edit {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestiniumCloudPlanEdit.class);
+    private static final Logger logger = LoggerFactory.getLogger(PlanEdit.class);
     Methods methods;
 
-    public TestiniumCloudPlanEdit() {
+    public PlanEdit() {
 
         methods = new Methods();
     }
@@ -91,6 +91,12 @@ public class TestiniumCloudPlanEdit extends ExecutionContext implements org.grap
 
     public void e_Select_Platform() {
 
+        By planNameBy = methods.getBy("planNameInPlanEdit");
+        methods.checkElementVisible(planNameBy);
+        methods.waitByMilliSeconds(500);
+        methods.clearElement(planNameBy);
+        methods.waitByMilliSeconds(200);
+        methods.sendKeys(planNameBy, methods.getValueInTestMap("editPlanName").toString());
         methods.checkElementVisible(methods.getBy("browserTableInCreatePlan"));
         methods.waitByMilliSeconds(500);
         By environmentNameBy = methods.getBy("environmentNameInPlanEdit");
@@ -272,7 +278,7 @@ public class TestiniumCloudPlanEdit extends ExecutionContext implements org.grap
         By webFirefoxCheckboxBy = methods.getBy("webFirefoxShowOnlyOptionInAllSuites");
         By checkboxFirstBy = null;
         //By checkboxSecondBy = null;
-        String projectName = String.valueOf(methods.getValueInTestMap("editProject"));
+        String projectName = String.valueOf(methods.getValueInTestMap("editProjectName"));
         methods.checkElementVisible(selectProjectBy);
         methods.checkElementClickable(selectProjectBy);
         methods.selectByVisibleText(selectProjectBy, projectName);
@@ -346,7 +352,7 @@ public class TestiniumCloudPlanEdit extends ExecutionContext implements org.grap
 
         v_Verify_In_All_Suites_Page_SHARED();
         By selectProjectBy = methods.getBy("selectProjectInAllSuites");
-        String projectName = String.valueOf(methods.getValueInTestMap("editProject"));
+        String projectName = String.valueOf(methods.getValueInTestMap("editProjectName"));
         methods.checkElementVisible(selectProjectBy);
         methods.checkElementClickable(selectProjectBy);
         methods.selectByVisibleText(selectProjectBy, projectName);
@@ -443,7 +449,7 @@ public class TestiniumCloudPlanEdit extends ExecutionContext implements org.grap
 
         v_Verify_In_All_Suites_Page_SHARED();
         By selectProjectBy = methods.getBy("selectProjectInAllSuites");
-        String projectName = String.valueOf(methods.getValueInTestMap("editProject"));
+        String projectName = String.valueOf(methods.getValueInTestMap("editProjectName"));
         methods.checkElementVisible(selectProjectBy);
         methods.checkElementClickable(selectProjectBy);
         methods.waitByMilliSeconds(200);
@@ -464,6 +470,13 @@ public class TestiniumCloudPlanEdit extends ExecutionContext implements org.grap
 
     public void e_Select_Test_Cases() {
 
+
+        By planNameBy = methods.getBy("planNameInPlanEdit");
+        methods.checkElementVisible(planNameBy);
+        methods.waitByMilliSeconds(500);
+        methods.clearElement(planNameBy);
+        methods.waitByMilliSeconds(200);
+        methods.sendKeys(planNameBy, methods.getValueInTestMap("editPlanName").toString());
         methods.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
         methods.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
         By scenarioNameForScenariosBy = methods.getByWithKeySetValue("scenarioForScenariosSelectListNumberInCreatePlan"

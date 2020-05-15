@@ -10,14 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @GraphWalker(value = "random(edge_coverage(100))")
-public class TestiniumCloudCreatePlan extends ExecutionContext implements org.graphwalker.Create_Plan {
+public class CreatePlan extends ExecutionContext implements org.graphwalker.Create_Plan {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestiniumCloudCreatePlan.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreatePlan.class);
     Methods methods;
     Boolean modelLocationStillCreatePlanPage = false;
     Boolean appiumPlan = false;
 
-    public TestiniumCloudCreatePlan() {
+    public CreatePlan() {
 
         methods = new Methods();
     }
@@ -305,7 +305,7 @@ public class TestiniumCloudCreatePlan extends ExecutionContext implements org.gr
         methods.clearElementWithBackSpace(suiteNameBy);
         methods.waitByMilliSeconds(200);
         methods.checkElementVisible(suiteNameBy);
-        methods.sendKeys(suiteNameBy, "newScenario");
+        methods.sendKeys(suiteNameBy, "newPlan");
         methods.waitByMilliSeconds(200);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);

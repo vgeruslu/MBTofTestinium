@@ -10,12 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @GraphWalker(value = "random(edge_coverage(100))")
-public class TestiniumCloudScenarioEdit extends ExecutionContext implements org.graphwalker.Scenario_Edit {
+public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Scenario_Edit {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestiniumCloudScenarioEdit.class);
+    private static final Logger logger = LoggerFactory.getLogger(ScenarioEdit.class);
     Methods methods;
 
-    public TestiniumCloudScenarioEdit() {
+    public ScenarioEdit() {
 
         methods = new Methods();
     }

@@ -10,12 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @GraphWalker(value = "random(edge_coverage(100))")
-public class TestiniumCloudAllSuites extends ExecutionContext implements org.graphwalker.All_Suites {
+public class AllSuites extends ExecutionContext implements org.graphwalker.All_Suites {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestiniumCloudAllSuites.class);
+    private static final Logger logger = LoggerFactory.getLogger(AllSuites.class);
     Methods methods;
 
-    public TestiniumCloudAllSuites() {
+    public AllSuites() {
 
         methods = new Methods();
         methods.putValueInTestMap("allSuitesMobile",false);
@@ -323,6 +323,7 @@ public class TestiniumCloudAllSuites extends ExecutionContext implements org.gra
         methods.waitByMilliSeconds(500);
         methods.clickElement(editButtonBy);
         methods.putValueInTestMap("editPlanName", planName);
+        methods.putValueInTestMap("editProjectName", projectName);
     }
 
     public void v_Verify_In_Report_Detail_Page_SHARED() {

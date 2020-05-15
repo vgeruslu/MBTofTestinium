@@ -32,12 +32,6 @@
       <artifactId>graphwalker-websocket</artifactId>
       <version>4.1.0</version>
     </dependency>
-   <!-- <dependency>
-      <groupId>org.graphwalker</groupId>
-      <artifactId>graphwalker-studio</artifactId>
-      <version>4.0.1</version>
-    </dependency> -->
-    <!-- https://mvnrepository.com/artifact/org.graphwalker/graphwalker-model-checker -->
     <dependency>
       <groupId>org.graphwalker</groupId>
       <artifactId>graphwalker-model-checker</artifactId>

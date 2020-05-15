@@ -10,12 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @GraphWalker(value = "random(edge_coverage(100))")
-public class TestiniumCloudProjectDetailSuites extends ExecutionContext implements org.graphwalker.Project_Detail_Suites {
+public class ProjectDetailSuites extends ExecutionContext implements org.graphwalker.Project_Detail_Suites {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestiniumCloudProjectDetailSuites.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProjectDetailSuites.class);
     Methods methods;
 
-    public TestiniumCloudProjectDetailSuites() {
+    public ProjectDetailSuites() {
 
         methods = new Methods();
     }
@@ -260,6 +260,7 @@ public class TestiniumCloudProjectDetailSuites extends ExecutionContext implemen
         methods.waitByMilliSeconds(200);
         String planName = methods.getText(planNameBy).trim();
         methods.putValueInTestMap("editPlanName", planName);
+        methods.putValueInTestMap("editProjectName", methods.getValueInTestMap("currentProject").toString());
         By planEditButtonBy = methods.getByWithKeySetValue("editButtonWithPlanNameInProjectDetailSuites", planName);
         methods.checkElementVisible(planEditButtonBy);
         methods.checkElementClickable(planEditButtonBy);

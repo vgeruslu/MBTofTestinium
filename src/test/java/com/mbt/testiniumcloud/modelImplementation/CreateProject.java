@@ -11,12 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @GraphWalker(value = "random(edge_coverage(100))")
-public class TestiniumCloudCreateProject extends ExecutionContext implements org.graphwalker.Create_Project {
+public class CreateProject extends ExecutionContext implements org.graphwalker.Create_Project {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestiniumCloudCreateProject.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreateProject.class);
     Methods methods;
 
-    public TestiniumCloudCreateProject() {
+    public CreateProject() {
 
         methods = new Methods();
     }
