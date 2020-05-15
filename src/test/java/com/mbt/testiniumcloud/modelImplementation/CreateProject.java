@@ -297,6 +297,10 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By templateSiteUrlBy = methods.getBy("templateSiteUrlInCreateProject");
         methods.checkElementVisible(templateSiteUrlBy);
+        methods.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(templateSiteUrlBy);
+        methods.waitByMilliSeconds(200);
+        methods.checkElementVisible(templateSiteUrlBy);
         methods.sendKeys(templateSiteUrlBy,"https://testinium.com/");
     }
 
