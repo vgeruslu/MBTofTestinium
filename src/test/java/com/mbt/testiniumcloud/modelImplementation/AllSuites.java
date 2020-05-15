@@ -278,7 +278,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By projectNameBy = methods.getByWithKeySetValue("tableProjectNameInAllSuites","last()");
         By tableSuiteNameBy = methods.getByWithKeySetValue("tableSuiteNameInAllSuites","last()");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(200);
+        methods.waitByMilliSeconds(300);
         methods.checkElementVisible(tableSuiteNameBy);
         methods.waitByMilliSeconds(200);
         String projectName = methods.getText(projectNameBy).trim();
@@ -289,8 +289,9 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By deleteButtonBy = methods.getByWithKeySetValue("deleteButtonTableSuiteNameKeyValueInAllSuites"
                 , projectName + "!!" + planName);
         methods.checkElementVisible(deleteButtonBy);
-        methods.checkElementClickable(deleteButtonBy);
         methods.waitByMilliSeconds(500);
+        methods.checkElementClickable(deleteButtonBy);
+        methods.waitBySeconds(1);
         methods.clickElement(deleteButtonBy);
     }
 
