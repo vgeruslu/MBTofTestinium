@@ -31,43 +31,37 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
     public TestWatcher testWatcher = new TestResultJunit();
 
     public GraphWalkerTestiniumCloudTest() {
-
-        //PropertyConfigurator.configure(GraphWalkerTestiniumTest.class.getClassLoader().getResource("log4j.properties"));
-        /**
-        Logger.getRootLogger().setLevel(Level.OFF);
-        Logger.getLogger(GraphWalkerTestiniumCloudTest.class).setLevel(Level.ALL);
-        Logger.getLogger(DriverCreater.class).setLevel(Level.ALL);
-        Logger.getLogger(TestResultJunit.class).setLevel(Level.ALL);
-         */
+        
+        
     }
 
     @Test
     public void testiniumLoginWebSocketTest() throws IOException {
 
-        Executor executor = new TestExecutor(TestiniumCloudAllScenarios.class, TestiniumCloudDashboard.class, TestiniumCloudLogin.class,
-                TestiniumCloudProjectDetailSuites.class, TestiniumCloudProjectDetailSummary.class, TestiniumCloudProjects.class,
-                TestiniumCloudReportDetail.class, TestiniumCloudReports.class, TestiniumCloudScenarioCreateNewGroup.class,
-                TestiniumCloudCreate.class, TestiniumCloudCreatePlan.class, TestiniumCloudCreateProject.class, TestiniumCloudCreateScenario.class,
-                TestiniumCloudPlanEdit.class, TestiniumCloudProjectDetailProperties.class, TestiniumCloudProjectDetailScenarios.class,
-                TestiniumCloudScenarioEdit.class, TestiniumCloudAllSuites.class);
+        Executor executor = new TestExecutor(AllScenarios.class, Dashboard.class, Login.class,
+                ProjectDetailSuites.class, ProjectDetailSummary.class, Projects.class,
+                ReportDetail.class, Reports.class, ScenarioCreateNewGroup.class,
+                Create.class, CreatePlan.class, CreateProject.class, CreateScenario.class,
+                PlanEdit.class, ProjectDetailProperties.class, ProjectDetailScenarios.class,
+                ScenarioEdit.class, AllSuites.class);
 
         WebSocketServer server = new WebSocketServer(8887, executor.getMachine());
         server.start();
 
-       result = executor.execute(true);
-       setInfo(executor);
-       errorControl();
+        result = executor.execute(true);
+        setInfo(executor);
+        errorControl();
     }
 
     @Test
     public void testiniumCloudAll() throws IOException {
 
-        Executor executor = new TestExecutor(TestiniumCloudAllScenarios.class, TestiniumCloudDashboard.class, TestiniumCloudLogin.class,
-                TestiniumCloudProjectDetailSuites.class, TestiniumCloudProjectDetailSummary.class, TestiniumCloudProjects.class,
-                TestiniumCloudReportDetail.class, TestiniumCloudReports.class, TestiniumCloudScenarioCreateNewGroup.class,
-                TestiniumCloudCreate.class, TestiniumCloudCreatePlan.class, TestiniumCloudCreateProject.class, TestiniumCloudCreateScenario.class,
-                TestiniumCloudPlanEdit.class, TestiniumCloudProjectDetailProperties.class, TestiniumCloudProjectDetailScenarios.class,
-                TestiniumCloudScenarioEdit.class, TestiniumCloudAllSuites.class);
+        Executor executor = new TestExecutor(AllScenarios.class, Dashboard.class, Login.class,
+                ProjectDetailSuites.class, ProjectDetailSummary.class, Projects.class,
+                ReportDetail.class, Reports.class, ScenarioCreateNewGroup.class,
+                Create.class, CreatePlan.class, CreateProject.class, CreateScenario.class,
+                PlanEdit.class, ProjectDetailProperties.class, ProjectDetailScenarios.class,
+                ScenarioEdit.class, AllSuites.class);
 
         result = executor.execute(true);
         setInfo(executor);
@@ -77,15 +71,15 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
     @Test
     public void testiniumCloudAllss() throws IOException {
 
-        Executor executor = new TestExecutor(TestiniumCloudAllScenarios.class, TestiniumCloudDashboard.class, TestiniumCloudLogin.class,
-                TestiniumCloudProjectDetailSuites.class, TestiniumCloudProjectDetailSummary.class, TestiniumCloudProjects.class,
-                TestiniumCloudReportDetail.class, TestiniumCloudReports.class, TestiniumCloudScenarioCreateNewGroup.class,
-                TestiniumCloudCreate.class, TestiniumCloudCreatePlan.class, TestiniumCloudCreateProject.class, TestiniumCloudCreateScenario.class,
-                TestiniumCloudPlanEdit.class, TestiniumCloudProjectDetailProperties.class, TestiniumCloudProjectDetailScenarios.class,
-                TestiniumCloudScenarioEdit.class, TestiniumCloudAllSuites.class);
+        Executor executor = new TestExecutor(AllScenarios.class, Dashboard.class, Login.class,
+                ProjectDetailSuites.class, ProjectDetailSummary.class, Projects.class,
+                ReportDetail.class, Reports.class, ScenarioCreateNewGroup.class,
+                Create.class, CreatePlan.class, CreateProject.class, CreateScenario.class,
+                PlanEdit.class, ProjectDetailProperties.class, ProjectDetailScenarios.class,
+                ScenarioEdit.class, AllSuites.class);
 
         List<Context> contextList = executor.getMachine().getContexts();
-        Observer observer = new GraphDenemeStreamObserverNewVersion2_1(TestiniumCloudLogin.class, contextList,false,false);
+        Observer observer = new GraphDenemeStreamObserverNewVersion2_1(Login.class, contextList,false,false);
         executor.getMachine().addObserver(observer);
 
         result = executor.execute(true);
@@ -97,7 +91,7 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
     @Test
     public void testiniumCloudLoginWs() throws IOException {
 
-        Executor executor = new TestExecutor(TestiniumCloudLogin.class);
+        Executor executor = new TestExecutor(Login.class);
 
         WebSocketServer server = new WebSocketServer(8887, executor.getMachine());
         server.start();
@@ -109,7 +103,7 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
     @Test
     public void testiniumCloudLogin() throws IOException {
 
-        Executor executor = new TestExecutor(TestiniumCloudLogin.class);
+        Executor executor = new TestExecutor(Login.class);
 
         result = executor.execute(true);
         setInfo(executor);
@@ -119,7 +113,7 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
     @Test
     public void testiniumCloudDashboard() throws IOException {
 
-        Executor executor = new TestExecutor(TestiniumCloudLogin.class, TestiniumCloudDashboard.class);
+        Executor executor = new TestExecutor(Login.class, Dashboard.class);
 
         result = executor.execute(true);
         setInfo(executor);

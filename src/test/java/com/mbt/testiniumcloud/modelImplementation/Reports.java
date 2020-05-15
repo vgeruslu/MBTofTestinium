@@ -36,22 +36,12 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         logger.info("═════════  " + getModel().getName() + "   "
                 + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
                 + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "  ═════════");
-        /**
-         int stepCount = Integer.parseInt(methods.getValueInTestMap("stepCount").toString()) + 1;
-         methods.putValueInTestMap("stepCount",stepCount);
-         logger.error("  " + stepCount + " " + getModel().getName() + "   "
-         + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
-         + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "   ");
-         */
     }
 
     @AfterElement
     public void afterElement() {
 
-        //logger.error("Success" + "\n");
-        //logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
         logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
-        //System.out.println("\r\n");
     }
 
     public void v_Control_Suites_For_Selected_Suite() {

@@ -44,17 +44,6 @@ public class DriverCreater {
     public static String testResult = "";
     public static ConcurrentHashMap<String,Object> TestMap;
 
-/**
-     static {
-         //EEE, MMM d, yyyy hh:mm:ss a z
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_!_XXX");
-         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-         String currentTime = dateFormat.format(new Date()).replace("!","UTC")
-                 .replace("+","").replace(":","-");
-         System.setProperty("currenttime", currentTime);
-     }
- */
-
     @BeforeClass
     public static void beforeClass(){
 
@@ -66,7 +55,6 @@ public class DriverCreater {
             dir = dir.replace("/","\\");
         }
         PropertyConfigurator.configure(System.getProperty("user.dir") + dir);
-                //GraphWalkerTestiniumCloudTest.class.getClassLoader().getResource("log4j.properties"));
         //getRootLogger().setLevel(Level.ALL);
         getRootLogger().setLevel(Level.OFF);
 

@@ -37,22 +37,12 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         logger.info("═════════  " + getModel().getName() + "   "
                 + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
                 + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "  ═════════");
-        /**
-         int stepCount = Integer.parseInt(methods.getValueInTestMap("stepCount").toString()) + 1;
-         methods.putValueInTestMap("stepCount",stepCount);
-         logger.error("  " + stepCount + " " + getModel().getName() + "   "
-         + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
-         + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "   ");
-         */
     }
 
     @AfterElement
     public void afterElement() {
 
-        //logger.error("Success" + "\n");
-        //logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
         logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
-        //System.out.println("\r\n");
     }
 
     public void e_click_Mobile_Checbox() {
@@ -182,6 +172,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(yesButtonBy);
         methods.waitBySeconds(1);
         methods.clickElement(yesButtonBy);
@@ -274,10 +265,11 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
     public void v_Control_Are_You_Sure_Message() {
 
+        methods.waitBySeconds(1);
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
-        methods.waitByMilliSeconds(200);
+        methods.waitBySeconds(1);
     }
 
     public void e_Click_Delete() {
@@ -349,10 +341,11 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
     public void v_control_Are_You_Sure_Message() {
 
+        methods.waitBySeconds(1);
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
-        methods.waitByMilliSeconds(200);
+        methods.waitBySeconds(1);
     }
 
     public void e_Click_Mobile_Checbox() {
@@ -408,6 +401,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(yesButtonBy);
         methods.waitBySeconds(1);
         methods.clickElement(yesButtonBy);
@@ -470,6 +464,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(noButtonBy);
         methods.waitBySeconds(1);
         methods.clickElement(noButtonBy);
@@ -479,6 +474,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(noButtonBy);
         methods.waitBySeconds(1);
         methods.clickElement(noButtonBy);
