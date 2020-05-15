@@ -230,6 +230,11 @@
     "type": "xpath"
   },
   {
+    "key": "testRunningSpinnerInNewSuite",
+    "value": "//div[contains(@class,\"panel\")]//table//tbody/tr[./td[./span[text()=\"SUITE NAME\"] and contains(text(),'%s')]]/td[./span[text()=\"LAST EXECUTION\"] and .//div[contains(@class,'execution-results')]/div[contains(@class,'execution-result')]//i[contains(@class,'fa fa-cog') or contains(@class,'fa fa-cog fa-spin fa-fw') or contains(@class,'fa fa-check') or contains(@class,'fa fa-remove') or contains(@class,'fa fa-bug')] or ./i[contains(@class,\"fa fa-spinner\")]]",
+    "type": "xpath"
+  },
+  {
     "key": "testRunningResultInNewSuite",
     "value": "//div[contains(@class,\"panel\")]//table//tbody/tr[./td[./span[text()=\"SUITE NAME\"] and contains(text(),'%s')]]/td[./span[text()=\"LAST EXECUTION\"]]//div[contains(@class,'execution-results')]/div[contains(@class,'execution-result')]//i[@class='fa fa-check' or @class='fa fa-remove' or @class='fa fa-bug']",
     "type": "xpath"

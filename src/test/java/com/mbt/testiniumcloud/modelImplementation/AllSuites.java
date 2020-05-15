@@ -387,12 +387,12 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
     public void v_Verify_Suite_Is_Running() {
 
         Assert.assertTrue("Test Başlatılamadı...", methods
-                .isElementVisible(methods.getBy("TestRunSuccessfullStarted"),30));
+                .isElementVisible(methods.getBy("TestRunSuccessfullStarted"),60));
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
         methods.checkElementVisible(methods.getBy("suiteForTableInAllSuites"));
         String projectName = String.valueOf(methods.getValueInTestMap("currentProject"));
         String planName = String.valueOf(methods.getValueInTestMap("currentPlan"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("testRunningInNewSuite"
+        methods.checkElementVisible(methods.getByWithKeySetValue("testRunningSpinnerInNewSuite"
                 , planName),120);
     }
 
