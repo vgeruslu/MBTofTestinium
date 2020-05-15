@@ -145,6 +145,7 @@ public class ReportDetail extends ExecutionContext implements org.graphwalker.Re
 
     public void e_Navigate_Back() {
 
+        methods.waitBySeconds(2);
         methods.navigateToBack();
     }
 }
