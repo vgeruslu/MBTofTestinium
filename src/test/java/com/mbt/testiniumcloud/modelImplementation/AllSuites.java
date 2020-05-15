@@ -211,6 +211,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By reportButtonBy = methods.getByWithKeySetValue("reportButtonTableSuiteNameKeyValueInAllSuites"
                 , projectName + "!!" + planName);
         methods.checkElementVisible(reportButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(reportButtonBy);
         methods.waitBySeconds(1);
         methods.clickElement(reportButtonBy);

@@ -7,6 +7,7 @@ import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -344,9 +345,19 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
         methods.waitBySeconds(1);
         methods.scrollElement(reportDetailInDashboardBy);
         methods.waitBySeconds(1);
+        methods.checkElementVisible(reportDetailInDashboardBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(reportDetailInDashboardBy);
         methods.waitBySeconds(1);
-        methods.clickElement(reportDetailInDashboardBy);
+        try {
+            methods.clickElement(reportDetailInDashboardBy);
+        }catch (StaleElementReferenceException e){
+            methods.checkElementVisible(reportDetailInDashboardBy);
+            methods.waitByMilliSeconds(500);
+            methods.checkElementClickable(reportDetailInDashboardBy);
+            methods.waitBySeconds(1);
+            methods.clickElement(reportDetailInDashboardBy);
+        }
     }
 
     public void v_Verify_In_All_Scenarios_Page_SHARED() {

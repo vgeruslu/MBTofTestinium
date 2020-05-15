@@ -114,8 +114,9 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
         methods.putValueInTestMap("reportPlan", planName);
         By planReportButtonBy = methods.getByWithKeySetValue("reportButtonWithPlanNameInProjectDetailSuites",planName);
         methods.checkElementVisible(planReportButtonBy);
-        methods.checkElementClickable(planReportButtonBy);
         methods.waitByMilliSeconds(500);
+        methods.checkElementClickable(planReportButtonBy);
+        methods.waitBySeconds(1);
         methods.clickElement(planReportButtonBy);
     }
 
