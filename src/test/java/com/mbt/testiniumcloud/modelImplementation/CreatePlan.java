@@ -260,10 +260,11 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         methods.checkElementClickable(projectBy);
         methods.waitByMilliSeconds(500);
         if(!appiumPlan){
-            methods.putValueInTestMap("currentProject", methods.getValueInTestMap("appiumProject"));
+            methods.putValueInTestMap("currentProject", methods.getValueInTestMap("appiumProject").toString());
             setAttribute("isCreatePlanWebPlatform",false);
             setAttribute("isCreatePlanMobilePlatform",true);
         }else {
+            methods.putValueInTestMap("currentProject", methods.getValueInTestMap("optionalProject").toString());
             setAttribute("isCreatePlanWebPlatform",true);
             setAttribute("isCreatePlanMobilePlatform",false);
         }
