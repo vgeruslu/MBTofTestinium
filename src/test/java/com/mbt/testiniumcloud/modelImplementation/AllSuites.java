@@ -6,6 +6,7 @@ import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -420,9 +421,18 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By runButtonBy = methods.getByWithKeySetValue("runButtonTableSuiteNameKeyValueInAllSuites"
                 , projectName + "!!" + planName);
         methods.checkElementVisible(runButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(runButtonBy);
         methods.waitByMilliSeconds(500);
-        methods.clickElement(runButtonBy);
+        try {
+            methods.clickElement(runButtonBy);
+        }catch (StaleElementReferenceException e){
+            methods.checkElementVisible(runButtonBy);
+            methods.waitByMilliSeconds(500);
+            methods.checkElementClickable(runButtonBy);
+            methods.waitByMilliSeconds(500);
+            methods.clickElement(runButtonBy);
+        }
         methods.putValueInTestMap("currentPlan", planName);
     }
 

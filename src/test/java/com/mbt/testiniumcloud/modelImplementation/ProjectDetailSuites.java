@@ -134,7 +134,7 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
         methods.clickElement(planRunButtonBy);
         if(!Boolean.parseBoolean(methods.getValueInTestMap("testRun").toString())
                 && methods.getValueInTestMap("currentProject").toString().trim()
-                .equals(methods.getValueInTestMap("optionalProject").toString())){
+                .equals(methods.getValueInTestMap("editProject").toString())){
             setAttribute("suiteRunYes",true);
         }
         else {
