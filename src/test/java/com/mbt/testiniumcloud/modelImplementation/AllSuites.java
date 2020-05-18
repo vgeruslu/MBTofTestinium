@@ -427,11 +427,12 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         try {
             methods.clickElement(runButtonBy);
         }catch (StaleElementReferenceException e){
+            methods.waitBySeconds(2);
             methods.checkElementVisible(runButtonBy);
             methods.waitByMilliSeconds(500);
             methods.checkElementClickable(runButtonBy);
-            methods.waitByMilliSeconds(500);
-            methods.clickElement(runButtonBy);
+            methods.waitBySeconds(1);
+            methods.clickElementJs(runButtonBy);
         }
         methods.putValueInTestMap("currentPlan", planName);
     }

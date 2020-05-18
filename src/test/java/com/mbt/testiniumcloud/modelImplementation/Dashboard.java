@@ -353,11 +353,12 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
         try {
             methods.clickElement(reportDetailInDashboardBy);
         }catch (StaleElementReferenceException e){
+            methods.waitBySeconds(2);
             methods.checkElementVisible(reportDetailInDashboardBy);
             methods.waitByMilliSeconds(500);
             methods.checkElementClickable(reportDetailInDashboardBy);
             methods.waitBySeconds(1);
-            methods.clickElement(reportDetailInDashboardBy);
+            methods.clickElementJs(reportDetailInDashboardBy);
         }
     }
 
