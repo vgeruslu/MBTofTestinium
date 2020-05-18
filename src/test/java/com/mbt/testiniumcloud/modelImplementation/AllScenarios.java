@@ -369,16 +369,16 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
         methods.checkElementVisible(methods.getBy("reportsTab"));
         methods.checkElementVisible(methods.getBy("automatedTestTab"));
 
-        methods.waitByMilliSeconds(200);
+        methods.waitByMilliSeconds(500);
         methods.selectByVisibleText(projectSelectBy, methods.getValueInTestMap("appiumProject").toString());
-        methods.waitByMilliSeconds(200);
+        methods.waitByMilliSeconds(300);
         methods.checkElementVisible(projectSelectBy);
         methods.selectByVisibleText(projectSelectBy,"All Projects");
-        methods.waitByMilliSeconds(300);
+        methods.waitByMilliSeconds(500);
         methods.checkElementVisible(projectSelectBy);
         methods.selectByVisibleText(methods.getBy("suiteSelectInAllScenarios"),"All Suites");
         methods.putValueInTestMap("currentProject", methods.getValueInTestMap("optionalProject").toString());
-        methods.waitByMilliSeconds(300);
+        methods.waitByMilliSeconds(500);
     }
 
     // selected project
