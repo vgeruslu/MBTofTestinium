@@ -237,6 +237,11 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
         methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
         By projectSelectBy = methods.getBy("projectSelectInAllScenarios");
+        methods.waitByMilliSeconds(500);
+        methods.selectByVisibleText(projectSelectBy
+                , "All Projects");
+        methods.waitBySeconds(1);
+        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
         methods.selectByVisibleText(projectSelectBy
                 , String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(projectSelectBy);
