@@ -38,6 +38,7 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
         //methods.putValueInTestMap("editProjectRun",false);
         methods.putValueInTestMap("currentProject",
                 String.valueOf(methods.getValueInTestMap("optionalProject")));
+        methods.putValueInTestMap("testRun",false);
     }
 
     @BeforeExecution

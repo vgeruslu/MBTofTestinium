@@ -100,9 +100,11 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
 
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(yesButtonBy);
         methods.waitByMilliSeconds(500);
         methods.clickElement(yesButtonBy);
+        methods.putValueInTestMap("testRun",true);
         setAttribute("suiteRunYes",false);
     }
 
@@ -130,7 +132,14 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
         methods.checkElementVisible(planRunButtonBy);
         methods.checkElementClickable(planRunButtonBy);
         methods.clickElement(planRunButtonBy);
-        setAttribute("suiteRunYes",false);
+        if(!Boolean.parseBoolean(methods.getValueInTestMap("testRun").toString())
+                && methods.getValueInTestMap("currentProject").toString().trim()
+                .equals(methods.getValueInTestMap("optionalProject").toString())){
+            setAttribute("suiteRunYes",true);
+        }
+        else {
+            setAttribute("suiteRunYes",false);
+        }
     }
 
     public void v_Verify_In_Project_Detail_Suites_Page_SHARED() {
@@ -193,9 +202,11 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
 
     public void v_Control_Are_You_Sure_Message() {
 
+        methods.waitByMilliSeconds(500);
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
+        methods.waitByMilliSeconds(500);
     }
 
     public void e_Click_Delete() {
