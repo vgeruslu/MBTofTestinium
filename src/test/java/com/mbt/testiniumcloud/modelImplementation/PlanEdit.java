@@ -419,10 +419,6 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         //scenarioForScenariosSelectListInCreatePlan
         //Mac 	1920x1080
 
-        String projectName = methods.getFirstSelectedOption(methods.getBy("projectNameInPlanEdit")).getText().trim();
-
-        //Assert.assertEquals("", methods.getValueInTestMap("editProject"), projectName);
-
         methods.checkElementVisible(methods.getBy("propertiesTabInPlanEdit"));
         methods.checkElementVisible(methods.getBy("advancedTabInPlanEdit"));
         methods.checkElementVisible(methods.getBy("scheduleAndNotificationsTabInPlanEdit"));
@@ -433,6 +429,16 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         methods.checkElementVisible(methods.getBy("allSuitesTab"));
         methods.checkElementVisible(methods.getBy("reportsTab"));
         methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        methods.waitBySeconds(1);
+        String projectName = methods.getFirstSelectedOption(methods.getBy("projectNameInPlanEdit")).getText().trim();
+        /**
+         * TODO: kontrol et
+         */
+        if(projectName.contains("mobileTemp") || projectName.contains("appiumEditProject")){
+            setAttribute("isProjectMobile",true);
+        } else {
+            setAttribute("isProjectMobile",false);
+        }
     }
 
     public void v_Control_Edited_plan() {
