@@ -120,9 +120,9 @@
     "type": "css"
   },
   {
-    "key": "5",
-    "value": "",
-    "type": ""
+    "key": "reportsTableElementsInDashboard",
+    "value": "//div[contains(@class,\"panel-body\") and .//h4[text()=\"Latest Test Runs\"]]/table/tbody/tr",
+    "type": "xpath"
   },
   {
     "key": "5",
