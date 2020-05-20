@@ -148,7 +148,9 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
 
         By automatedTestTabBy = methods.getBy("automatedTestTab");
         methods.checkElementVisible(automatedTestTabBy);
-        methods.scrollElement(automatedTestTabBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(automatedTestTabBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(automatedTestTabBy);
         methods.clickElement(automatedTestTabBy);
     }
@@ -200,7 +202,9 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
 
         By allScenariosTabBy = methods.getBy("allScenariosTab");
         methods.checkElementVisible(allScenariosTabBy);
-        methods.scrollElement(allScenariosTabBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(allScenariosTabBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(allScenariosTabBy);
         methods.clickElement(allScenariosTabBy);
     }
@@ -241,7 +245,9 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
 
         By projectsTabBy = methods.getBy("projectsTab");
         methods.checkElementVisible(projectsTabBy);
-        methods.scrollElement(projectsTabBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(projectsTabBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(projectsTabBy);
         methods.clickElement(projectsTabBy);
     }
@@ -250,7 +256,9 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
 
         By dashboardCreateButtonBy = methods.getBy("dashboardCreateButton");
         methods.checkElementVisible(dashboardCreateButtonBy);
-        methods.scrollElement(dashboardCreateButtonBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(dashboardCreateButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(dashboardCreateButtonBy);
         methods.clickElement(dashboardCreateButtonBy);
     }
@@ -282,7 +290,9 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
 
         By reportsTabBy = methods.getBy("reportsTab");
         methods.checkElementVisible(reportsTabBy);
-        methods.scrollElement(reportsTabBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(reportsTabBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(reportsTabBy);
         methods.clickElement(reportsTabBy);
     }
@@ -291,7 +301,9 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
 
         By allSuitesTabBy = methods.getBy("allSuitesTab");
         methods.checkElementVisible(allSuitesTabBy);
-        methods.scrollElement(allSuitesTabBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(allSuitesTabBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(allSuitesTabBy);
         methods.clickElement(allSuitesTabBy);
     }
@@ -314,7 +326,9 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
 
         By dashboardButtonBy = methods.getBy("dashboardButton");
         methods.checkElementVisible(dashboardButtonBy);
-        methods.scrollElement(dashboardButtonBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(dashboardButtonBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementClickable(dashboardButtonBy);
         methods.waitByMilliSeconds(500);
         methods.clickElement(dashboardButtonBy);
@@ -341,22 +355,27 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
 
     public void e_Click_Details() {
 
+        By reportTableElementBy = methods.getBy("reportsTableElementsInDashboard");
         By reportDetailInDashboardBy = methods.getBy("reportDetailInDashboard");
-        methods.checkElementVisible(reportDetailInDashboardBy);
+        methods.checkElementVisible(reportTableElementBy);
         methods.waitBySeconds(1);
-        methods.scrollElement(reportDetailInDashboardBy);
+        methods.waitUntilWithoutStaleElement(reportTableElementBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(reportTableElementBy);
         methods.waitBySeconds(1);
         methods.checkElementVisible(reportDetailInDashboardBy);
         methods.waitByMilliSeconds(500);
         methods.checkElementClickable(reportDetailInDashboardBy);
         methods.waitBySeconds(1);
         try {
+            methods.waitUntilWithoutStaleElement(reportDetailInDashboardBy);
             methods.clickElement(reportDetailInDashboardBy);
         }catch (StaleElementReferenceException e){
             methods.waitBySeconds(2);
             methods.checkElementVisible(reportDetailInDashboardBy);
             methods.waitByMilliSeconds(500);
             methods.checkElementClickable(reportDetailInDashboardBy);
+            methods.waitUntilWithoutStaleElement(reportDetailInDashboardBy);
             methods.waitBySeconds(1);
             methods.clickElementJs(reportDetailInDashboardBy);
         }

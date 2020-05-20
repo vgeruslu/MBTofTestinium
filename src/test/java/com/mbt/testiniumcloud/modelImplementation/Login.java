@@ -105,13 +105,14 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
     public void e_Logout() {
 
         By userDropDownBy = methods.getBy("btnUserDropdown");
-        methods.scrollElement(userDropDownBy);
+        methods.waitByMilliSeconds(500);
+        methods.scrollElementCenterWithJs(userDropDownBy);
+        methods.waitByMilliSeconds(500);
         methods.checkElementVisible(userDropDownBy);
         methods.checkElementClickable(userDropDownBy);
         methods.clickElement(userDropDownBy);
         By logoutBy = methods.getBy("btnLogOut");
         methods.checkElementVisible(logoutBy);
-        //methods.scrollElement(logoutBy);
         methods.checkElementClickable(logoutBy);
         methods.waitByMilliSeconds(500);
         methods.clickElement(logoutBy);

@@ -87,6 +87,11 @@ public class Methods {
         return ElementHelper.getElementInfoToBy(getElementInfo(key));
     }
 
+    public Boolean waitUntilWithoutStaleElement(By by){
+
+        return wait.until(ExpectedConditions.refreshed(ExpectedConditions.stalenessOf(findElement(by))));
+    }
+
     public WebElement findElement(By by){
 
         logger.info("Element " + by.toString() + " by değerine sahip");
@@ -300,7 +305,11 @@ public class Methods {
 
     public void scrollElementCenterWithJs(By by){
 
-        WebElement webElement = findElement(by);
+        scrollElementCenterWithJs(findElement(by));
+    }
+
+    public void scrollElementCenterWithJs(WebElement webElement){
+
         jsExecutor("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})", webElement);
     }
 

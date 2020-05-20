@@ -425,6 +425,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         methods.checkElementClickable(runButtonBy);
         methods.waitByMilliSeconds(500);
         try {
+            methods.waitUntilWithoutStaleElement(runButtonBy);
             methods.clickElement(runButtonBy);
         }catch (StaleElementReferenceException e){
             methods.waitBySeconds(2);
@@ -432,6 +433,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
             methods.waitByMilliSeconds(500);
             methods.checkElementClickable(runButtonBy);
             methods.waitBySeconds(1);
+            methods.waitUntilWithoutStaleElement(runButtonBy);
             methods.clickElementJs(runButtonBy);
         }
         methods.putValueInTestMap("currentPlan", planName);
