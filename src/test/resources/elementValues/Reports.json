@@ -1,0 +1,342 @@
+[
+  {
+    "key": "createButtonInReports",
+    "value": "a[class*='create-button'][href='/create']",
+    "type": "css"
+  },
+  {
+    "key": "reportsLogoTitleInReports",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li/a[@href='/report' and text()='Reports']",
+    "type": "xpath"
+  },
+  {
+    "key": "exportTableInReports",
+    "value": "//div[@class=\"button-area\"]//button[text()='EXPORT TABLE']",
+    "type": "xpath"
+  },
+  {
+    "key": "projectsInReports",
+    "value": "projects",
+    "type": "id"
+  },
+  {
+    "key": "projectsOptionKeyValueInReports",
+    "value": "//select[@id=\"projects\"]/option[text()=\"%s\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "suitesInReports",
+    "value": "suites",
+    "type": "id"
+  },
+  {
+    "key": "suitesOptionKeyValueInReports",
+    "value": "//select[@id=\"suites\"]/option[text()=\"%s\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "dateFromInReports",
+    "value": "dateFrom",
+    "type": "id"
+  },
+  {
+    "key": "dateToInReports",
+    "value": "dateTo",
+    "type": "id"
+  },
+  {
+    "key": "showOnlyFailedTestsInReports",
+    "value": "//app-checkbox[@text=\"Show only failed tests\"]/div[contains(@class,\"checkbox\")]/label",
+    "type": "xpath"
+  },
+  {
+    "key": "calendarDateInReports",
+    "value": "bs-datepicker-container[aria-label=\"calendar\"]",
+    "type": "css"
+  },
+  {
+    "key": "calendarPreviousInReports",
+    "value": "//bs-datepicker-container[@aria-label=\"calendar\"]//bs-datepicker-navigation-view/button[@class=\"previous\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "calendarNavigationButton1InReports",
+    "value": "//bs-datepicker-container[@aria-label=\"calendar\"]//bs-datepicker-navigation-view/button[@class=\"previous\"]/following-sibling::button[@class=\"current\"][1]",
+    "type": "xpath"
+  },
+  {
+    "key": "calendarNavigationButton2EqualInReports",
+    "value": "//bs-datepicker-container[@aria-label=\"calendar\"]//bs-datepicker-navigation-view/button[@class=\"previous\"]/following-sibling::button[@class=\"current\"][2]",
+    "type": "xpath"
+  },
+  {
+    "key": "calendarNavigationButton2InReports",
+    "value": "//bs-datepicker-container[@aria-label=\"calendar\"]//bs-datepicker-navigation-view/button[contains(@class,\"previous\")]/following-sibling::button[contains(@class,\"current\")][2]",
+    "type": "xpath"
+  },
+  {
+    "key": "calendarNextInReports",
+    "value": "//bs-datepicker-container[@aria-label=\"calendar\"]//bs-datepicker-navigation-view/button[@class=\"next\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "monthsSelectWithNumberKeyValueInReports",
+    "value": "(//table[@class='months']/tbody//td[@role=\"gridcell\"])[%s]",
+    "type": "xpath"
+  },
+  {
+    "key": "monthsSelectWithNameKeyValueInReports",
+    "value": "//table[@class='months']/tbody//td[@role=\"gridcell\" and ./span[text()=\"%s\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "monthsTableInReports",
+    "value": "table[class='months']",
+    "type": "css"
+  },
+  {
+    "key": "yearsSelectWithNumberKeyValueInReports",
+    "value": "//table[@class='years']/tbody//td[@role=\"gridcell\" and not(@class=\"disabled\") and ./span[text()=\"%s\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "yearsSelectWithNameKeyValueInReports",
+    "value": "//table[@class='years']/tbody//td[@role=\"gridcell\" and ./span[text()=\"%s\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "yearsTableInReports",
+    "value": "//table[@class='years']",
+    "type": "xpath"
+  },
+  {
+    "key": "dayWithCalendarKeyValue",
+    "value": "//table[@class=\"days weeks\"]/tbody//td[@role=\"gridcell\" and ./span[not(@class=\"is-other-month\") and text()=\"%s\"]]/span",
+    "type": "xpath"
+  },
+  {
+    "key": "tableInReports",
+    "value": "//table[@class=\"table table-with-checkbox\" and .//tr[./th/app-checkbox and ./th[text()=\"ID\"] and ./th[text()=\"SUITE NAME\"] and ./th[text()=\"PROJECT NAME\"] and ./th[text()=\"RUN DATE\"] and ./th[text()=\"RUNTIME\"] and ./th[text()=\"TEST RESULT\"]]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableContainInReports",
+    "value": "//table[contains(@class,\"table table-with-checkbox\") and .//tr[./th/app-checkbox and ./th[text()=\"ID\"] and ./th[text()=\"SUITE NAME\"] and ./th[text()=\"PROJECT NAME\"] and ./th[text()=\"RUN DATE\"] and ./th[text()=\"RUNTIME\"] and ./th[text()=\"TEST RESULT\"]]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableCheckboxEqualInReports",
+    "value": "table[class=\"table table-with-checkbox\"] thead app-checkbox > div.checkbox > label",
+    "type": "css"
+  },
+  {
+    "key": "tableCheckboxInReports",
+    "value": "table[class*=\"table table-with-checkbox\"] thead app-checkbox > div.checkbox > label",
+    "type": "css"
+  },
+  {
+    "key": "tablePlanDetailsButtonKeyValueInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"] and text()=\"%s\"] and ./td[./span[text()=\"PROJECT NAME\"] and text()=\"%s\"]]/td/a[@type=\"button\" and contains(text(),\"DETAILS\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "tablePlanDetailsButtonInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]]]/td/a[@type=\"button\" and contains(text(),\"DETAILS\") and not(contains(@class,\"disabled\"))]",
+    "type": "xpath"
+  },
+  {
+    "key": "tablePlanKeyValueInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"] and text()=\"%s\"] and ./td[./span[text()=\"PROJECT NAME\"] and text()=\"%s\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tablePlanCheckboxKeyValueInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"] and text()=\"%s\"] and ./td[./span[text()=\"PROJECT NAME\"] and text()=\"%s\"]]/td/app-checkbox/div[contains(@class,\"checkbox\")]/label",
+    "type": "xpath"
+  },
+  {
+    "key": "tablePlanCheckboxNumberInReports",
+    "value": "(//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]]]/td/app-checkbox/div[contains(@class,\"checkbox\")]/label)[%s]",
+    "type": "xpath"
+  },
+  {
+    "key": "tablePlanCheckboxNumberWithIdInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]] and ./td[./span[text()=\"ID\"] and contains(text(),\"%s\")]]/td/app-checkbox/div[contains(@class,\"checkbox\")]/label",
+    "type": "xpath"
+  },
+  {
+    "key": "tablePlanIdNumberInReports",
+    "value": "(//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]]]/td[./span[text()=\"ID\"]])[%s]",
+    "type": "xpath"
+  },
+  {
+    "key": "tablePlanIdNumberKeyValueInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]]]/td[./span[text()=\"ID\"] and contains(text(),\"%s\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableRunDateInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]]]/td[./span[text()=\"RUN DATE\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportsSelectedTextInReports",
+    "value": "//div[@class=\"button-area\"]/div/span[contains(@class,\"text-default\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportsSelectedtextInReports",
+    "value": "//div[@class=\"button-area\"]/div/span[contains(@class,\"text-default\") and contains(text(),\"REPORTS SELECTED\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportsOptionsInReports",
+    "value": "//div[@class=\"button-area\"]//div[contains(@class,\"btn-group\")]/a[contains(text(),\"OPTIONS\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportsOptionsDeleteButtonInReports",
+    "value": "//div[@class=\"button-area\"]//div[contains(@class,\"btn-group\") and ./a[contains(text(),\"OPTIONS\")]]//ul[contains(@class,\"dropdown-menu\")]/li[@role=\"menuitem\"]/a[@class=\"dropdown-item text-danger\" and text()=\"DELETE\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableElementsFromDateKeyValueInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]]]/td[./span[text()=\"RUN DATE\"] and (number(substring-before(substring-after(substring-after(text(),\"/\"),\"/\"),\" \")))>%s or ((number(substring-before(substring-after(text(),\"/\"),\"/\")))>%s and (number(substring-before(substring-after(substring-after(text(),\"/\"),\"/\"),\" \")))=%s) or ((number(substring-before(text(),\"/\")))>=%s and (number(substring-before(substring-after(text(),\"/\"),\"/\")))=%s and (number(substring-before(substring-after(substring-after(text(),\"/\"),\"/\"),\" \")))=%s)]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableElementsToDateKeyValueInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]]]/td[./span[text()=\"RUN DATE\"] and (number(substring-before(substring-after(substring-after(text(),\"/\"),\"/\"),\" \")))<%s or ((number(substring-before(substring-after(text(),\"/\"),\"/\")))<%s and (number(substring-before(substring-after(substring-after(text(),\"/\"),\"/\"),\" \")))=%s) or ((number(substring-before(text(),\"/\")))<=%s and (number(substring-before(substring-after(text(),\"/\"),\"/\")))=%s and (number(substring-before(substring-after(substring-after(text(),\"/\"),\"/\"),\" \")))=%s)]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableElementsInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"]]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableLineForPlanInReports",
+    "value": "//div[contains(@class,\"panel\")]//table//tbody/tr/td[./span[text()=\"PROJECT NAME\"] and text()='%s']",
+    "type": "xpath"
+  },
+  {
+    "key": "tableLineForPlanExecutionResultInReports",
+    "value": "//div[contains(@class,\"panel\")]//table//tbody/tr[./td[./span[text()=\"PROJECT NAME\"] and text()='%s']]/td[./span[text()=\"TEST RESULT\"]]//div[contains(@class,'execution-results')]/div[contains(@class,'execution-result')]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportProjectNameInReports",
+    "value": "//div[contains(@class,\"panel\")]//table//tbody/tr[./td[./span[text()=\"PROJECT NAME\"] and text()='%s']]/td/a[@type='button' and contains(@href,'/report/detail/') and contains(text(),'DETAILS')]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportIdInReports",
+    "value": "//div[contains(@class,\"panel\")]//table//tbody/tr/td[./span[text()=\"ID\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportTestResultInReports",
+    "value": "//div[contains(@class,\"panel\")]//table//tbody/tr/td/span[text()=\"STATUS\"]/following-sibling::app-test-status/span",
+    "type": "xpath"
+  },
+  {
+    "key": "reportProjectNameInReports",
+    "value": "//div[contains(@class,\"panel\")]//table//tbody/tr[./td[./span[text()=\"PROJECT NAME\"] and text()='%s']]/td/a[@type='button' and contains(@href,'/report/detail/') and contains(text(),'DETAILS')]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableNotProjectNameInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"] and not(text()=\"%s\")]]",
+    "type": "xpath"
+  },
+  {
+    "key": "tableProjectNameInReports",
+    "value": "//table[contains(@class,\"table\")]/tbody/tr[./td[./span[text()=\"SUITE NAME\"]] and ./td[./span[text()=\"PROJECT NAME\"] and text()=\"%s\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  }
+]

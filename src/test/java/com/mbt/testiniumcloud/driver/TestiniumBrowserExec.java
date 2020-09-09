@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
+import java.util.Set;
 
 public class TestiniumBrowserExec {
     private static WebDriver driver;
@@ -22,13 +24,18 @@ public class TestiniumBrowserExec {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("key", key);
         //logger.info(System.getenv().toString());
-        String platform = System.getProperty("platform");
-        String browser = System.getProperty("browser");
+        /**Properties properties = System.getProperties();
+        Set<String> set = properties.stringPropertyNames();
+        for (String propertiesName: set){
+            logger.info(propertiesName + " " + properties.getProperty(propertiesName));
+        }*/
+        String platform = System.getProperty("platform").trim();
+        String browser = System.getProperty("browser").trim();
         DriverCreater.platformName = platform;
         DriverCreater.browserName = browser;
         logger.info("1 " + platform + "  " + browser);
-        if(browser.trim().equalsIgnoreCase("chrome") ){
-            logger.info(platform + "  " + browser);
+        if(browser.equalsIgnoreCase("chrome") ){
+           // logger.info(platform + "  " + browser);
             ChromeOptions chromeOptions = new ChromeOptions();
             //chromeOptions.addArguments("--start-maximized");
            // chromeOptions.addArguments("--start-fullscreen");
@@ -61,11 +68,12 @@ public class TestiniumBrowserExec {
                 e.printStackTrace();
             }
         }
-        /**if(platform.trim().equalsIgnoreCase("mac")
-                && browser.trim().equalsIgnoreCase("safari") ){
-            driver.manage().window().setPosition(new Point(0, 0));
-            driver.manage().window().setSize(new Dimension(1600, 900));
-        }*/
+        if(platform.equalsIgnoreCase("mac")
+                && browser.equalsIgnoreCase("safari") ){
+            //driver.manage().window().setPosition(new Point(0, 0));
+            //driver.manage().window().setSize(new Dimension(1600, 900));
+            driver.manage().window().maximize();
+        }
         /**if(browser.trim().equalsIgnoreCase("firefox")){
             driver.manage().window().maximize();
         }*/

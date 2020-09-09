@@ -1,0 +1,152 @@
+[
+  {
+    "key": "logoWithProjectNameInProjectDetailProperties",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li[./a[@href='/project' and text()='Projects']]/following-sibling::li[.//span[@class=\"text\" and text()=\"%s\"]]/following-sibling::li[./a[contains(@href,\"/project/detail/\") and contains(@href,\"/properties\") and text()=\"Properties\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "projectNameInProjectDetailProperties",
+    "value": "project-name",
+    "type": "id"
+  },
+  {
+    "key": "testFrameworkInProjectDetailProperties",
+    "value": "test-framework",
+    "type": "id"
+  },
+  {
+    "key": "testFrameworkNameInProjectDetailProperties",
+    "value": "#test-framework span.text",
+    "type": "css"
+  },
+  {
+    "key": "testFileTypeInProjectDetailProperties",
+    "value": "test-file-type",
+    "type": "id"
+  },
+  {
+    "key": "testFileTypeSelectInProjectDetailProperties",
+    "value": "select#test-file-type",
+    "type": "css"
+  },
+  {
+    "key": "testRunnerToolInProjectDetailProperties",
+    "value": "test-runner-tool",
+    "type": "id"
+  },
+  {
+    "key": "gitProjectFolderNameInProjectDetailProperties",
+    "value": "git-project-folder-name",
+    "type": "id"
+  },
+  {
+    "key": "gitBranchOrTagsInProjectDetailProperties",
+    "value": "git-branch-or-tags",
+    "type": "id"
+  },
+  {
+    "key": "gitBranchOrTagsSelectInProjectDetailProperties",
+    "value": "select#git-branch-or-tags",
+    "type": "css"
+  },
+  {
+    "key": "enableCheckboxInProjectDetailProperties",
+    "value": "//div[@class=\"form-group\" and ./label[text()=\"ENABLE\"]]//app-switch//input[@type=\"checkbox\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "cancelButtonInProjectDetailProperties",
+    "value": "//a[@type=\"button\" and @href=\"/project\" and text()=\"CANCEL\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "applyButtonInProjectDetailProperties",
+    "value": "//button[@type=\"button\" and ./span[@class=\"ladda-label\" and text()=\"APPLY\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "saveButtonInProjectDetailProperties",
+    "value": "//button[@type=\"button\" and ./span[@class=\"ladda-label\" and text()=\"SAVE\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "projectNameErrorBlockInProjectDetailProperties",
+    "value": "input#project-name + span.error-block",
+    "type": "css"
+  },
+  {
+    "key": "gitProjectFolderNameErrorBlockInProjectDetailProperties",
+    "value": "input#git-project-folder-name ~ span.error-block",
+    "type": "css"
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  }
+]

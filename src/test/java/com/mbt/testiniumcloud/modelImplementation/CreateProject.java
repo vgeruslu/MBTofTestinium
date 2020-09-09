@@ -2,6 +2,8 @@ package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.driver.DriverCreater;
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.utils.CoverageValue;
+import com.mbt.testiniumcloud.utils.ExcelMapData;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
@@ -10,15 +12,17 @@ import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@GraphWalker(value = "random(edge_coverage(100))")
+@GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class CreateProject extends ExecutionContext implements org.graphwalker.Create_Project {
 
     private static final Logger logger = LoggerFactory.getLogger(CreateProject.class);
     Methods methods;
+    ExcelMapData excelMapData;
 
     public CreateProject() {
 
         methods = new Methods();
+        excelMapData = new ExcelMapData();
     }
 
     @BeforeExecution
@@ -34,14 +38,15 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
     @BeforeElement
     public void beforeElement() {
 
-        logger.info("═════════  " + getModel().getName() + "   "
-                + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
-                + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "  ═════════");
+        excelMapData.setBeforeElementData(getModel().getName().trim()
+                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
+        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
     }
 
     @AfterElement
     public void afterElement() {
 
+        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
         logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
@@ -134,6 +139,9 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         methods.clickElement(templateCheckboxBy);
     }
 
+    /**
+     * TODO: clear file
+     */
     public void e_Clear_File() {
 
         e_Select_Selenium_Framework();
@@ -191,7 +199,9 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         methods.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
-
+    /**
+     * TODO Apk Upload
+     */
     public void e_upload_Invalid_File() {
 
         String uploadDir = System.getProperty("user.dir") + "/pom.xml";
@@ -345,7 +355,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         methods.clickElement(saveButtonBy);
         methods.putValueInTestMap("newProject", projectName);
         methods.putValueInTestMap("currentProject", projectName);
-        methods.checkElementVisible(methods.getBy("projectSuccessfullyCreated"),120);
+       // methods.checkElementVisible(methods.getBy("projectSuccessfullyCreated"),120);
     }
 
     public void v_Verify_Selected_Appium_Test_File_Type() {
@@ -357,6 +367,10 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
                 , methods.getFirstSelectedOption(testFileTypeBy).getText().trim());
     }
 
+    /**
+     * @// TODO: 29.04.2020
+     * TODO: Ipa Upload
+     */
     public void e_Upload_Invalid_File() {
 
         String uploadDir = System.getProperty("user.dir") + "/pom.xml";
@@ -372,6 +386,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
     public void v_Verify_In_Project_Detail_Summary_Page_SHARED() {
 
+        Assert.assertTrue("Project isn't created", methods.doesUrl("https://testinium.io/project/detail/",150,"startWith"));
         /**
         Assert.assertTrue("", methods.doesUrl("https://testinium.io/project/detail/",75,"startWith"));
         Assert.assertTrue("", methods.doesUrl("/summary",75,"endWith"));
@@ -444,7 +459,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         methods.clickElement(saveButtonBy);
         methods.putValueInTestMap("newProject", projectName);
         methods.putValueInTestMap("currentProject", projectName);
-        methods.checkElementVisible(methods.getBy("projectSuccessfullyCreated"),120);
+        //methods.checkElementVisible(methods.getBy("projectSuccessfullyCreated"),120);
     }
 
     public void e_Click_Save_Empty_Project_Name() {
@@ -532,6 +547,9 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
                 , methods.getFirstSelectedOption(testFileTypeBy).getText().trim());
     }
 
+    /**
+     * TODO: kontrol et
+     */
     public void v_Verify_Appium_Framework() {
 
         By testFrameworkBy = methods.getBy("testFrameworkInCreateProject");
@@ -684,6 +702,9 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         methods.clickElement(cancelButtonBy);
     }
 
+    /**
+     * TODO: clear file
+     */
     public void e_Clear_file() {
 
         e_Select_Selenium_Framework();

@@ -1,7 +1,8 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
-import com.mbt.testiniumcloud.driver.DriverCreater;
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.utils.CoverageValue;
+import com.mbt.testiniumcloud.utils.ExcelMapData;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
@@ -10,15 +11,17 @@ import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@GraphWalker(value = "random(edge_coverage(100))")
+@GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class AllScenarios extends ExecutionContext implements org.graphwalker.All_Scenarios {
 
     private static final Logger logger = LoggerFactory.getLogger(AllScenarios.class);
     Methods methods;
+    ExcelMapData excelMapData;
 
     public AllScenarios() {
 
         methods = new Methods();
+        excelMapData = new ExcelMapData();
     }
 
     @BeforeExecution
@@ -34,14 +37,15 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
     @BeforeElement
     public void beforeElement() {
 
-        logger.info("═════════  " + getModel().getName() + "   "
-                + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
-                + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "  ═════════");
+        excelMapData.setBeforeElementData(getModel().getName().trim()
+                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
+        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
     }
 
     @AfterElement
     public void afterElement() {
 
+        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
         logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
@@ -49,6 +53,7 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
 
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
+        methods.waitBySeconds(1);
         methods.checkElementClickable(noButtonBy);
         methods.waitBySeconds(1);
         methods.clickElement(noButtonBy);
@@ -113,9 +118,9 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
         methods.checkElementClickable(methods.getBy("deleteButtonInAllScenarios"));
         methods.waitByMilliSeconds(500);
         By tableProjectNameBy = methods.getByWithKeySetValue("tableProjectNameWithNotProjectNameInAllScenarios",
-                methods.getValueInTestMap("editProject") + "!!" + "last()");
+                methods.getValueInTestMap("editProject") + "!!" + methods.getValueInTestMap("appiumProject") + "!!" + "last()");
         By tableScenarioNameBy = methods.getByWithKeySetValue("tableScenarioNameWithNotProjectNameInAllScenarios",
-                methods.getValueInTestMap("editProject") + "!!" + "last()");
+                methods.getValueInTestMap("editProject") + "!!" + methods.getValueInTestMap("appiumProject") + "!!" + "last()");
         methods.checkElementVisible(tableProjectNameBy);
         methods.checkElementVisible(tableScenarioNameBy);
         methods.waitByMilliSeconds(200);
@@ -188,6 +193,7 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
 
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
+        methods.waitBySeconds(1);
         methods.checkElementClickable(yesButtonBy);
         methods.waitBySeconds(1);
         methods.clickElement(yesButtonBy);
@@ -289,10 +295,13 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
 
     public void v_Control_Are_You_Sure_Message() {
 
+        methods.waitByMilliSeconds(500);
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
-        methods.waitByMilliSeconds(300);
+        methods.waitBySeconds(1);
+        methods.checkElementClickable(methods.getBy("popupYesButtonInProjects"));
+        methods.checkElementClickable(methods.getBy("popupNoButtonInProjects"));
     }
 
     //none project
@@ -328,9 +337,9 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
         methods.checkElementClickable(methods.getBy("deleteButtonInAllScenarios"));
         methods.waitByMilliSeconds(500);
         By tableProjectNameBy = methods.getByWithKeySetValue("tableProjectNameWithNotProjectNameInAllScenarios",
-                methods.getValueInTestMap("editProject") + "!!" + "last()");
+                methods.getValueInTestMap("editProject")+ "!!" + methods.getValueInTestMap("appiumProject") + "!!" + "last()");
         By tableScenarioNameBy = methods.getByWithKeySetValue("tableScenarioNameWithNotProjectNameInAllScenarios",
-                methods.getValueInTestMap("editProject") + "!!" + "last()");
+                methods.getValueInTestMap("editProject")+ "!!" + methods.getValueInTestMap("appiumProject") + "!!" + "last()");
         methods.checkElementVisible(tableProjectNameBy);
         methods.checkElementVisible(tableScenarioNameBy);
         methods.waitByMilliSeconds(200);
@@ -381,6 +390,9 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
         methods.waitByMilliSeconds(500);
     }
 
+    /**
+     * TODO: sfdsgh
+     */
     // selected project
     public void e_Click_Delete_Button() {
 
@@ -393,9 +405,9 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
         methods.checkElementClickable(methods.getBy("deleteButtonInAllScenarios"));
         methods.waitByMilliSeconds(500);
         By tableProjectNameBy = methods.getByWithKeySetValue("tableProjectNameWithNotProjectNameInAllScenarios",
-                methods.getValueInTestMap("editProject") + "!!" + "last()");
+                methods.getValueInTestMap("editProject") + "!!" + methods.getValueInTestMap("appiumProject") + "!!" + "last()");
         By tableScenarioNameBy = methods.getByWithKeySetValue("tableScenarioNameWithNotProjectNameInAllScenarios",
-                methods.getValueInTestMap("editProject") + "!!" + "last()");
+                methods.getValueInTestMap("editProject") + "!!" + methods.getValueInTestMap("appiumProject") + "!!" + "last()");
         methods.checkElementVisible(tableProjectNameBy);
         methods.checkElementVisible(tableScenarioNameBy);
         methods.waitByMilliSeconds(200);

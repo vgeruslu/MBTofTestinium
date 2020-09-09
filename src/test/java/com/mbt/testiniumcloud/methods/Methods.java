@@ -87,9 +87,54 @@ public class Methods {
         return ElementHelper.getElementInfoToBy(getElementInfo(key));
     }
 
-    public Boolean waitUntilWithoutStaleElement(By by){
+    public Boolean isElementEnabled(By by){
 
-        return wait.until(ExpectedConditions.refreshed(ExpectedConditions.stalenessOf(findElement(by))));
+        return isElementEnabled(by,10);
+    }
+
+    public Boolean isElementEnabled(By by, int loopCount){
+
+        for (int i = 0; i < loopCount; i++) {
+            try {
+                if (driver.findElement(by).isDisplayed() && driver.findElement(by).isEnabled()) {
+                    return true;
+                }
+            }catch (Exception e){
+            }
+            waitByMilliSeconds(400);
+        }
+        return false;
+    }
+
+    public void clickElementForStaleElement(By by){
+
+        clickElementForStaleElement(by,10);
+    }
+
+    public void clickElementForStaleElement(By by, int loopCount){
+
+        for (int i = 0; i < loopCount; i++) {
+            try {
+                clickElement(by);
+                break;
+            } catch (StaleElementReferenceException e) {
+                waitByMilliSeconds(400);
+                if (i == (loopCount-1)) {
+                    waitUntilWithoutStaleElement(by);
+                    clickElement(by);
+                }
+            }
+        }
+    }
+
+    public void waitUntilWithoutStaleElement(By by){
+
+        waitUntilWithoutStaleElement(by,30);
+    }
+
+    public void waitUntilWithoutStaleElement(By by, long timeout){
+
+        setFluentWait(timeout).until(ExpectedConditions.refreshed(ExpectedConditions.stalenessOf(findElement(by))));
     }
 
     public WebElement findElement(By by){
@@ -106,7 +151,13 @@ public class Methods {
 
     public void clickElement(By by){
 
-        findElement(by).click();
+        //testinium safari
+        if(DriverCreater.isSafari || DriverCreater.zoomCondition){
+
+            clickElementJs(by);
+        }else {
+            findElement(by).click();
+        }
         logger.info("Elemente tıklandı.");
     }
 
@@ -223,6 +274,11 @@ public class Methods {
 
         WebElement webElement = findElement(by);
         driver.switchTo().frame(webElement);
+    }
+
+    public void switchParentFrame(){
+
+        driver.switchTo().parentFrame();
     }
 
     public void switchDefaultContent(){
@@ -410,36 +466,6 @@ public class Methods {
         }
     }
 
-    public void returnParentWindow() {
-
-        String winHandleBefore = DriverCreater.winHandleBefore;
-
-        logger.info("default: " + winHandleBefore);
-        List<String> windowList = new ArrayList<String>();
-        for (String winHandle : driver.getWindowHandles()) {
-            logger.info(winHandle);
-            windowList.add(winHandle);
-        }
-        windowList.remove(winHandleBefore);
-
-        for (int i = 0 ; i < windowList.size() ; i++){
-            // Switch to new window opened
-            driver.switchTo().window(windowList.get(i));
-            waitBySeconds(1);
-            // Perform the actions on new window
-            //this will close new opened window
-            driver.close();
-            waitBySeconds(1);
-
-        }
-
-        //switch back to main window using this code
-        if(windowList.size() > 0) {
-            driver.switchTo().window(winHandleBefore);
-            waitBySeconds(1);
-        }
-    }
-
     public void hoverElement(By by) {
 
         WebElement element = findElement(by);
@@ -491,6 +517,7 @@ public class Methods {
         while (!isUrl) {
             waitByMilliSeconds(400);
             if (againCount == count) {
+                System.err.println("Expected url " + url + " doesn't equal current url " + takenUrl);
                 logger.info("Alınan url: " + takenUrl);
                 return false;
             }
@@ -755,94 +782,6 @@ public class Methods {
         String[] arrayValue = value.split("!!");
         String newValue = String.format(getValue, arrayValue);
         createElementInfo(newKey,newValue,type);
-    }
-
-    public void isFileDownloaded(LocalDateTime target, String fileNameStartsWith, String fileNameEndsWith) throws Exception{
-
-        int loopCount = 200;
-        // LocalDateTime target = LocalDate.of(2019, 2, 1).atTime(12,30,10);
-        File dir;
-        /**if(DriverCreater.isTestinium){
-         dir = new File(System.getProperty("user.home"));
-         }*/
-        String slash = DriverCreater.osName.equals("WINDOWS") ? "\\" : "/";
-        dir = new File(System.getProperty("user.home") + slash + "Downloads");
-        File[] dirContents = dir.listFiles();
-        File myFile = null;
-        if (dirContents == null) {
-
-            Assert.fail("Verilen dizin hatalı");
-        }
-        int countValue = 0;
-        int seconds = 0;
-        boolean isFileDownloaded = false;
-        File file;
-
-        while (true) {
-
-            countValue++;
-            dirContents = dir.listFiles();
-            waitByMilliSeconds(100);
-            if (countValue % 10 == 0) {
-                seconds++;
-                System.out.println(seconds);
-            }
-            for (int i = 0; i < dirContents.length; i++) {
-                file = dirContents[i];
-                if (!file.isDirectory() && file.getName().startsWith(fileNameStartsWith)
-                        && file.getName().endsWith(fileNameEndsWith)) {
-
-                    isFileDownloaded = getLocalDateTime(Files.readAttributes(file.toPath()
-                            , BasicFileAttributes.class)).isAfter(target);
-                    if (isFileDownloaded) {
-                        myFile = file;
-                        break;
-                    }
-                }
-            }
-            if (isFileDownloaded) {
-                break;
-            }
-            if (countValue == loopCount) {
-                break;
-            }
-        }
-        if(myFile != null) {
-            logger.info(myFile.getName());
-            myFile.delete();
-        }
-        Assert.assertTrue("Dosya indirilemedi.", isFileDownloaded);
-    }
-
-    public String getTime(String simpleDateFormat){
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentTime = new SimpleDateFormat(simpleDateFormat);
-        String currentTimeString = currentTime.format(calendar.getTime());
-        return currentTimeString;
-    }
-
-    public LocalDateTime getLocalDateTime(BasicFileAttributes attributes){
-
-        return attributes.creationTime()
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-    }
-
-    public LocalDateTime getTarget(){
-
-        String currentTimeString = getTime("yyyy:MM:dd:HH:mm:ss");
-        String[] arrayStringTime = currentTimeString.split(":");
-        LocalDateTime target = LocalDate.of(Integer.parseInt(arrayStringTime[0])
-                , Integer.parseInt(arrayStringTime[1])
-                , Integer.parseInt(arrayStringTime[2]))
-                .atTime(Integer.parseInt(arrayStringTime[3])
-                        , Integer.parseInt(arrayStringTime[4])
-                        , Integer.parseInt(arrayStringTime[5]));
-
-        waitByMilliSeconds(1000);
-        return target;
     }
 
 }

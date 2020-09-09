@@ -18,21 +18,13 @@ import java.util.List;
 
 public class GraphWalkerTestiniumCloudTest extends DriverCreater {
 
-    /**
-    static {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-        System.setProperty("currenttime", dateFormat.format(new Date()));
-    }
-     */
-    //private static final Logger logger = LoggerFactory.getLogger(GraphWalkerTestiniumTest.class);
     private static Log4jLoggerAdapter logger = (Log4jLoggerAdapter) LoggerFactory.getLogger(GraphWalkerTestiniumCloudTest.class);
 
     @Rule
     public TestWatcher testWatcher = new TestResultJunit();
 
     public GraphWalkerTestiniumCloudTest() {
-        
-        
+
     }
 
     @Test
@@ -48,9 +40,9 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
         WebSocketServer server = new WebSocketServer(8887, executor.getMachine());
         server.start();
 
-        result = executor.execute(true);
-        setInfo(executor);
-        errorControl();
+       setExcel(executor);
+       result = executor.execute(true);
+       errorControl();
     }
 
     @Test
@@ -63,8 +55,8 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
                 PlanEdit.class, ProjectDetailProperties.class, ProjectDetailScenarios.class,
                 ScenarioEdit.class, AllSuites.class);
 
+        setExcel(executor);
         result = executor.execute(true);
-        setInfo(executor);
         errorControl();
     }
 
@@ -78,13 +70,12 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
                 PlanEdit.class, ProjectDetailProperties.class, ProjectDetailScenarios.class,
                 ScenarioEdit.class, AllSuites.class);
 
+        setExcel(executor);
         List<Context> contextList = executor.getMachine().getContexts();
         Observer observer = new GraphDenemeStreamObserverNewVersion2_1(Login.class, contextList,false,false);
         executor.getMachine().addObserver(observer);
 
         result = executor.execute(true);
-
-        setInfo(executor);
         errorControl();
     }
 
@@ -92,11 +83,10 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
     public void testiniumCloudLoginWs() throws IOException {
 
         Executor executor = new TestExecutor(Login.class);
-
+        setExcel(executor);
         WebSocketServer server = new WebSocketServer(8887, executor.getMachine());
         server.start();
         result = executor.execute(true);
-        setInfo(executor);
         errorControl();
     }
 
@@ -104,9 +94,8 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
     public void testiniumCloudLogin() throws IOException {
 
         Executor executor = new TestExecutor(Login.class);
-
+        setExcel(executor);
         result = executor.execute(true);
-        setInfo(executor);
         errorControl();
     }
 
@@ -114,9 +103,39 @@ public class GraphWalkerTestiniumCloudTest extends DriverCreater {
     public void testiniumCloudDashboard() throws IOException {
 
         Executor executor = new TestExecutor(Login.class, Dashboard.class);
-
+        setExcel(executor);
         result = executor.execute(true);
-        setInfo(executor);
+        errorControl();
+    }
+
+    @Test
+    public void LoginToProjects() throws IOException {
+
+        Executor executor = new TestExecutor(LoginToProjects.class, Projects.class
+                , CreateProject.class, ProjectDetailSummary.class, ProjectDetailProperties.class
+                , ProjectDetailScenarios.class, ProjectDetailSuites.class);
+        setExcel(executor);
+        result = executor.execute(true);
+        errorControl();
+    }
+
+    @Test
+    public void LoginToAllSuites() throws IOException {
+
+        Executor executor = new TestExecutor(LoginToAllSuites.class, AllSuites.class
+                , CreatePlan.class, PlanEdit.class);
+        setExcel(executor);
+        result = executor.execute(true);
+        errorControl();
+    }
+
+    @Test
+    public void LoginToAllScenarios() throws IOException {
+
+        Executor executor = new TestExecutor(LoginToAllScenarios.class, AllScenarios.class
+                , CreateScenario.class, ScenarioEdit.class, ScenarioCreateNewGroup.class);
+        setExcel(executor);
+        result = executor.execute(true);
         errorControl();
     }
 

@@ -2,6 +2,7 @@ package com.mbt.testiniumcloud.driver;
 
 import com.mbt.testiniumcloud.tests.GraphWalkerTestiniumCloudTest;
 import com.mbt.testiniumcloud.tests.TestResultJunit;
+import com.mbt.testiniumcloud.utils.ExcelMapData;
 import com.mbt.testiniumcloud.utils.ReadProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
@@ -17,6 +18,8 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -35,26 +38,36 @@ public class DriverCreater {
     public static WebDriver driver;
     public static boolean isTestinium = false;
     public static String baseUrl;
-    public static String osName;
-    public static String winHandleBefore;
-    public static ResourceBundle ConfigurationProp;
+    public static String osName = FindOS.getOperationSystemName();
+    public static ResourceBundle ConfigurationProp = ReadProperties.readProp("Configuration.properties");
     public static String platformName;
     public static Result result;
-    public static List<String> listExecution;
     public static String testResult = "";
     public static ConcurrentHashMap<String,Object> TestMap;
+    public static ConcurrentHashMap<String,Object> ModelDurationMap;
+    public static Integer stepCount;
+    public static String excelLocation;
+    public static String slash = FindOS.getOperationSystemName().equals("WINDOWS") ? "\\": "/";
+    public static String TestCaseName = "";
+    public static boolean excelActive = false;
+    public static String userDir = System.getProperty("user.dir");
+    public static boolean chromeZoomCondition = false;
+    public static boolean isSafari = false;
+    public static boolean zoomCondition = false;
 
     @BeforeClass
     public static void beforeClass(){
 
-        TestMap = new ConcurrentHashMap<String, Object>();
-        //deneme
-        //TestMap.put("stepCount", 0);
         String dir = "/src/test/resources/log4j.properties";
-        if(FindOS.getOperationSystemName().equals("WINDOWS")){
-            dir = dir.replace("/","\\");
+        if(!slash.equals("/")) {
+            dir = dir.replace("/", "\\");
         }
-        PropertyConfigurator.configure(System.getProperty("user.dir") + dir);
+        /**if(FindOS.getOperationSystemName().equals("WINDOWS")){
+            slash = "\\";
+            dir = dir.replace("/","\\");
+        }*/
+        PropertyConfigurator.configure(userDir + dir);
+                //GraphWalkerTestiniumCloudTest.class.getClassLoader().getResource("log4j.properties"));
         //getRootLogger().setLevel(Level.ALL);
         getRootLogger().setLevel(Level.OFF);
 
@@ -64,6 +77,7 @@ public class DriverCreater {
         getLogger(TestiniumBrowserExec.class).setLevel(Level.ALL);
         getLogger(LocalBrowserExec.class).setLevel(Level.ALL);
         getLogger(FindOS.class).setLevel(Level.ALL);
+        getLogger(ExcelMapData.class).setLevel(Level.ALL);
         logger.info("*************************************************************************");
         System.out.println("\r\n");
     }
@@ -73,6 +87,25 @@ public class DriverCreater {
 
         logger.info("_________________________________________________________________________" + "\r\n");
         logger.info("------------------------SCENARIO-------------------------");
+
+        TestMap = new ConcurrentHashMap<String, Object>();
+        ModelDurationMap = new ConcurrentHashMap<String, Object>();
+        stepCount = 0;
+        testResult = "";
+        excelLocation = userDir + slash + "TestiniumMBTTestPath.xlsx";
+        excelActive = false;
+
+        try{
+            File file = new File(excelLocation);
+            if(file.exists()){
+                file.delete();
+                logger.info("Excel file is deleted.");
+            }else
+                logger.info("Excel file is not found.");
+        }catch (Exception e){
+            logger.info("Excel file is not deleted.");
+        }
+
         try {
             createDriver();
         }catch (Throwable e) {
@@ -83,7 +116,7 @@ public class DriverCreater {
 
                 error = error + "\r\n" + stackTraceElements[i].toString();
             }
-            logger.error(error);
+            //logger.error(error);
             throw new SessionNotCreatedException(error);
         }
     }
@@ -95,83 +128,66 @@ public class DriverCreater {
             quitDriver();
         }
         logger.info("_________________________________________________________________________" + "\r\n");
-        /**
-        new SendMail().sendMailTestResult(result,listExecution,toMail);
-         */
     }
 
     @AfterClass
     public static void afterClass(){
 
-        //System.out.println("\r\n");
         System.out.println("");
         logger.info("*************************************************************************");
     }
 
-    public void setInfo(Executor executor){
+    public void setExcel(Executor executor){
 
-        List<Execution> list  = executor.getMachine().getCurrentContext().getProfiler().getExecutionPath();
-        listExecution = new ArrayList<String>();
-        String info;
-        String type;
-        Element element;
-        Execution execution;
-        for (int i = 0 ; i < list.size() ; i++) {
-            execution = list.get(i);
-            element = execution.getElement();
-            type = "";
-            if (element instanceof Vertex.RuntimeVertex) {
-                type = "vertex";
-            } else if (element instanceof Edge.RuntimeEdge) {
-                type = "edge";
-            }
-
-            info = (i + 1) + " " + element.getId() + " " + type + " " + execution.getContext().getModel().getName() + " " + element.getName();
-            logger.info(info);
-            listExecution.add(info);
-        }
+        excelActive = true;
+        new ExcelMapData().createMapData(executor.getMachine());
     }
 
     public void errorControl(){
 
+        ExcelMapData excelMapData = new ExcelMapData();
         if (result.hasErrors()) {
 
-            logger.error("Done: [" + result.getResults().toString(2) + "]");
+            excelMapData.setTestResult("Failed");
+            logger.error("Done: [" + "\r\n" + "  \"totalFailedNumberOfModels\"" + result.getResults().toString(2).split("\"totalFailedNumberOfModels\"")[1] + "]");
             Assert.fail(result.getErrors().toString());
         }
+
+        excelMapData.setTestResult("Successfull");
         logger.info("Done: [" + result.getResults().toString(2) + "]");
     }
 
     public void createDriver() throws MalformedURLException, Exception {
 
-        osName = FindOS.getOperationSystemName();
-        ConfigurationProp = ReadProperties.readProp("Configuration.properties");
+        //ConfigurationProp = ReadProperties.readProp("Configuration.properties");
         String key = System.getProperty("key");
         browserName = ConfigurationProp.getString("browserName");
         baseUrl = ConfigurationProp.getString("baseUrl");
         isFullScreen = Boolean.parseBoolean(ConfigurationProp.getString("isFullScreen"));
         if(StringUtils.isEmpty(key)) {
+            isTestinium = false;
             platformName = FindOS.getOperationSystemNameExpanded();
             driver = LocalBrowserExec.LocalExec(browserName);
-            isTestinium = false;
         }
         else {
-            driver = TestiniumBrowserExec.TestiniumExec(key);
             isTestinium = true;
+            driver = TestiniumBrowserExec.TestiniumExec(key);
         }
 
-        logger.info("Driver ayağa kaldırıldı.");
+        logger.info("Driver is started.");
+        isSafari = browserName.equalsIgnoreCase("safari");
+        zoomCondition = !DriverCreater.isTestinium
+                && DriverCreater.browserName.equalsIgnoreCase("chrome")
+                && DriverCreater.chromeZoomCondition;
         driver.get(baseUrl);
-       // winHandleBefore = driver.getWindowHandle();
     }
 
     public void quitDriver() {
 
         if(driver != null){
             driver.quit();
-            logger.info("Driver kapatıldı.");
+            logger.info("Driver is closed.");
         }
-        //logger.info("_________________________________________________________________________" + "\r\n");
     }
 
 }

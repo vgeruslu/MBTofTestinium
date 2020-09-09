@@ -1,11 +1,14 @@
 package com.mbt.testiniumcloud.utils;
 
 import com.mbt.testiniumcloud.driver.DriverCreater;
+import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.graphwalker.java.test.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,18 +27,26 @@ public class SendMail {
 
     String slash;
     String testPlatform;
+    String senderMail;
+    String senderPassword;
+    String sendMailProjectName;
+    String userDir;
 
     public SendMail(){
 
         slash = DriverCreater.osName.equals("WINDOWS") ? "\\" : "/";
         testPlatform = DriverCreater.isTestinium ? "Testinium" : "Local";
+        senderMail = DriverCreater.ConfigurationProp.getString("senderMail");
+        senderPassword = DriverCreater.ConfigurationProp.getString("senderPassword");
+        sendMailProjectName = DriverCreater.ConfigurationProp.getString("sendMailProjectName");
+        userDir = System.getProperty("user.dir");
     }
 
-    private void sendMail(String toMail, String value, String testRunFlow, String testResultTxt) {
+    private void sendMail(String toMail, String testResultInfo, String testFailInfo, String testResultTxt, String excelPath) {
 
         Properties props = new Properties();
-        props.put("mail.user", "yourgmail");
-        props.put("mail.password", "yourpassword");
+        props.put("mail.user", senderMail);
+        props.put("mail.password", senderPassword);
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
@@ -43,7 +54,7 @@ public class SendMail {
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("yourgmail", "yourpassword");
+                return new PasswordAuthentication(senderMail, senderPassword);
             }
         });
         try {
@@ -53,31 +64,45 @@ public class SendMail {
             InternetAddress[] address = InternetAddress.parse(to, true);
 
             msg.setRecipients(Message.RecipientType.TO, address);
-            String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm").format(new Date());
-            msg.setSubject("TestiniumCloudMBT: " + timeStamp + "  " + testPlatform);
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss XXX").format(new Date());
+            msg.setSubject(sendMailProjectName + ": " + timeStamp + "  " + testPlatform);
             MimeMultipart multipart = new MimeMultipart();
             MimeBodyPart bodyPart = new MimeBodyPart();
             //bodyPart.setContent(a,"text/html; charset=utf-8");
             //multipart.addBodyPart(bodyPart);
-            String b = "Test Result\r\n\r\n" + value;
+            String b = "Platform Name: " + DriverCreater.platformName + "\r\n\r\n"
+                    + "Browser Name: " + DriverCreater.browserName + "\r\n\r\n"
+                    + "Test Case:  " + DriverCreater.TestCaseName + "\r\n\r\n"
+                    + "Test Result:  " + testResultInfo;
             bodyPart.setText(b,"utf-8");
             multipart.addBodyPart(bodyPart);
-            MimeBodyPart attachPart = new MimeBodyPart();
-
-            try {
-                attachPart.attachFile(System.getProperty("user.dir")+ slash + testRunFlow);
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if(testResultInfo.equals("Test Failed")) {
+                MimeBodyPart attachPart = new MimeBodyPart();
+                try {
+                    attachPart.attachFile(userDir + slash + testFailInfo);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                multipart.addBodyPart(attachPart);
             }
-            multipart.addBodyPart(attachPart);
+
             MimeBodyPart attachPart2 = new MimeBodyPart();
 
             try {
-                attachPart2.attachFile(System.getProperty("user.dir")+ slash + testResultTxt);
+                attachPart2.attachFile(userDir + slash + testResultTxt);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
             multipart.addBodyPart(attachPart2);
+
+            MimeBodyPart attachPart3 = new MimeBodyPart();
+
+            try {
+                attachPart3.attachFile(excelPath);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            multipart.addBodyPart(attachPart3);
             msg.setContent(multipart);
             Transport.send(msg);
             System.out.println("Mail has been sent successfully");
@@ -86,27 +111,28 @@ public class SendMail {
         }
 
         // https://myaccount.google.com/lesssecureapps
- // ayarı yap
+        // lesssecureapps must be true for sender mail account
 
     }
 
-    public void sendMailTestResult(Result testResult, List<String> listExecution, String mail){
+    public void sendMailTestResult(Result testResult, String mail, String excelPath){
 
         try {
-            String testResultInfo = "Test Başarılı";
+            String testResultInfo = "Test Successfull";
             List<String> list = new ArrayList<String>();
             if (testResult.hasErrors()) {
-                testResultInfo = "Test Başarısız";
-                list = testResult.getErrors();
+                testResultInfo = "Test Failed";
+                BufferedWriter writer3 = createWriter("testFailInfo.txt",false);
+                for (int i=0; i < testResult.getErrors().size() ; i++){
+                    writer3.append(testResult.getErrors().get(i));
+                    writer3.newLine();
+                }
+                Thread.sleep(1000);
+                writer3.close();
             }
-            list.add("\r\n\r\nDone: [" + testResult.getResults().toString(2) + "]");
-            BufferedWriter writer = createWriter("testRunFlow.txt",false);
-            for (int i=0; i < listExecution.size() ; i++){
-                writer.append(listExecution.get(i));
-                writer.newLine();
-            }
-            Thread.sleep(1000);
-            writer.close();
+            list.add("Done: [" + "\r\n" + "  \"totalFailedNumberOfModels\"" + testResult.getResults()
+                    .toString(2).split("\"totalFailedNumberOfModels\"")[1] + "]");
+
             Thread.sleep(2000);
             BufferedWriter writer2 = createWriter("testResult.txt",false);
             for (int i=0; i < list.size() ; i++){
@@ -116,16 +142,16 @@ public class SendMail {
             Thread.sleep(1000);
             writer2.close();
             Thread.sleep(2000);
-            sendMail(mail,testResultInfo,"testRunFlow.txt","testResult.txt");
+            sendMail(mail,testResultInfo,"testFailInfo.txt","testResult.txt", excelPath);
         }catch (Exception e){
-            logger.info("Mail yollanamadı.");
+            logger.info("Could not send mail.");
         }
     }
 
     public BufferedWriter createWriter(String dir, boolean appendCondition) {
-       BufferedWriter writer = null;
+        BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + slash + dir,appendCondition));
+            writer = new BufferedWriter(new FileWriterWithEncoding(userDir + slash + dir, StandardCharsets.UTF_8, appendCondition));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -133,9 +159,10 @@ public class SendMail {
     }
 
     public BufferedReader createReader(String dir) {
-       BufferedReader reader = null;
+        BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + slash + dir));
+            reader = Files.newBufferedReader(new File(userDir + slash + dir).toPath(), StandardCharsets.UTF_8);
+        //new BufferedReader(new FileReader(userDir + slash + dir));
         } catch (IOException e) {
             e.printStackTrace();
         }

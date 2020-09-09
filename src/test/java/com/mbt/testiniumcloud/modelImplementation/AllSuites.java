@@ -1,6 +1,8 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.utils.CoverageValue;
+import com.mbt.testiniumcloud.utils.ExcelMapData;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
@@ -10,15 +12,17 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@GraphWalker(value = "random(edge_coverage(100))")
+@GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class AllSuites extends ExecutionContext implements org.graphwalker.All_Suites {
 
     private static final Logger logger = LoggerFactory.getLogger(AllSuites.class);
     Methods methods;
+    ExcelMapData excelMapData;
 
     public AllSuites() {
 
         methods = new Methods();
+        excelMapData = new ExcelMapData();
         methods.putValueInTestMap("allSuitesMobile",false);
     }
 
@@ -35,14 +39,15 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
     @BeforeElement
     public void beforeElement() {
 
-        logger.info("═════════  " + getModel().getName() + "   "
-                + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
-                + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "  ═════════");
+        excelMapData.setBeforeElementData(getModel().getName().trim()
+                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
+        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
     }
 
     @AfterElement
     public void afterElement() {
 
+        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
         logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
@@ -328,7 +333,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         methods.checkElementVisible(methods.getBy("exportTableInReportDetail"));
         methods.checkElementVisible(methods.getBy("exportPdfInReportDetail"));
         methods.checkElementVisible(methods.getBy("executionDetailTableInReportDetail"));
-        methods.checkElementVisible(methods.getBy("executionDetailTestCaseInReportDetail"));
+        //methods.checkElementVisible(methods.getBy("executionDetailTestCaseInReportDetail"));
         methods.checkElementVisible(methods.getBy("testResultTableInReportDetail"));
         methods.checkElementVisible(methods.getBy("testResultStatusInReportDetail"));
         methods.checkElementVisible(methods.getBy("testResultDetailButtonInReportDetail"));
@@ -350,6 +355,11 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
         methods.waitBySeconds(1);
     }
+
+    /**
+     * TODO: düzenle
+     * AssertionError: By.xpath: //table[contains(@class,"table")]/tbody/tr[./td[./span[text()="PROJECT NAME"] and text()="testiniumProjectTemp"] and ./td/button[contains(text(),"REPORT") and not(disabled)]]/td[./span[text()="SUITE NAME"]] elementi görüntülenemedi.
+     */
 
     public void e_Click_Mobile_Checbox() {
 
@@ -422,20 +432,10 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
                 , projectName + "!!" + planName);
         methods.checkElementVisible(runButtonBy);
         methods.waitByMilliSeconds(500);
+        methods.isElementEnabled(runButtonBy);
         methods.checkElementClickable(runButtonBy);
         methods.waitByMilliSeconds(500);
-        try {
-            methods.waitUntilWithoutStaleElement(runButtonBy);
-            methods.clickElement(runButtonBy);
-        }catch (StaleElementReferenceException e){
-            methods.waitBySeconds(2);
-            methods.checkElementVisible(runButtonBy);
-            methods.waitByMilliSeconds(500);
-            methods.checkElementClickable(runButtonBy);
-            methods.waitBySeconds(1);
-            methods.waitUntilWithoutStaleElement(runButtonBy);
-            methods.clickElementJs(runButtonBy);
-        }
+        methods.clickElementForStaleElement(runButtonBy);
         methods.putValueInTestMap("currentPlan", planName);
     }
 

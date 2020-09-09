@@ -1,0 +1,217 @@
+[
+  {
+    "key": "logoTitleInPlanEdit",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li[./a[@href='/plan' and text()='All Suites']]/following-sibling::li[.//span[text()=\"%s\"]]/following-sibling::li[./a[contains(@href,\"/plan/edit/\") and contains(@href,\"/properties\") and text()=\"Properties\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "propertiesTabInPlanEdit",
+    "value": "//ul[contains(@class,\"navbar sub-navbar\")]/li[./a[contains(@href,\"/plan/edit/\") and contains(@href,\"/properties\") and text()=\"PROPERTIES\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "advancedTabInPlanEdit",
+    "value": "//ul[contains(@class,\"navbar sub-navbar\")]/li[./a[contains(@href,\"/plan/edit/\") and contains(@href,\"/advanced\") and text()=\"ADVANCED SETTINGS\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "scheduleAndNotificationsTabInPlanEdit",
+    "value": "//ul[contains(@class,\"navbar sub-navbar\")]/li[./a[contains(@href,\"/plan/edit/\") and contains(@href,\"/schedule\") and text()=\"SCHEDULE & NOTIFICATIONS\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "projectNameInPlanEdit",
+    "value": "projectName",
+    "type": "id"
+  },
+  {
+    "key": "planNameInPlanEdit",
+    "value": "planName",
+    "type": "id"
+  },
+  {
+    "key": "planNameErrorBlockInPlanEdit",
+    "value": "input#planName + span.error-block",
+    "type": "css"
+  },
+  {
+    "key": "enableSwitchInPlanEdit",
+    "value": "//div[contains(@class,\"form-group\") and ./label[text()=\"ENABLE\"]]/div/app-switch//label[@class=\"switch\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioNameForScenariosPanelInPlanEdit",
+    "value": "scenarioName",
+    "type": "id"
+  },
+  {
+    "key": "operatingSystemNameInPlanEdit",
+    "value": "//table[.//tr[./th[text()=\"OPERATING SYSTEM\"]]]/tbody/tr/td[./span[text()=\"OPERATING SYSTEM\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "environmentNameInPlanEdit",
+    "value": "//table[.//tr[./th[text()=\"OPERATING SYSTEM\"]]]/tbody/tr/td[./span[text()=\"ENVIRONMENT NAME\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "deleteButtonForPlatformInPlanEdit",
+    "value": "//table[.//tr[./th[text()=\"OPERATING SYSTEM\"]]]/tbody/tr/td[./span[text()=\"OPERATING SYSTEM\"]]/following-sibling::td/button[@type=\"button\" and text()=\"DELETE\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "cancelButtonInPlanEdit",
+    "value": "//a[@type=\"button\" and @href=\"/plan\" and text()=\"CANCEL\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "saveButtonInPlanEdit",
+    "value": "//button[@type=\"button\" and ./span[text()=\"SAVE\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "applyButtonInPlanEdit",
+    "value": "//button[@type=\"button\" and ./span[text()=\"APPLY\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "logoTitleForAdvancedSettingsInPlanEdit",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li[./a[@href='/plan' and text()='All Suites']]/following-sibling::li[.//span[text()=\"%s\"]]/following-sibling::li[./a[contains(@href,\"/plan/edit/\") and contains(@href,\"/advanced\") and text()=\"Advanced\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "faildTestRetryCountForAdvancedSettingsInPlanEdit",
+    "value": "faildTestRetryCount",
+    "type": "id"
+  },
+  {
+    "key": "parallelTestLimitForAdvancedSettingsInPlanEdit",
+    "value": "parallelTestLimit",
+    "type": "id"
+  },
+  {
+    "key": "maxExecutionTimeForAdvancedSettingsInPlanEdit",
+    "value": "maxExecutionTime",
+    "type": "id"
+  },
+  {
+    "key": "bandwidthTypeForAdvancedSettingsInPlanEdit",
+    "value": "bandwidthType",
+    "type": "id"
+  },
+  {
+    "key": "screenshotTypeForAdvancedSettingsInPlanEdit",
+    "value": "screenshotType",
+    "type": "id"
+  },
+  {
+    "key": "recordVideoForAdvancedSettingsInPlanEdit",
+    "value": "//div[contains(@class,\"panel-switch\") and .//h3[text()=\"Record Video\"]]//app-switch/div[contains(@class,\"material-switch\") and ./label]",
+    "type": "xpath"
+  },
+  {
+    "key": "recordVideoLabelForAdvancedSettingsInPlanEdit",
+    "value": "//div[contains(@class,\"panel-switch\") and .//h3[text()=\"Record Video\"]]//app-switch//label",
+    "type": "xpath"
+  },
+  {
+    "key": "capturePerformanceDataForAdvancedSettingsInPlanEdit",
+    "value": "//div[contains(@class,\"panel-switch\") and .//h3[text()=\"Capture Performance Data\" or text()=\"Clear App Data\"]]//app-switch/div[contains(@class,\"material-switch\") and ./label]",
+    "type": "xpath"
+  },
+  {
+    "key": "capturePerformanceDataLabelForAdvancedSettingsInPlanEdit",
+    "value": "//div[contains(@class,\"panel-switch\") and .//h3[text()=\"Capture Performance Data\" or text()=\"Clear App Data\"]]//app-switch//label",
+    "type": "xpath"
+  },
+  {
+    "key": "tunnelForAdvancedSettingsInPlanEdit",
+    "value": "tunnel",
+    "type": "id"
+  },
+  {
+    "key": "javaParameterNameForAdvancedSettingsInPlanEdit",
+    "value": "javaParameterName",
+    "type": "id"
+  },
+  {
+    "key": "javaParameterValueForAdvancedSettingsInPlanEdit",
+    "value": "javaParameterValue",
+    "type": "id"
+  },
+  {
+    "key": "javaParameterDescriptionForAdvancedSettingsInPlanEdit",
+    "value": "javaParameterDescription",
+    "type": "id"
+  },
+  {
+    "key": "addButtonForAdvancedSettingsInPlanEdit",
+    "value": "//button[@type=\"submit\" and contains(text(),\"ADD\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "applyButtonOtherTabInPlanEdit",
+    "value": "//button[@type=\"button\" and ./span[contains(text(),\"APPLY\")]]",
+    "type": "xpath"
+  },
+  {
+    "key": "saveButtonOtherTabInPlanEdit",
+    "value": "//button[@type=\"button\" and ./span[contains(text(),\"SAVE\")]]",
+    "type": "xpath"
+  },
+  {
+    "key": "logoTitleForScheduleInPlanEdit",
+    "value": "//a[@class='logo' and @href=\"/home\"]/following-sibling::ul/li[./a[@href='/plan' and text()='All Suites']]/following-sibling::li[.//span[text()=\"%s\"]]/following-sibling::li[./a[contains(@href,\"/plan/edit/\") and contains(@href,\"/schedule\") and text()=\"Schedule\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "periodTypePanelForScheduleInPlanEdit",
+    "value": "//form[./div[./*[text()=\"SCHEDULE\"]]]/div[@class=\"panel-body\"]//div[@class=\"panel\" and div[@class=\"panel-heading\" and ./*[text()=\"PERIOD TYPE\"]]]/div[contains(@class,\"panel-body\")]",
+    "type": "xpath"
+  },
+  {
+    "key": "manuallyRunForScheduleInPlanEdit",
+    "value": "//div[@class=\"panel\" and div[@class=\"panel-heading\" and ./*[text()=\"PERIOD TYPE\"]]]/div[contains(@class,\"panel-body\")]/div[contains(@class,\"checkbox\")]//label[text()=\"Manually run this plan\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "automaticallyRunCheckboxForScheduleInPlanEdit",
+    "value": "//div[@class=\"panel\" and div[@class=\"panel-heading\" and ./*[text()=\"PERIOD TYPE\"]]]/div[contains(@class,\"panel-body\")]/div[contains(@class,\"checkbox\")]//label[text()=\"Automatically run this plan\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "repeatCheckboxForScheduleInPlanEdit",
+    "value": "//div[@class=\"panel\" and div[@class=\"panel-heading\" and ./*[text()=\"PERIOD TYPE\"]]]/div[contains(@class,\"panel-body\")]/div[contains(@class,\"checkbox\")]//label[text()=\"Repeat\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "scenarioKeyValueForScenariosInPlanEdit",
+    "value": "//div[@class=\"panel-heading\" and ./*[text()=\"SCENARIOS\"]]/following-sibling::div[contains(@class,\"panel-body\")]/app-scenario-selection//div[contains(@class,\"level-%s\")]/app-checkbox/div[contains(@class,\"checkbox\") and ./label[text()[contains(.,\"%s\")]]]",
+    "type": "xpath"
+  },
+  {
+    "key": "InPlanEdit",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "InPlanEdit",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "InPlanEdit",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "InPlanEdit",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "InPlanEdit",
+    "value": "",
+    "type": ""
+  }
+]

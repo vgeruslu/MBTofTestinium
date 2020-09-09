@@ -35,6 +35,7 @@ public class LocalBrowserExec {
                     JavascriptExecutor executor = (JavascriptExecutor) driver;
                     executor.executeScript("chrome.settingsPrivate.setDefaultZoom("
                             + DriverCreater.ConfigurationProp.getString("chromeZoomSize") + ");");
+                    DriverCreater.chromeZoomCondition = true;
                 }
                 break;
             case "firefox" :
@@ -85,6 +86,7 @@ public class LocalBrowserExec {
          * chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
          */
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
+       // chromeOptions.addArguments("--remote-debugging-port=9222");
 
         chromeOptions.addArguments("--disable-notifications");
         chromeOptions.addArguments("test-type");
@@ -258,10 +260,8 @@ public class LocalBrowserExec {
     private static OperaDriver getOperaDriver(){
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        //capabilities
         OperaOptions operaOptions = new OperaOptions();
-        //firefoxOptions.setLogLevel(FirefoxDriverLogLevel.INFO);
-        // options
+
         operaOptions.merge(capabilities);
         return new OperaDriver(operaOptions);
     }

@@ -2,6 +2,8 @@ package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.driver.DriverCreater;
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.utils.CoverageValue;
+import com.mbt.testiniumcloud.utils.ExcelMapData;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
@@ -10,15 +12,17 @@ import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@GraphWalker(value = "random(edge_coverage(100))", start = "v_Start")
+@GraphWalker(value = CoverageValue.RandomEdgeCoverage100, start = "v_Start")
 public class Login extends ExecutionContext implements org.graphwalker.Login {
 
     private static final Logger logger = LoggerFactory.getLogger(Login.class);
     Methods methods;
+    ExcelMapData excelMapData;
 
     public Login() {
 
         methods = new Methods();
+        excelMapData = new ExcelMapData();
     }
 
     @BeforeExecution
@@ -34,14 +38,15 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
     @BeforeElement
     public void beforeElement() {
 
-        logger.info("═════════  " + getModel().getName() + "   "
-                + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
-                + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "  ═════════");
+        excelMapData.setBeforeElementData(getModel().getName().trim()
+                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
+        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
     }
 
     @AfterElement
     public void afterElement() {
 
+        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
         logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
@@ -305,24 +310,26 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
 
     public void v_Verify_In_Dashboard_Page_SHARED() {
 
-        //https://testinium.io/home?code=
-        Assert.assertTrue(""
-                , methods.doesUrl("https://testinium.io/home",75,"startWith"));
-        methods.checkElementVisible(methods.getBy("logoArea"),60);
-        methods.checkElementVisible(methods.getBy("logoTitle"),60);
-        Assert.assertEquals("", "Dashboard", methods.getText(methods.getBy("logoTitle")).trim());
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
-        methods.checkElementVisible(methods.getBy("dashboardCreateButton"));
-        methods.checkElementVisible(methods.getBy("testiniumTestPlanInDashboard"));
-        methods.checkElementVisible(methods.getBy("parallelTestsInDashboard"));
-        methods.checkElementVisible(methods.getBy("queuedTestsInDashboard"));
-        methods.checkElementVisible(methods.getBy("activeTestsInDashboard"));
-        methods.checkElementVisible(methods.getBy("latestTestRunsTableInDashboard"));
+        if(Boolean.parseBoolean(getAttribute("isEverythingDone").toString())) {
+            //https://testinium.io/home?code=
+            Assert.assertTrue(""
+                    , methods.doesUrl("https://testinium.io/home", 75, "startWith"));
+            methods.checkElementVisible(methods.getBy("logoArea"), 60);
+            methods.checkElementVisible(methods.getBy("logoTitle"), 60);
+            Assert.assertEquals("", "Dashboard", methods.getText(methods.getBy("logoTitle")).trim());
+            methods.checkElementVisible(methods.getBy("dashboardButton"));
+            methods.checkElementVisible(methods.getBy("projectsTab"));
+            methods.checkElementVisible(methods.getBy("allScenariosTab"));
+            methods.checkElementVisible(methods.getBy("allSuitesTab"));
+            methods.checkElementVisible(methods.getBy("reportsTab"));
+            methods.checkElementVisible(methods.getBy("automatedTestTab"));
+            methods.checkElementVisible(methods.getBy("dashboardCreateButton"));
+            methods.checkElementVisible(methods.getBy("testiniumTestPlanInDashboard"));
+            methods.checkElementVisible(methods.getBy("parallelTestsInDashboard"));
+            methods.checkElementVisible(methods.getBy("queuedTestsInDashboard"));
+            methods.checkElementVisible(methods.getBy("activeTestsInDashboard"));
+            methods.checkElementVisible(methods.getBy("latestTestRunsTableInDashboard"));
+        }
     }
 
     public void e_Input_Unregistered_Email_Forgot_Password() {
@@ -371,6 +378,12 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
 
     public void v_Start() {
 
+        /**
+        // Forgot password kapalı
+        setAttribute("isForgotPassword",false);
+        setAttribute("isForgotPasswordRegistered",false);
+        setAttribute("isForgotPasswordUnregistered",false);
+         */
     }
 
     public void e_Invalid_Login_Empty() {

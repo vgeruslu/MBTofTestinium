@@ -1,0 +1,137 @@
+[
+  {
+    "key": "logoArea",
+    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[@href=\"/home\" and ./img[@alt=\"Testinium\" and @class=\"brand-logo\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "logoTitle",
+    "value": "a.logo + ul.count-1 > li > a",
+    "type": "css"
+  },
+  {
+    "key": "dashboardButton",
+    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[@href=\"/home\" and ./img[@alt=\"Testinium\" and @class=\"brand-logo\"]]",
+    "type": "xpath"
+  },
+  {
+    "key": "dashboardCreateButton",
+    "value": "a[href=\"/create\"][class*=\"create-button\"]",
+    "type": "css"
+  },
+  {
+    "key": "dashboardCreatePlanButton",
+    "value": "button[routerlink=\"/plan/create\"]",
+    "type": "css"
+  },
+  {
+    "key": "dashboardCreateProjectButton",
+    "value": "button[routerlink=\"/project/create\"]",
+    "type": "css"
+  },
+  {
+    "key": "createPageTitle",
+    "value": "a.logo + ul.count-1 > li > a",
+    "type": "css"
+  },
+  {
+    "key": "dashboardCreateScenarioButton",
+    "value": "button[routerlink=\"/scenario/create\"]",
+    "type": "css"
+  },
+  {
+    "key": "projectsTab",
+    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[text()=\"PROJECTS\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "allScenariosTab",
+    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[text()=\"ALL SCENARIOS\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "allSuitesTab",
+    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[text()=\"ALL SUITES\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportsTab",
+    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[text()=\"REPORTS\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "automatedTestTab",
+    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[text()=\"AUTOMATED TEST\"]",
+    "type": "xpath"
+  },
+  {
+    "key": "testiniumTestPlanInDashboard",
+    "value": "//div[contains(@class,'container-statistics')]//h4[contains(text(),'PLAN')]",
+    "type": "xpath"
+  },
+  {
+    "key": "parallelTestsInDashboard",
+    "value": "//div[contains(@class,'container-statistics')]//h4[text()='PARALLEL TESTS']",
+    "type": "xpath"
+  },
+  {
+    "key": "queuedTestsInDashboard",
+    "value": "//div[contains(@class,'container-statistics')]//h4[text()='QUEUED TESTS']",
+    "type": "xpath"
+  },
+  {
+    "key": "activeTestsInDashboard",
+    "value": "//div[contains(@class,'container-statistics')]//h4[text()='ACTIVE TESTS']",
+    "type": "xpath"
+  },
+  {
+    "key": "latestTestRunsTableInDashboard",
+    "value": "//div/h4[text()='Latest Test Runs']/following-sibling::table[.//*[text()='ID'] and .//*[text()='TEST SUITE'] and .//*[text()='RUN DATE'] and .//*[text()='RUNTIME'] and .//*[text()='TEST RESULT']]",
+    "type": "xpath"
+  },
+  {
+    "key": "bell",
+    "value": "//a[./i[@class='fa fa-bell']]",
+    "type": "xpath"
+  },
+  {
+    "key": "shoppingCart",
+    "value": "//a[@href='/account/payment' and ./i[@class='fa fa-shopping-cart']]",
+    "type": "xpath"
+  },
+  {
+    "key": "userDropdown",
+    "value": "//a[contains(@class,'user-dropdown') and .//span[contains(@class,'first-line')] and .//span[contains(@class,'second-line')]]",
+    "type": "xpath"
+  },
+  {
+    "key": "viewTestRunTableInDashboard",
+    "value": "//div[@class='panel' and .//h4[text()='Latest Test Runs']]//table[.//td/span[text()='ID'] and .//td/span[text()='TEST SUITE'] and .//td/span[text()='RUN DATE'] and .//td/span[text()='RUNTIME'] and .//td/span[text()='TEST SUITE'] and .//td/span[text()='TEST RESULT']]",
+    "type": "xpath"
+  },
+  {
+    "key": "reportDetail2InDashboard",
+    "value": "a[href*='/report/detail']",
+    "type": "css"
+  },
+  {
+    "key": "reportDetailInDashboard",
+    "value": "a[href*='/report/detail']:not([class*=\"disabled\"])",
+    "type": "css"
+  },
+  {
+    "key": "reportsTableElementsInDashboard",
+    "value": "//div[contains(@class,\"panel-body\") and .//h4[text()=\"Latest Test Runs\"]]/table/tbody/tr",
+    "type": "xpath"
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  },
+  {
+    "key": "5",
+    "value": "",
+    "type": ""
+  }
+]

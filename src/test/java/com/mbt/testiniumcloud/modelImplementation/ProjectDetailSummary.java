@@ -1,6 +1,8 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.utils.CoverageValue;
+import com.mbt.testiniumcloud.utils.ExcelMapData;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
@@ -9,15 +11,18 @@ import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@GraphWalker(value = "random(edge_coverage(100))")
+@GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ProjectDetailSummary extends ExecutionContext implements org.graphwalker.Project_Detail_Summary {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectDetailSummary.class);
     Methods methods;
+    ExcelMapData excelMapData;
 
     public ProjectDetailSummary() {
 
         methods = new Methods();
+        excelMapData = new ExcelMapData();
+        methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     @BeforeExecution
@@ -33,14 +38,15 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
     @BeforeElement
     public void beforeElement() {
 
-        logger.info("═════════  " + getModel().getName() + "   "
-                + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
-                + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "  ═════════");
+        excelMapData.setBeforeElementData(getModel().getName().trim()
+                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
+        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
     }
 
     @AfterElement
     public void afterElement() {
 
+        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
         logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
@@ -65,6 +71,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         methods.checkElementClickable(suitesTabBy);
         methods.waitByMilliSeconds(500);
         methods.clickElement(suitesTabBy);
+        methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_Verify_Suite_Is_Available() {
@@ -81,6 +88,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         methods.checkElementClickable(scenariosTabBy);
         methods.waitByMilliSeconds(500);
         methods.clickElement(scenariosTabBy);
+        methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_Verify_In_Create_Plan_Page_SHARED() {
@@ -167,6 +175,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         methods.checkElementClickable(propertiesTabBy);
         methods.waitByMilliSeconds(500);
         methods.clickElement(propertiesTabBy);
+        methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_Control_Are_You_Sure_Message() {
@@ -188,6 +197,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         methods.waitByMilliSeconds(500);
         methods.clickElement(deleteDropDownBy);
         methods.putValueInTestMap("currentPlan", planName);
+        methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_control_Are_You_Sure_Message() {
@@ -215,6 +225,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         methods.checkElementClickable(projectsTabBy);
         methods.waitByMilliSeconds(500);
         methods.clickElement(projectsTabBy);
+        methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void e_Click_Summary() {
@@ -274,6 +285,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         methods.waitByMilliSeconds(500);
         methods.clickElement(createNewSuitePanelBy);
         methods.putValueInTestMap("projectSelectedForPlan",true);
+        methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_Verify_In_Project_Detail_Summary_Page_SHARED() {
@@ -298,14 +310,17 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         methods.checkElementVisible(methods.getBy("reportsTab"));
         methods.checkElementVisible(methods.getBy("automatedTestTab"));
 
-        if(methods.isElementVisible(methods.getBy("suiteInProjectDetailSummary"),2)){
-            logger.info("element görünür");
-            methods.checkElementVisible(methods.getBy("dropDownSuiteInProjectDetailSummary"));
-            methods.checkElementVisible(methods.getBy("reportSuiteInProjectDetailSummary"));
-            methods.checkElementVisible(methods.getBy("runSuiteInProjectDetailSummary"));
-            setAttribute("hasProjectAPlan", true);
-        }else {
-            setAttribute("hasProjectAPlan", false);
+        if(!Boolean.parseBoolean(methods.getValueInTestMap("controlProjectDetailSummary").toString())) {
+            if (methods.isElementVisible(methods.getBy("suiteInProjectDetailSummary"), 2)) {
+                logger.info("element görünür");
+                methods.checkElementVisible(methods.getBy("dropDownSuiteInProjectDetailSummary"));
+                methods.checkElementVisible(methods.getBy("reportSuiteInProjectDetailSummary"));
+                methods.checkElementVisible(methods.getBy("runSuiteInProjectDetailSummary"));
+                setAttribute("hasProjectAPlan", true);
+            } else {
+                setAttribute("hasProjectAPlan", false);
+            }
+            methods.putValueInTestMap("controlProjectDetailSummary", true);
         }
         logger.info(getAttribute("hasProjectAPlan").toString());
     }

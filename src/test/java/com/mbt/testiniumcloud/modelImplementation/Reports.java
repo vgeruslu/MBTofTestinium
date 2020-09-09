@@ -1,6 +1,8 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.utils.CoverageValue;
+import com.mbt.testiniumcloud.utils.ExcelMapData;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
@@ -9,15 +11,17 @@ import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@GraphWalker(value = "random(edge_coverage(100))")
+@GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class Reports extends ExecutionContext implements org.graphwalker.Reports {
 
     private static final Logger logger = LoggerFactory.getLogger(Reports.class);
     Methods methods;
+    ExcelMapData excelMapData;
 
     public Reports() {
 
         methods = new Methods();
+        excelMapData = new ExcelMapData();
     }
 
     @BeforeExecution
@@ -33,14 +37,15 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
     @BeforeElement
     public void beforeElement() {
 
-        logger.info("═════════  " + getModel().getName() + "   "
-                + (getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex") + "   "
-                + getCurrentElement().getName() + "   "  + getCurrentElement().getId() + "  ═════════");
+        excelMapData.setBeforeElementData(getModel().getName().trim()
+                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
+        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
     }
 
     @AfterElement
     public void afterElement() {
 
+        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
         logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
@@ -226,7 +231,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         methods.checkElementVisible(methods.getBy("exportTableInReportDetail"));
         methods.checkElementVisible(methods.getBy("exportPdfInReportDetail"));
         methods.checkElementVisible(methods.getBy("executionDetailTableInReportDetail"));
-        methods.checkElementVisible(methods.getBy("executionDetailTestCaseInReportDetail"));
+        //methods.checkElementVisible(methods.getBy("executionDetailTestCaseInReportDetail"));
         methods.checkElementVisible(methods.getBy("testResultTableInReportDetail"));
         methods.checkElementVisible(methods.getBy("testResultStatusInReportDetail"));
         methods.checkElementVisible(methods.getBy("testResultDetailButtonInReportDetail"));
