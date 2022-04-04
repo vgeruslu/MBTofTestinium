@@ -62,7 +62,7 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
         methods.checkElementVisible(noButtonBy);
         methodsUtil.waitBySeconds(1);
         methods.checkElementClickable(noButtonBy);
-       methodsUtil.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 

@@ -120,10 +120,10 @@ public class LoginToAllScenarios extends ExecutionContext implements org.graphwa
         methods.checkElementVisible(methods.getBy("testiniumTestPlanInDashboard"));
         methods.checkElementVisible(methods.getBy("parallelTestsInDashboard"));
         methods.checkElementVisible(methods.getBy("queuedTestsInDashboard"));
-        methods.checkElementVisible(methods.getBy("activeTestsInDashboard"));
-        methods.checkElementVisible(methods.getBy("latestTestRunsTableInDashboard"));
-        methods.checkElementVisible(methods.getBy("bell"));
-        methods.checkElementVisible(methods.getBy("shoppingCart"));
+       // methods.checkElementVisible(methods.getBy("activeTestsInDashboard"));
+       // methods.checkElementVisible(methods.getBy("latestTestRunsTableInDashboard"));
+      //  methods.checkElementVisible(methods.getBy("bell"));
+      //  methods.checkElementVisible(methods.getBy("shoppingCart"));
         methods.checkElementVisible(methods.getBy("userDropdown"));
     }
 

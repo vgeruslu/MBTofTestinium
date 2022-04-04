@@ -333,8 +333,8 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
             methods.checkElementVisible(methods.getBy("testiniumTestPlanInDashboard"));
             methods.checkElementVisible(methods.getBy("parallelTestsInDashboard"));
             methods.checkElementVisible(methods.getBy("queuedTestsInDashboard"));
-            methods.checkElementVisible(methods.getBy("activeTestsInDashboard"));
-            methods.checkElementVisible(methods.getBy("latestTestRunsTableInDashboard"));
+           // methods.checkElementVisible(methods.getBy("activeTestsInDashboard"));
+        //    methods.checkElementVisible(methods.getBy("latestTestRunsTableInDashboard"));
         }
     }
 
