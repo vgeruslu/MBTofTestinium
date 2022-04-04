@@ -1,17 +1,20 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
+import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
 import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
 import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.graphwalker.core.machine.ExecutionContext;
-import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import static org.apache.logging.log4j.LogManager.*;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Scenario_Edit {
@@ -26,6 +29,7 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         methods = new Methods();
         methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+        Configurator.setLevel(getLogger(ScenarioEdit.class), Level.toLevel(Driver.modelImplLogLevel));
     }
 
     @BeforeElement

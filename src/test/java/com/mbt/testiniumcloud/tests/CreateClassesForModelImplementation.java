@@ -44,6 +44,7 @@ public class CreateClassesForModelImplementation {
                 "import org.apache.logging.log4j.Logger;\n" +
                 "import org.apache.logging.log4j.LogManager;\n" +
                 "import static org.apache.logging.log4j.LogManager.*;\n" +
+                "import org.apache.logging.log4j.core.config.Configurator;\n" +
                 "\n" +
                 "@GraphWalker(value = CoverageValue.RandomEdgeCoverage100)\n" +
                 "public class %s extends ExecutionContext implements org.graphwalker.%s {\n" +
@@ -56,7 +57,7 @@ public class CreateClassesForModelImplementation {
                 "\n" +
                 "        methods = new Methods();\n" +
                 "        excelMapData = new ExcelMapData();\n" +
-                "        getLogger(%s.class).atLevel(Level.toLevel(Driver.modelImplLogLevel));\n" +
+                "        Configurator.setLevel(getLogger(%s.class), Level.toLevel(Driver.modelImplLogLevel));\n" +
                 "    }\n" +
                 "\n" +
                 "    @BeforeElement\n" +

@@ -1,18 +1,21 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
+import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
 import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
 import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
-import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import static org.apache.logging.log4j.LogManager.*;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ProjectDetailSummary extends ExecutionContext implements org.graphwalker.Project_Detail_Summary {
@@ -28,6 +31,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
         methods.putValueInTestMap("controlProjectDetailSummary",false);
+        Configurator.setLevel(getLogger(ProjectDetailSummary.class), Level.toLevel(Driver.modelImplLogLevel));
     }
 
     @BeforeElement

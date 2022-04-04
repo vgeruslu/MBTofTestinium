@@ -6,13 +6,15 @@ import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
 import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.graphwalker.core.machine.ExecutionContext;
-import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import static org.apache.logging.log4j.LogManager.*;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class Dashboard extends ExecutionContext implements org.graphwalker.Dashboard {
@@ -27,6 +29,7 @@ public class Dashboard extends ExecutionContext implements org.graphwalker.Dashb
         methods = new Methods();
         methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+        Configurator.setLevel(getLogger(Dashboard.class), Level.toLevel(Driver.modelImplLogLevel));
         // Projects
         methods.putValueInTestMap("runProject",
                 Driver.ConfigurationProp.getString("runProject"));

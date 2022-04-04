@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.graphwalker.java.test.Executor;
 import org.graphwalker.java.test.Result;
 import org.junit.*;
@@ -60,29 +61,29 @@ public class Driver {
             isTestinium = true;
         }
         if (!isTestinium){
-            LoggerContext loggerContext = (LoggerContext) LogManager.getContext(false);
+            LoggerContext loggerContext = (LoggerContext) getContext(false);
             File file = new File("./src/test/resources/log4j2Local.properties");
             loggerContext.setConfigLocation(file.toURI());
         }
 
-        getRootLogger().atLevel(Level.toLevel(Driver.ConfigurationProp.getString("logLevel")));
+        String rootLogLevel = Driver.ConfigurationProp.getString("logLevel").trim();
+        Configurator.setRootLevel(Level.toLevel(rootLogLevel));
 
         String methodsClassLogLevel = Driver.ConfigurationProp.getString("methodsClassLogLevel");
         modelImplLogLevel = ConfigurationProp.getString("modelImplLogLevel");
+        Configurator.setLevel(getLogger(Methods.class), Level.toLevel(methodsClassLogLevel));
         String elementHelperLogLevel = ConfigurationProp.getString("elementHelperLogLevel");
-        getLogger(Methods.class).atLevel(Level.toLevel(methodsClassLogLevel));
-        getLogger(Driver.class).atLevel(Level.ALL);
-        getLogger(TestResultJunit.class).atLevel(Level.ALL);
-        getLogger(TestiniumBrowserExec.class).atLevel(Level.ALL);
-        getLogger(LocalBrowserExec.class).atLevel(Level.ALL);
-        getLogger(FindOS.class).atLevel(Level.ALL);
-        getLogger(ExcelMapData.class).atLevel(Level.ALL);
-        getLogger(StoreHelper.class).atLevel(Level.toLevel(elementHelperLogLevel));
-        getLogger(ElementHelper.class).atLevel(Level.toLevel(elementHelperLogLevel));
-        getLogger(ExcelMapData.class).atLevel(Level.ALL);
-        getLogger(SendMail.class).atLevel(Level.ALL);
-        getLogger(CreateMBTExcel.class).atLevel(Level.ALL);
-        getLogger(StoreHelper.class).atLevel(Level.toLevel(elementHelperLogLevel));
+        Configurator.setLevel(getLogger(Driver.class), Level.ALL);
+        Configurator.setLevel(getLogger(TestResultJunit.class), Level.ALL);
+        Configurator.setLevel(getLogger(TestiniumBrowserExec.class), Level.ALL);
+        Configurator.setLevel(getLogger(LocalBrowserExec.class), Level.ALL);
+        Configurator.setLevel(getLogger(FindOS.class), Level.ALL);
+        Configurator.setLevel(getLogger(ExcelMapData.class), Level.ALL);
+        Configurator.setLevel(getLogger(SendMail.class), Level.ALL);
+        Configurator.setLevel(getLogger(CreateMBTExcel.class), Level.ALL);
+        Configurator.setLevel(getLogger(StoreHelper.class), Level.toLevel(elementHelperLogLevel));
+        Configurator.setLevel(getLogger(ElementHelper.class), Level.toLevel(elementHelperLogLevel));
+        Configurator.setLevel(getLogger(StoreHelper.class), Level.toLevel(elementHelperLogLevel));
         logger.info("*************************************************************************");
         System.out.println("\r\n");
     }

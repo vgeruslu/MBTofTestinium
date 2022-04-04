@@ -9,13 +9,12 @@ import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.graphwalker.core.machine.ExecutionContext;
-import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-
-import static org.apache.logging.log4j.LogManager.getLogger;
+import static org.apache.logging.log4j.LogManager.*;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class AllScenarios extends ExecutionContext implements org.graphwalker.All_Scenarios {
@@ -30,7 +29,7 @@ public class AllScenarios extends ExecutionContext implements org.graphwalker.Al
         methods = new Methods();
         methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
-        getLogger(AllScenarios.class).atLevel(Level.toLevel(Driver.modelImplLogLevel));
+        Configurator.setLevel(getLogger(AllScenarios.class), Level.toLevel(Driver.modelImplLogLevel));
     }
 
     @BeforeElement
