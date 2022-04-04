@@ -32,7 +32,6 @@ public class Driver {
     public static String browserName;
     public static boolean isFullScreen;
     public static WebDriver driver;
-    public static boolean isTestinium = false;
     public static String baseUrl;
     public static String osName = FindOS.getOperationSystemName();
     public static ResourceBundle ConfigurationProp = ReadProperties.readProp("Configuration.properties");
@@ -57,10 +56,7 @@ public class Driver {
     @BeforeClass
     public static void beforeClass(){
 
-        if(StringUtils.isNotEmpty(System.getProperty("key"))){
-            isTestinium = true;
-        }
-        if (!isTestinium){
+        if (Boolean.parseBoolean(Driver.ConfigurationProp.getString("log4jColorActive").toString())){
             LoggerContext loggerContext = (LoggerContext) getContext(false);
             File file = new File("./src/test/resources/log4j2Local.properties");
             loggerContext.setConfigLocation(file.toURI());
@@ -75,7 +71,6 @@ public class Driver {
         String elementHelperLogLevel = ConfigurationProp.getString("elementHelperLogLevel");
         Configurator.setLevel(getLogger(Driver.class), Level.ALL);
         Configurator.setLevel(getLogger(TestResultJunit.class), Level.ALL);
-        Configurator.setLevel(getLogger(TestiniumBrowserExec.class), Level.ALL);
         Configurator.setLevel(getLogger(LocalBrowserExec.class), Level.ALL);
         Configurator.setLevel(getLogger(FindOS.class), Level.ALL);
         Configurator.setLevel(getLogger(ExcelMapData.class), Level.ALL);
@@ -144,7 +139,7 @@ public class Driver {
     @After
     public void after() {
 
-        if (isTestinium || Boolean.parseBoolean(ConfigurationProp.getString("localQuitDriverActive"))) {
+        if (Boolean.parseBoolean(ConfigurationProp.getString("localQuitDriverActive"))) {
             quitDriver();
         }
         logger.info("_________________________________________________________________________" + "\r\n");
@@ -187,15 +182,8 @@ public class Driver {
         browserName = ConfigurationProp.getString("browserName");
         baseUrl = ConfigurationProp.getString("baseUrl");
         isFullScreen = Boolean.parseBoolean(ConfigurationProp.getString("isFullScreen"));
-        if(StringUtils.isEmpty(key)) {
-            isTestinium = false;
-            platformName = FindOS.getOperationSystemNameExpanded();
-            driver = LocalBrowserExec.LocalExec(browserName);
-        }
-        else {
-            isTestinium = true;
-            driver = TestiniumBrowserExec.TestiniumExec(key);
-        }
+        platformName = FindOS.getOperationSystemNameExpanded();
+        driver = LocalBrowserExec.LocalExec(browserName);
 
         logger.info("Driver ayağa kaldırıldı.");
         isSafari = browserName.equalsIgnoreCase("safari");
@@ -227,12 +215,6 @@ public class Driver {
             }
             if (excelActive) {
                 String toMail = ConfigurationProp.getString("toMail");
-                if (isTestinium) {
-                    String toMailTestinium = System.getProperty("toMail");
-                    if (!StringUtils.isEmpty(toMailTestinium)) {
-                        toMail = toMailTestinium;
-                    }
-                }
                 new SendMail().sendMailTestResult(result, toMail, excelLocation);
             } else {
                 logger.info("Excel oluşturulamadığı için mail yollanamadı.");

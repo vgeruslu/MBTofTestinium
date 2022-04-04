@@ -29,12 +29,14 @@ public class Methods {
     JsMethods jsMethods;
     ActionMethods actionMethods;
     MethodsUtil methodsUtil;
-    long waitElementTimeout = 30;
-    long pollingEveryValue = 300;
+    long waitElementTimeout;
+    long pollingEveryValue;
 
     public Methods(){
 
         this.driver = Driver.driver;
+        waitElementTimeout = Long.parseLong(Driver.ConfigurationProp.getString("localWaitElementTimeout"));
+        pollingEveryValue = Long.parseLong(Driver.ConfigurationProp.getString("localPollingEveryMilliSecond"));
         wait = setFluentWait(waitElementTimeout);
         jsMethods = new JsMethods(driver);
         actionMethods = new ActionMethods(driver);

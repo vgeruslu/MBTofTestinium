@@ -38,7 +38,7 @@ public class SendMail {
     public SendMail(){
 
         slash = Driver.osName.equals("WINDOWS") ? "\\" : "/";
-        testPlatform = Driver.isTestinium ? "Testinium" : "Local";
+        testPlatform = "Local";
         sendMailActive = Driver.ConfigurationProp.getString("sendMailActive");
         senderMail = Driver.ConfigurationProp.getString("senderMail");
         senderPassword = Driver.ConfigurationProp.getString("senderPassword");
