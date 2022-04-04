@@ -1,27 +1,46 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class Reports extends ExecutionContext implements org.graphwalker.Reports {
 
-    private static final Logger logger = LoggerFactory.getLogger(Reports.class);
+    private static final Logger logger = LogManager.getLogger(Reports.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public Reports() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -32,21 +51,6 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Control_Suites_For_Selected_Suite() {
@@ -63,7 +67,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         Assert.assertTrue("", methods.doesUrl("https://testinium.io/report/detail/",75,"notStartWith"));
         Assert.assertTrue("", methods.doesUrl("https://testinium.io/report",75,"startWith"));
         /**
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         String currentUrl = methods.getCurrentUrl().trim();
         logger.info(currentUrl);
         Assert.assertTrue("", currentUrl.equals("https://testinium.io/report")
@@ -91,7 +95,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         e_Select_All_Projects();
         By suitesBy = methods.getBy("suitesInReports");
         methods.checkElementVisible(suitesBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         //methods.selectByVisibleText(suitesBy, String.valueOf(methods.getValueInTestMap("currentPlan")));
         methods.selectByVisibleText(suitesBy,"All SUITES");
     }
@@ -106,7 +110,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
         methods.checkElementClickable(yesButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(yesButtonBy);
     }
 
@@ -117,7 +121,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         methods.checkElementVisible(tablePlanCheckboxBy);
         // checkbox deselect
         methods.checkElementClickable(tablePlanCheckboxBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(tablePlanCheckboxBy);
     }
 
@@ -138,13 +142,13 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
 
     public void v_Control_Reports_Table() {
 
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(methods.getBy("tableContainInReports"));
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         if(methods.isElementVisible(methods.getBy("tableElementsInReports"),2)){
-            setAttribute("isReportAvailable",true);
+            setAttribute("isReportAvailable", Value.asValue(true));
         }else {
-            setAttribute("isReportAvailable",false);
+            setAttribute("isReportAvailable",Value.asValue(false));
         }
     }
 
@@ -164,19 +168,19 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
 
         By reportsOptionsDeleteButtonBy = methods.getBy("reportsOptionsDeleteButtonInReports");
         methods.checkElementClickable(reportsOptionsDeleteButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(reportsOptionsDeleteButtonBy);
     }
 
     public void v_Control_Table() {
 
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(methods.getBy("tableContainInReports"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         if(methods.isElementVisible(methods.getBy("tableElementsInReports"),2)){
-            setAttribute("isReportAvailable",true);
+            setAttribute("isReportAvailable",Value.asValue(true));
         }else {
-            setAttribute("isReportAvailable",false);
+            setAttribute("isReportAvailable",Value.asValue(false));
         }
     }
 
@@ -188,37 +192,37 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         By dateToBy = methods.getBy("dateToInReports");
         methods.checkElementVisible(dateToBy);
         methods.checkElementClickable(dateToBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(dateToBy);
         By calendarDateBy = methods.getBy("calendarDateInReports");
         methods.checkElementVisible(calendarDateBy);
-        methods.waitByMilliSeconds(500);
-        methods.scrollElement(calendarDateBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
+        methods.scrollElementJs(calendarDateBy,"3");
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(calendarDateBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         By calendarNavigationButtonTwoBy = methods.getBy("calendarNavigationButton2InReports");
         methods.checkElementVisible(calendarNavigationButtonTwoBy);
         methods.checkElementClickable(calendarNavigationButtonTwoBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(calendarNavigationButtonTwoBy);
         methods.checkElementVisible(methods.getBy("yearsTableInReports"));
         By yearSelectBy = methods.getByWithKeySetValue("yearsSelectWithNumberKeyValueInReports", year);
         methods.checkElementVisible(yearSelectBy);
         methods.checkElementClickable(yearSelectBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(yearSelectBy);
         methods.checkElementVisible(methods.getBy("monthsTableInReports"));
         By monthSelectBy = methods.getByWithKeySetValue("monthsSelectWithNumberKeyValueInReports", month);
         methods.checkElementVisible(monthSelectBy);
         methods.checkElementClickable(monthSelectBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(monthSelectBy);
         methods.checkElementVisible(methods.getBy("calendarDateInReports"));
         By daySelectBy = methods.getByWithKeySetValue("dayWithCalendarKeyValue", day);
         methods.checkElementVisible(daySelectBy);
         methods.checkElementClickable(daySelectBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(daySelectBy);
         Assert.assertTrue("", methods.isElementInVisible(calendarDateBy,30));
         methods.putValueInTestMap("dateForRunDateTo", day + "/" + month + "/" + year);
@@ -248,11 +252,11 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
 
         By reportsTabBy = methods.getBy("reportsTab");
         methods.checkElementVisible(reportsTabBy);
-        methods.waitBySeconds(1);
-        methods.scrollElement(reportsTabBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
+        methods.scrollElementJs(reportsTabBy,"3");
+        methodsUtil.waitBySeconds(1);
         methods.checkElementClickable(reportsTabBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(reportsTabBy);
     }
 
@@ -264,11 +268,11 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
 
         By suitesBy = methods.getBy("suitesInReports");
         methods.checkElementVisible(suitesBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         //methods.selectByVisibleText(suitesBy, String.valueOf(methods.getValueInTestMap("currentPlan")));
         methods.selectByIndex(suitesBy,1);
         methods.checkElementVisible(suitesBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.putValueInTestMap("selectedPlanInReports", methods.getFirstSelectedOption(suitesBy).getText().trim());
     }
 
@@ -276,7 +280,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
 
         By projectsBy = methods.getBy("projectsInReports");
         methods.checkElementVisible(projectsBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.selectByVisibleText(projectsBy,"All Projects");
     }
 
@@ -285,7 +289,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         By projectsBy = methods.getBy("projectsInReports");
         methods.checkElementVisible(projectsBy);
         methods.checkElementClickable(projectsBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.selectByVisibleText(projectsBy, String.valueOf(methods.getValueInTestMap("editProject")));
     }
 
@@ -294,7 +298,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
         methods.checkElementClickable(noButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 
@@ -313,7 +317,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
        By tablePlanCheckboxBy = methods.getByWithKeySetValue("tablePlanCheckboxNumberWithIdInReports", reportId);
        methods.checkElementVisible(tablePlanCheckboxBy);
        methods.checkElementClickable(tablePlanCheckboxBy);
-       methods.waitByMilliSeconds(200);
+       methodsUtil.waitByMilliSeconds(200);
        methods.clickElement(tablePlanCheckboxBy);
        methods.putValueInTestMap("reportId", reportId);
     }
@@ -322,7 +326,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
 
         By reportsOptionsBy = methods.getBy("reportsOptionsInReports");
         methods.checkElementClickable(reportsOptionsBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(reportsOptionsBy);
     }
 
@@ -334,37 +338,37 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         By dateFromBy = methods.getBy("dateFromInReports");
         methods.checkElementVisible(dateFromBy);
         methods.checkElementClickable(dateFromBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(dateFromBy);
         By calendarDateBy = methods.getBy("calendarDateInReports");
         methods.checkElementVisible(calendarDateBy);
-        methods.waitByMilliSeconds(500);
-        methods.scrollElement(calendarDateBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
+        methods.scrollElementJs(calendarDateBy,"3");
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(calendarDateBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         By calendarNavigationButtonTwoBy = methods.getBy("calendarNavigationButton2InReports");
         methods.checkElementVisible(calendarNavigationButtonTwoBy);
         methods.checkElementClickable(calendarNavigationButtonTwoBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(calendarNavigationButtonTwoBy);
         methods.checkElementVisible(methods.getBy("yearsTableInReports"));
         By yearSelectBy = methods.getByWithKeySetValue("yearsSelectWithNumberKeyValueInReports", year);
         methods.checkElementVisible(yearSelectBy);
         methods.checkElementClickable(yearSelectBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(yearSelectBy);
         methods.checkElementVisible(methods.getBy("monthsTableInReports"));
         By monthSelectBy = methods.getByWithKeySetValue("monthsSelectWithNumberKeyValueInReports", month);
         methods.checkElementVisible(monthSelectBy);
         methods.checkElementClickable(monthSelectBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(monthSelectBy);
         methods.checkElementVisible(methods.getBy("calendarDateInReports"));
         By daySelectBy = methods.getByWithKeySetValue("dayWithCalendarKeyValue", day);
         methods.checkElementVisible(daySelectBy);
         methods.checkElementClickable(daySelectBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(daySelectBy);
         Assert.assertTrue("", methods.isElementInVisible(calendarDateBy,30));
         methods.putValueInTestMap("dateForRunDateFrom", day + "/" + month + "/" + year);
@@ -376,7 +380,7 @@ public class Reports extends ExecutionContext implements org.graphwalker.Reports
         By tablePlanDetailsButtonBy = methods.getBy("tablePlanDetailsButtonInReports");
         methods.checkElementVisible(tablePlanDetailsButtonBy);
         methods.checkElementClickable(tablePlanDetailsButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(tablePlanDetailsButtonBy);
     }
 

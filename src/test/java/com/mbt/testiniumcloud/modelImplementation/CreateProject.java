@@ -1,28 +1,46 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
-import com.mbt.testiniumcloud.driver.DriverCreater;
+import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class CreateProject extends ExecutionContext implements org.graphwalker.Create_Project {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreateProject.class);
+    private static final Logger logger = LogManager.getLogger(CreateProject.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public CreateProject() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -35,27 +53,12 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
     }
 
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
-    }
-
     public void e_Click_Checked_Template_Checkbox() {
 
         By templateCheckboxBy = methods.getBy("templateCheckboxInCreateProject");
         methods.checkElementVisible(templateCheckboxBy);
         methods.checkElementClickable(templateCheckboxBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(templateCheckboxBy);
     }
 
@@ -68,13 +71,13 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By gitProjectFolderNameBy = methods.getBy("gitProjectFolderNameInCreateProject");
         methods.checkElementVisible(gitProjectFolderNameBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(gitProjectFolderNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(gitProjectFolderNameBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -85,13 +88,13 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         By testFileTypeBy = methods.getBy("testFileTypeInCreateProject");
         methods.checkElementVisible(testFrameworkBy);
         methods.checkElementVisible(testFrameworkNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertEquals("", "SELENIUM", methods.getText(testFrameworkNameBy).trim());
         //if(methods.getSelectedOptionIndexWithJs(testFileTypeBy) != 0){
             e_Select_Selenium_Framework();
             methods.checkElementVisible(testFrameworkBy);
             methods.checkElementVisible(testFrameworkNameBy);
-            methods.waitByMilliSeconds(200);
+            methodsUtil.waitByMilliSeconds(200);
             Assert.assertEquals("", "SELENIUM", methods.getText(testFrameworkNameBy).trim());
        // }
     }
@@ -120,13 +123,13 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By templateSiteUrlBy = methods.getBy("templateSiteUrlInCreateProject");
         methods.checkElementVisible(templateSiteUrlBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(templateSiteUrlBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(templateSiteUrlBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -135,7 +138,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         By templateCheckboxBy = methods.getBy("templateCheckboxInCreateProject");
         methods.checkElementVisible(templateCheckboxBy);
         methods.checkElementClickable(templateCheckboxBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(templateCheckboxBy);
     }
 
@@ -145,9 +148,9 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
     public void e_Clear_File() {
 
         e_Select_Selenium_Framework();
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         e_Select_Appium_Framework();
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
     }
 
     public void v_Control_Invalid_Create_Project_Invalid_Url() {
@@ -163,11 +166,11 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         methods.checkElementVisible(testFrameworkBy);
         methods.checkElementVisible(testFrameworkButtonBy);
         methods.checkElementClickable(testFrameworkButtonBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(testFrameworkButtonBy);
         methods.checkElementVisible(seleniumFrameworkBy);
         methods.checkElementClickable(seleniumFrameworkBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(seleniumFrameworkBy);
     }
 
@@ -176,7 +179,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         By templateCheckboxCheckedConditionBy = methods.getBy("templateCheckboxCheckedConditionInCreateProject");
         methods.checkElementVisible(methods.getBy("templateCheckboxInCreateProject"));
         methods.checkElementVisible(templateCheckboxCheckedConditionBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertTrue("", methods
                 .getAttribute(templateCheckboxCheckedConditionBy, "class").contains("checked"));
     }
@@ -190,13 +193,13 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By projectNameBy = methods.getBy("projectNameInCreateProject");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(projectNameBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
     /**
@@ -205,7 +208,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
     public void e_upload_Invalid_File() {
 
         String uploadDir = System.getProperty("user.dir") + "/pom.xml";
-        if(DriverCreater.osName.equals("WINDOWS")){
+        if(Driver.osName.equals("WINDOWS")){
             uploadDir = uploadDir.replace("/","\\") ;
         }
         methods.checkElementVisible(methods.getBy("mobileAppAreaInCreateProject"));
@@ -219,13 +222,13 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By gitProjectFolderNameBy = methods.getBy("gitProjectFolderNameInCreateProject");
         methods.checkElementVisible(gitProjectFolderNameBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(gitProjectFolderNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(gitProjectFolderNameBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -233,7 +236,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By templateSiteUrlBy = methods.getBy("templateSiteUrlInCreateProject");
         methods.checkElementVisible(templateSiteUrlBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertTrue("", methods
                 .getAttribute(templateSiteUrlBy, "value").trim().equals("https://testinium.com/"));
     }
@@ -263,16 +266,16 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         methods.checkElementVisible(templateCheckboxBy);
         methods.checkElementVisible(cancelButtonBy);
         methods.checkElementVisible(saveButtonBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(projectNameBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(projectNameBy);
-        methods.clearElementWithBackSpace(gitProjectFolderNameBy);
-        methods.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(gitProjectFolderNameBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(gitProjectFolderNameBy);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -299,7 +302,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         By templateCheckboxBy = methods.getBy("templateCheckboxInCreateProject");
         methods.checkElementVisible(templateCheckboxBy);
         methods.checkElementClickable(templateCheckboxBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(templateCheckboxBy);
     }
 
@@ -307,9 +310,9 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By templateSiteUrlBy = methods.getBy("templateSiteUrlInCreateProject");
         methods.checkElementVisible(templateSiteUrlBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(templateSiteUrlBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(templateSiteUrlBy,"a");
+        methodsUtil.waitByMilliSeconds(200);
         methods.checkElementVisible(templateSiteUrlBy);
         methods.sendKeys(templateSiteUrlBy,"https://testinium.com/");
     }
@@ -330,28 +333,28 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
                 break;
             default:
         }
-        projectName = projectName + methods.randomString(6);
+        projectName = projectName + methodsUtil.randomString(6);
         By projectNameBy = methods.getBy("projectNameInCreateProject");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(projectNameBy, projectName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(methods.getBy("testFrameworkInCreateProject"));
         methods.checkElementVisible(methods.getBy("templateCheckboxInCreateProject"));
         By templateSiteUrlBy = methods.getBy("templateSiteUrlInCreateProject");
         methods.checkElementVisible(templateSiteUrlBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(templateSiteUrlBy,"https://testinium.com/");
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(methods.getBy("testFileTypeInCreateProject"));
         By gitProjectFolderNameBy = methods.getBy("gitProjectFolderNameInCreateProject");
         methods.checkElementVisible(gitProjectFolderNameBy);
         methods.sendKeys(gitProjectFolderNameBy, projectName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(saveButtonBy);
         methods.putValueInTestMap("newProject", projectName);
         methods.putValueInTestMap("currentProject", projectName);
@@ -362,7 +365,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By testFileTypeBy = methods.getBy("testFileTypeInCreateProject");
         methods.checkElementVisible(testFileTypeBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertEquals("", methods.getValueInTestMap("appiumTestFileType")
                 , methods.getFirstSelectedOption(testFileTypeBy).getText().trim());
     }
@@ -374,7 +377,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
     public void e_Upload_Invalid_File() {
 
         String uploadDir = System.getProperty("user.dir") + "/pom.xml";
-        if(DriverCreater.osName.equals("WINDOWS")){
+        if(Driver.osName.equals("WINDOWS")){
             uploadDir = uploadDir.replace("/","\\") ;
         }
         methods.checkElementVisible(methods.getBy("mobileAppAreaInCreateProject"));
@@ -438,24 +441,24 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
                 break;
             default:
         }
-        projectName = projectName + methods.randomString(6);
+        projectName = projectName + methodsUtil.randomString(6);
         By projectNameBy = methods.getBy("projectNameInCreateProject");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(projectNameBy, projectName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(methods.getBy("testFrameworkInCreateProject"));
         methods.checkElementVisible(methods.getBy("templateCheckboxInCreateProject"));
         methods.checkElementVisible(methods.getBy("testFileTypeInCreateProject"));
         By gitProjectFolderNameBy = methods.getBy("gitProjectFolderNameInCreateProject");
         methods.checkElementVisible(gitProjectFolderNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(gitProjectFolderNameBy, projectName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(saveButtonBy);
         methods.putValueInTestMap("newProject", projectName);
         methods.putValueInTestMap("currentProject", projectName);
@@ -466,13 +469,13 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By projectNameBy = methods.getBy("projectNameInCreateProject");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(projectNameBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(saveButtonBy);
     }
 
@@ -505,23 +508,23 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
                 break;
             default:
         }
-        projectName = projectName + methods.randomString(6);
+        projectName = projectName + methodsUtil.randomString(6);
         By projectNameBy = methods.getBy("projectNameInCreateProject");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(projectNameBy, projectName);
         methods.checkElementVisible(methods.getBy("testFrameworkInCreateProject"));
         methods.checkElementVisible(methods.getBy("templateCheckboxInCreateProject"));
         methods.checkElementVisible(methods.getBy("testFileTypeInCreateProject"));
         By gitProjectFolderNameBy = methods.getBy("gitProjectFolderNameInCreateProject");
         methods.checkElementVisible(gitProjectFolderNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(gitProjectFolderNameBy, projectName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(saveButtonBy);
         methods.putValueInTestMap("newProject", projectName);
         methods.putValueInTestMap("currentProject", projectName);
@@ -542,7 +545,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By testFileTypeBy = methods.getBy("testFileTypeInCreateProject");
         methods.checkElementVisible(testFileTypeBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertEquals("", methods.getValueInTestMap("seleniumTestFileType")
                 , methods.getFirstSelectedOption(testFileTypeBy).getText().trim());
     }
@@ -557,13 +560,13 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         By testFileTypeBy = methods.getBy("testFileTypeInCreateProject");
         methods.checkElementVisible(testFrameworkBy);
         methods.checkElementVisible(testFrameworkNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertEquals("", "APPIUM", methods.getText(testFrameworkNameBy).trim());
        // if(methods.getFirstSelectedOption(testFileTypeBy).){
             e_Select_Appium_Framework();
             methods.checkElementVisible(testFrameworkBy);
             methods.checkElementVisible(testFrameworkNameBy);
-            methods.waitByMilliSeconds(200);
+            methodsUtil.waitByMilliSeconds(200);
             Assert.assertEquals("", "APPIUM", methods.getText(testFrameworkNameBy).trim());
       //  }
     }
@@ -572,15 +575,15 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By templateSiteUrlBy = methods.getBy("templateSiteUrlInCreateProject");
         methods.checkElementVisible(templateSiteUrlBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(templateSiteUrlBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(templateSiteUrlBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(templateSiteUrlBy);
         methods.sendKeys(templateSiteUrlBy, "testinium.com");
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(saveButtonBy);
     }
 
@@ -588,9 +591,9 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
 
         By templateSiteUrlBy = methods.getBy("templateSiteUrlInCreateProject");
         methods.checkElementVisible(templateSiteUrlBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(templateSiteUrlBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(templateSiteUrlBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
     }
 
     public void v_Control_Selenium_Empty_Project_Name() {
@@ -628,11 +631,11 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         methods.checkElementVisible(testFrameworkBy);
         methods.checkElementVisible(testFrameworkButtonBy);
         methods.checkElementClickable(testFrameworkButtonBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(testFrameworkButtonBy);
         methods.checkElementVisible(appiumFrameworkBy);
         methods.checkElementClickable(appiumFrameworkBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(appiumFrameworkBy);
     }
 
@@ -656,24 +659,24 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
                 break;
             default:
         }
-        projectName = projectName + methods.randomString(6);
+        projectName = projectName + methodsUtil.randomString(6);
         By projectNameBy = methods.getBy("projectNameInCreateProject");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(projectNameBy, projectName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(methods.getBy("testFrameworkInCreateProject"));
         methods.checkElementVisible(methods.getBy("templateCheckboxInCreateProject"));
         methods.checkElementVisible(methods.getBy("testFileTypeInCreateProject"));
         By gitProjectFolderNameBy = methods.getBy("gitProjectFolderNameInCreateProject");
         methods.checkElementVisible(gitProjectFolderNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(gitProjectFolderNameBy, projectName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         By saveButtonBy = methods.getBy("saveButtonInCreateProject");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(saveButtonBy);
         methods.putValueInTestMap("newProject", projectName);
         methods.putValueInTestMap("currentProject", projectName);
@@ -698,7 +701,7 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
         By cancelButtonBy = methods.getBy("cancelButtonInCreateProject");
         methods.checkElementVisible(cancelButtonBy);
         methods.checkElementClickable(cancelButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(cancelButtonBy);
     }
 
@@ -708,9 +711,9 @@ public class CreateProject extends ExecutionContext implements org.graphwalker.C
     public void e_Clear_file() {
 
         e_Select_Selenium_Framework();
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         e_Select_Appium_Framework();
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
     }
 
     public void e_Select_Selenium_Gauge_Test_File_Type() {

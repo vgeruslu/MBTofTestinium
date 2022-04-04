@@ -1,27 +1,45 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Scenario_Edit {
 
-    private static final Logger logger = LoggerFactory.getLogger(ScenarioEdit.class);
+    private static final Logger logger = LogManager.getLogger(ScenarioEdit.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public ScenarioEdit() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -32,21 +50,6 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Control_Apply_Successfull_Message() {
@@ -72,7 +75,7 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         By applyButtonBy = methods.getBy("applyButtonInScenarioEdit");
         methods.checkElementVisible(applyButtonBy);
         methods.checkElementClickable(applyButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(applyButtonBy);
     }
 
@@ -81,7 +84,7 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         By ideTabBy = methods.getBy("ideTabInScenarioEdit");
         methods.checkElementVisible(ideTabBy);
         methods.checkElementClickable(ideTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(ideTabBy);
     }
 
@@ -145,11 +148,11 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         By scenarioNameBy = methods.getBy("scenarioNameInScenarioEdit");
         methods.checkElementVisible(scenarioNameBy);
         methods.clearElement(scenarioNameBy);
-        methods.waitByMilliSeconds(200);
-        String editedScenarioName = "editedScenario" + methods.randomString(6);
+        methodsUtil.waitByMilliSeconds(200);
+        String editedScenarioName = "editedScenario" + methodsUtil.randomString(6);
         methods.putValueInTestMap("editedScenarioName", editedScenarioName);
         methods.sendKeys(scenarioNameBy, editedScenarioName);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
     }
 
     public void e_No_action() {
@@ -161,7 +164,7 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         By propertiesTabBy = methods.getBy("propertiesTabInScenarioEdit");
         methods.checkElementVisible(propertiesTabBy);
         methods.checkElementClickable(propertiesTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(propertiesTabBy);
     }
 
@@ -170,7 +173,7 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         By scenarioNameBy = methods.getBy("scenarioNameInScenarioEdit");
         methods.checkElementVisible(methods.getBy("projectNameInScenarioEdit"));
         methods.checkElementVisible(scenarioNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         Assert.assertTrue("",methods.getAttribute(scenarioNameBy,"class").contains("ng-invalid"));
         Assert.assertEquals("","#d0021b"
                 , methods.getHexCssValue(scenarioNameBy,"border-bottom-color"));
@@ -181,7 +184,7 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         By cancelButtonBy = methods.getBy("cancelButtonInScenarioEdit");
         methods.checkElementVisible(cancelButtonBy);
         methods.checkElementClickable(cancelButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(cancelButtonBy);
     }
 
@@ -190,12 +193,12 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         By scenarioNameBy = methods.getBy("scenarioNameInScenarioEdit");
         methods.checkElementVisible(methods.getBy("projectNameInScenarioEdit"));
         methods.checkElementVisible(scenarioNameBy);
-        methods.clearElementWithBackSpace(scenarioNameBy);
+        methods.clearElementWithBackSpace(scenarioNameBy,"a");
         methods.checkElementVisible(scenarioNameBy);
         By saveButtonBy = methods.getBy("saveButtonInScenarioEdit");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -204,7 +207,7 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         By saveButtonBy = methods.getBy("saveButtonInScenarioEdit");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -242,15 +245,15 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
         methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
         methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
         By projectSelectBy = methods.getBy("projectSelectInAllScenarios");
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.selectByVisibleText(projectSelectBy
                 , "All Projects");
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
         methods.selectByVisibleText(projectSelectBy
                 , String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(projectSelectBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
         methods.checkElementVisible(tableScenarioBy);
     }

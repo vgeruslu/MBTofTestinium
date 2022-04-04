@@ -1,27 +1,45 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ReportDetail extends ExecutionContext implements org.graphwalker.Report_Detail {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReportDetail.class);
+    private static final Logger logger = LogManager.getLogger(ReportDetail.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public ReportDetail() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -32,21 +50,6 @@ public class ReportDetail extends ExecutionContext implements org.graphwalker.Re
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Control_Report_Result() {
@@ -90,7 +93,7 @@ public class ReportDetail extends ExecutionContext implements org.graphwalker.Re
         By exportTableBy = methods.getBy("exportTableInReportDetail");
         methods.checkElementVisible(exportTableBy);
         methods.checkElementClickable(exportTableBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(exportTableBy);
     }
 
@@ -131,7 +134,7 @@ public class ReportDetail extends ExecutionContext implements org.graphwalker.Re
         By testResultDetailButtonBy = methods.getBy("testResultDetailButtonInReportDetail");
         methods.checkElementVisible(testResultDetailButtonBy);
         methods.checkElementClickable(testResultDetailButtonBy);
-        methods.waitByMilliSeconds(400);
+        methodsUtil.waitByMilliSeconds(400);
         methods.clickElement(testResultDetailButtonBy);
     }
 
@@ -144,13 +147,13 @@ public class ReportDetail extends ExecutionContext implements org.graphwalker.Re
         By exportPdfBy = methods.getBy("exportPdfInReportDetail");
         methods.checkElementVisible(exportPdfBy);
         methods.checkElementClickable(exportPdfBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(exportPdfBy);
     }
 
     public void e_Navigate_Back() {
 
-        methods.waitBySeconds(2);
+        methodsUtil.waitBySeconds(2);
         methods.navigateToBack();
     }
 }

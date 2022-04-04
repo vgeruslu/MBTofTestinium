@@ -22,8 +22,8 @@ public class ElementHelper
       case "class":
         by = By.className(elementInfoValue);
         break;
-      case "linkText":
-        by = By.linkText(elementInfoValue);
+      case "tagName":
+        by = By.tagName(elementInfoValue);
         break;
       case "name":
         by = By.name(elementInfoValue);
@@ -37,25 +37,24 @@ public class ElementHelper
   public static By getElementInfoToBy(String byValue, String selectorType) {
 
     By by = null;
-    String elementInfoValue = byValue;
     switch (selectorType){
       case "css":
-        by = By.cssSelector(elementInfoValue);
+        by = By.cssSelector(byValue);
         break;
       case "id":
-        by = By.id(elementInfoValue);
+        by = By.id(byValue);
         break;
       case "xpath":
-        by = By.xpath(elementInfoValue);
+        by = By.xpath(byValue);
         break;
       case "class":
-        by = By.className(elementInfoValue);
+        by = By.className(byValue);
         break;
-      case "linkText":
-        by = By.linkText(elementInfoValue);
+      case "tagName":
+        by = By.tagName(byValue);
         break;
       case "name":
-        by = By.name(elementInfoValue);
+        by = By.name(byValue);
         break;
       default:
         throw new NullPointerException("Element tipi hatalı");

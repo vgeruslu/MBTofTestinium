@@ -1,28 +1,46 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
-import com.mbt.testiniumcloud.driver.DriverCreater;
+import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100, start = "v_Start")
 public class Login extends ExecutionContext implements org.graphwalker.Login {
 
-    private static final Logger logger = LoggerFactory.getLogger(Login.class);
+    private static final Logger logger = LogManager.getLogger(Login.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public Login() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -33,21 +51,6 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Verify_In_Login_LinkedIn_Page() {
@@ -65,7 +68,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
         methods.sendKeys(methods.getBy("emailInGoogle")
                 , DriverCreater.ConfigurationProp.getString("GOOGLE_USERNAME"));
         methods.checkElementClickable(methods.getBy("nextButtonInGoogle"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(methods.getBy("nextButtonInGoogle"));
         methods.checkElementVisible(methods.getBy("profileIdentifierInGoogle"));
         methods.checkElementVisible(methods.getBy("passwordInGoogle"));
@@ -73,7 +76,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
         methods.sendKeys(methods.getBy("passwordInGoogle")
                 , DriverCreater.ConfigurationProp.getString("GOOGLE_PASSWORD"));
         methods.checkElementClickable(methods.getBy("passwordNextInGoogle"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(methods.getBy("passwordNextInGoogle"));
          */
 
@@ -102,7 +105,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
         methods.sendKeys(methods.getBy("passwordInLinkedIn")
                 , DriverCreater.ConfigurationProp.getString("LINKEDIN_PASSWORD"));
         methods.checkElementClickable(methods.getBy("signInInLinkedIn"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(methods.getBy("signInInLinkedIn"));
  */
     }
@@ -110,16 +113,16 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
     public void e_Logout() {
 
         By userDropDownBy = methods.getBy("btnUserDropdown");
-        methods.waitByMilliSeconds(500);
-        methods.scrollElementCenterWithJs(userDropDownBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
+        methods.scrollElementCenterJs(userDropDownBy,"3");
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(userDropDownBy);
         methods.checkElementClickable(userDropDownBy);
         methods.clickElement(userDropDownBy);
         By logoutBy = methods.getBy("btnLogOut");
         methods.checkElementVisible(logoutBy);
         methods.checkElementClickable(logoutBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(logoutBy);
     }
 
@@ -174,7 +177,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
         By forgotPasswordButtonBy = methods.getBy("forgotPasswordInLogin");
         methods.checkElementVisible(forgotPasswordButtonBy);
         methods.checkElementClickable(forgotPasswordButtonBy, 30);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(forgotPasswordButtonBy);
     }
 
@@ -226,7 +229,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
 
         methods.checkElementVisible(methods.getBy("usernameErrorInLogin"));
         methods.checkElementVisible(methods.getBy("passwordErrorInLogin"));
-        methods.waitByMilliSeconds(100);
+        methodsUtil.waitByMilliSeconds(100);
         Assert.assertEquals("","This field is required."
                 , methods.getText(methods.getBy("usernameErrorInLogin")).trim());
         Assert.assertEquals("","This field is required."
@@ -237,7 +240,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
 
         By userNameBy = methods.getBy("userNameInLogin");
         methods.clearElement(userNameBy);
-        methods.sendKeys(userNameBy, DriverCreater.ConfigurationProp.getString("VALID_USERNAME"));
+        methods.sendKeys(userNameBy, Driver.ConfigurationProp.getString("VALID_USERNAME"));
         By passwordBy = methods.getBy("passwordInLogin");
         methods.clearElement(passwordBy);
         methods.sendKeys(passwordBy,"invalidEmail");
@@ -252,7 +255,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
         methods.sendKeys(methods.getBy("passwordInGithub")
                 , DriverCreater.ConfigurationProp.getString("GITHUB_PASSWORD"));
         methods.checkElementClickable(methods.getBy("signInInGithub"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(methods.getBy("signInInGithub"));
 
          */
@@ -272,7 +275,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
         methods.checkElementVisible(methods.getBy("usernameErrorInLogin"));
         Assert.assertTrue("", methods.isElementInVisible(methods
                 .getBy("passwordErrorInLogin"), 30));
-        methods.waitByMilliSeconds(100);
+        methodsUtil.waitByMilliSeconds(100);
         Assert.assertEquals("","Please enter a valid email address."
                 , methods.getText(methods.getBy("usernameErrorInLogin")).trim());
     }
@@ -281,26 +284,26 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
 
         By signInButtonBy = methods.getBy("signInInLogin");
         By userNameBy = methods.getBy("userNameInLogin");
-        String userName = DriverCreater.ConfigurationProp.getString("VALID_USERNAME");
+        String userName = Driver.ConfigurationProp.getString("VALID_USERNAME");
         By passwordBy = methods.getBy("passwordInLogin");
-        String password = DriverCreater.ConfigurationProp.getString("VALID_PASSWORD");
+        String password = Driver.ConfigurationProp.getString("VALID_PASSWORD");
         methods.checkElementVisible(userNameBy);
         methods.checkElementVisible(passwordBy);
         methods.checkElementVisible(signInButtonBy);
         methods.checkElementClickable(signInButtonBy);
-        methods.clearElementWithBackSpace(userNameBy);
+        methods.clearElementWithBackSpace(userNameBy,"a");
         methods.checkElementVisible(userNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(userNameBy, userName);
         methods.checkElementClickable(passwordBy);
-        methods.clearElementWithBackSpace(passwordBy);
+        methods.clearElementWithBackSpace(passwordBy,"a");
         methods.checkElementClickable(passwordBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(passwordBy, password);
         methods.checkElementVisible(signInButtonBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementClickable(signInButtonBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(signInButtonBy);
     }
 
@@ -358,7 +361,7 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
 
     public void e_Input_Registered_Email_Forgot_Password() {
 
-        methods.sendKeys(methods.getBy("emailInForgotPassword"),DriverCreater.ConfigurationProp.getString("VALID_USERNAME"));
+        methods.sendKeys(methods.getBy("emailInForgotPassword"), Driver.ConfigurationProp.getString("VALID_USERNAME"));
         By sendEmailButtonBy = methods.getBy("sendPasswordResetEmailInForgotPassword");
         methods.checkElementVisible(sendEmailButtonBy);
         methods.checkElementClickable(sendEmailButtonBy);
@@ -388,9 +391,9 @@ public class Login extends ExecutionContext implements org.graphwalker.Login {
 
     public void e_Invalid_Login_Empty() {
 
-        methods.clearElementWithBackSpace(methods.getBy("userNameInLogin"));
-        methods.clearElementWithBackSpace(methods.getBy("passwordInLogin"));
-        methods.waitByMilliSeconds(500);
+        methods.clearElementWithBackSpace(methods.getBy("userNameInLogin"),"a");
+        methods.clearElementWithBackSpace(methods.getBy("passwordInLogin"),"a");
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(methods.getBy("signInInLogin"));
     }
 

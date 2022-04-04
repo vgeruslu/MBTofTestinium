@@ -1,27 +1,46 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_Edit {
 
-    private static final Logger logger = LoggerFactory.getLogger(PlanEdit.class);
+    private static final Logger logger = LogManager.getLogger(PlanEdit.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public PlanEdit() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -32,21 +51,6 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Verify_Advanced_Settings_Tab() {
@@ -88,12 +92,12 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
         methods.checkElementVisible(planNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clearElement(planNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.sendKeys(planNameBy, methods.getValueInTestMap("editPlanName").toString());
         methods.checkElementVisible(methods.getBy("browserTableInCreatePlan"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         By environmentNameBy = methods.getBy("environmentNameInPlanEdit");
         String browserName = "";
         String browserVersion = "";
@@ -102,7 +106,7 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
             By deleteButtonForPlatformBy = methods.getBy("deleteButtonForPlatformInPlanEdit");
             methods.checkElementVisible(deleteButtonForPlatformBy);
             methods.checkElementClickable(deleteButtonForPlatformBy);
-            methods.waitByMilliSeconds(300);
+            methodsUtil.waitByMilliSeconds(300);
             methods.clickElement(deleteButtonForPlatformBy);
         }
         By operatingSystemBy = methods.getByWithKeySetValue("operatingSystemOptionKeyValueInCreatePlan","Windows 10");
@@ -119,16 +123,16 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         methods.checkElementVisible(methods.getBy("operatingSystemAreaInCreatePlan"));
         methods.checkElementVisible(operatingSystemBy);
         methods.checkElementClickable(operatingSystemBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(operatingSystemBy);
         methods.checkElementVisible(methods.getBy("browserAreaInCreatePlan"));
         methods.checkElementVisible(browserOptionBy);
         methods.checkElementClickable(browserOptionBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(browserOptionBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(methods.getBy("versionAreaInCreatePlan"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         if(browserName.equals("CHROME")){
 
             browserVersion = "LATEST";
@@ -141,16 +145,16 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         By versionOptionBy = methods.getByWithKeySetValue("versionOptionKeyValueInCreatePlan", browserVersion);
         methods.checkElementVisible(versionOptionBy);
         methods.checkElementClickable(versionOptionBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(versionOptionBy);
         methods.checkElementVisible(methods.getBy("screenResolutionInCreatePlan"));
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(methods
                 .getByWithKeySetValue("screenResolutionSelectOptionKeyValueInCreatePlan","1280x1024"));
         By screenResolutionAddButtonBy = methods.getBy("screenResolutionAddButtonInCreatePlan");
         methods.checkElementVisible(screenResolutionAddButtonBy);
         methods.checkElementClickable(screenResolutionAddButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(screenResolutionAddButtonBy);
         methods.putValueInTestMap("browserNameEditPlan", browserName);
         methods.putValueInTestMap("browserVersionEditPlan", browserVersion);
@@ -190,7 +194,7 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         By advancedTabBy = methods.getBy("advancedTabInPlanEdit");
         methods.checkElementVisible(advancedTabBy);
         methods.checkElementClickable(advancedTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(advancedTabBy);
     }
 
@@ -199,7 +203,7 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         By saveButtonBy = methods.getBy("saveButtonInPlanEdit");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -238,13 +242,13 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
         methods.checkElementVisible(planNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(planNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(planNameBy);
-        String planName = "TestPlan" + methods.randomString(5);
+        String planName = "TestPlan" + methodsUtil.randomString(5);
         methods.sendKeys(planNameBy, planName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.putValueInTestMap("editPlanName", planName);
     }
 
@@ -293,7 +297,7 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         }
         methods.checkElementVisible(checkboxFirstBy);
         methods.checkElementClickable(checkboxFirstBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(checkboxFirstBy);
         /**methods.checkElementVisible(methods.getBy("tableInAllSuites"));
         Assert.assertTrue("",methods.isElementInVisible(methods
@@ -301,22 +305,22 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
                 , projectName + "!!" + planName),30));
         methods.checkElementVisible(checkboxFirstBy);
         methods.checkElementClickable(checkboxFirstBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(checkboxFirstBy);*/
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
         Assert.assertTrue("",methods.isElementVisible(methods.getByWithKeySetValue("tablePlanKeyValueInAllSuites"
                 , projectName + "!!" + planName),30));
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(checkboxFirstBy);
         methods.checkElementClickable(checkboxFirstBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(checkboxFirstBy);
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
         methods.checkElementVisible(selectProjectBy);
         methods.checkElementClickable(selectProjectBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.selectByVisibleText(selectProjectBy, "All Projects");
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(selectProjectBy);
     }
 
@@ -325,12 +329,12 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         By planNameBy = methods.getBy("planNameInPlanEdit");
         By saveButtonBy = methods.getBy("saveButtonInPlanEdit");
         methods.checkElementVisible(planNameBy);
-        methods.waitByMilliSeconds(400);
-        methods.clearElementWithBackSpace(planNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(400);
+        methods.clearElementWithBackSpace(planNameBy,"a");
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -338,7 +342,7 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
         methods.checkElementVisible(planNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertEquals("", methods.getValueInTestMap("editPlanName")
         , methods.getAttribute(planNameBy,"value").trim());
     }
@@ -367,7 +371,7 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         By scheduleTabBy = methods.getBy("scheduleAndNotificationsTabInPlanEdit");
         methods.checkElementVisible(scheduleTabBy);
         methods.checkElementClickable(scheduleTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(scheduleTabBy);
     }
 
@@ -384,7 +388,7 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         By cancelButtonBy = methods.getBy("cancelButtonInPlanEdit");
         methods.checkElementVisible(cancelButtonBy);
         methods.checkElementClickable(cancelButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(cancelButtonBy);
     }
 
@@ -393,7 +397,7 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         By propertiesTabBy = methods.getBy("propertiesTabInPlanEdit");
         methods.checkElementVisible(propertiesTabBy);
         methods.checkElementClickable(propertiesTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(propertiesTabBy);
     }
 
@@ -434,15 +438,15 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         methods.checkElementVisible(methods.getBy("allSuitesTab"));
         methods.checkElementVisible(methods.getBy("reportsTab"));
         methods.checkElementVisible(methods.getBy("automatedTestTab"));
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         String projectName = methods.getFirstSelectedOption(methods.getBy("projectNameInPlanEdit")).getText().trim();
         /**
          * TODO: kontrol et
          */
         if(projectName.contains("mobileTemp") || projectName.contains("appiumEditProject")){
-            setAttribute("isProjectMobile",true);
+            setAttribute("isProjectMobile", Value.asValue(true));
         } else {
-            setAttribute("isProjectMobile",false);
+            setAttribute("isProjectMobile",Value.asValue(false));
         }
     }
 
@@ -453,9 +457,9 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         String projectName = String.valueOf(methods.getValueInTestMap("editProjectName"));
         methods.checkElementVisible(selectProjectBy);
         methods.checkElementClickable(selectProjectBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.selectByVisibleText(selectProjectBy, projectName);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.checkElementVisible(selectProjectBy);
         String planName = String.valueOf(methods.getValueInTestMap("editPlanName"));
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
@@ -463,9 +467,9 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
                 , projectName + "!!" + planName),30));
         methods.checkElementVisible(selectProjectBy);
         methods.checkElementClickable(selectProjectBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.selectByVisibleText(selectProjectBy, "All Projects");
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.checkElementVisible(selectProjectBy);
     }
 
@@ -473,9 +477,9 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
         methods.checkElementVisible(planNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clearElement(planNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.sendKeys(planNameBy, methods.getValueInTestMap("editPlanName").toString());
         methods.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
         methods.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
@@ -486,12 +490,12 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         methods.checkElementVisible(methods.getBy("scenarioForScenariosSelectListInCreatePlan"));
         methods.checkElementVisible(scenarioNameForScenariosBy);
         methods.checkElementClickable(scenarioNameForScenariosBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         String scenarioName = methods.getText(scenarioNameForScenariosBy).trim();
         methods.putValueInTestMap("scenarioNameInEditPlan", scenarioName);
         if(!methods.getAttribute(methods.getByWithKeySetValue("scenarioKeyValueForScenariosInPlanEdit"
                 ,"!!" + scenarioName),"class").contains("checked")) {
-            methods.waitByMilliSeconds(300);
+            methodsUtil.waitByMilliSeconds(300);
             methods.clickElement(scenarioNameForScenariosBy);
         }
     }

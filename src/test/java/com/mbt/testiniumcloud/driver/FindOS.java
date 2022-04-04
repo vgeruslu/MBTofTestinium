@@ -1,12 +1,12 @@
 package com.mbt.testiniumcloud.driver;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FindOS {
 
-    private static Logger logger = LoggerFactory.getLogger(FindOS.class);
+    private static final Logger logger = LogManager.getLogger(FindOS.class);
 
     public static String getOperationSystemName(){
 

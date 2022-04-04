@@ -1,12 +1,8 @@
 package com.mbt.testiniumcloud.utils;
 
-import com.mbt.testiniumcloud.driver.DriverCreater;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import com.mbt.testiniumcloud.driver.Driver;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -14,15 +10,22 @@ public class ReadProperties {
 
     public static ResourceBundle readProp(String systemSourcesDir){
 
+        String propertyDir = "/src/test/resources/" + systemSourcesDir;
+        return readPropDir(propertyDir,true);
+    }
+
+    public static ResourceBundle readPropDir(String dir, boolean isProjectDir){
+
         ResourceBundle bundle = null;
 
         try {
-            String propertyDir = "/src/test/resources/"+systemSourcesDir;
-            if(DriverCreater.osName.equals("WINDOWS")){
+            String propertyDir = "";
+            propertyDir = isProjectDir ? System.getProperty("user.dir") + dir : dir;
+            if(Driver.osName.equals("WINDOWS")){
                 propertyDir = propertyDir.replace("/","\\") ;
             }
-            InputStream propertiesStream = new FileInputStream(System.getProperty("user.dir") + propertyDir);//ClassLoader.getSystemResource(systemSourcesDir).getPath()
-            bundle = new PropertyResourceBundle(new InputStreamReader(propertiesStream,"UTF-8"));
+            InputStream propertiesStream = new FileInputStream(propertyDir);//ClassLoader.getSystemResource(systemSourcesDir).getPath()
+            bundle = new PropertyResourceBundle(new InputStreamReader(propertiesStream, StandardCharsets.UTF_8));
             propertiesStream.close();
 
         } catch (IOException e) {
@@ -31,16 +34,24 @@ public class ReadProperties {
         return bundle;
     }
 
-    public static String getPropertiesValue(ResourceBundle bundle, String propertiesKey){
+    public static String readFile(String fileLocation){
 
-        return bundle.getString(propertiesKey);
-    }
-
-    public static List<String> getPropertiesKeyList(ResourceBundle bundle){
-        List<String> propertiesKeys = new ArrayList<String>();
-        for(String key: bundle.keySet()){
-        propertiesKeys.add(key);
+        StringBuilder jsonStringBuilder = new StringBuilder();
+        InputStream propertiesStream = null;
+        try {
+            propertiesStream = new FileInputStream(Driver.userDir
+                    + (Driver.slash.equals("/") ? fileLocation : fileLocation.replace("/","\\")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(propertiesStream, StandardCharsets.UTF_8));
+            String jsonString;
+            while(true){
+                if ((jsonString = bufferedReader.readLine()) == null) break;
+                jsonStringBuilder.append(jsonString);
+                jsonStringBuilder.append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return propertiesKeys;
+        return jsonStringBuilder.toString();
     }
+
 }

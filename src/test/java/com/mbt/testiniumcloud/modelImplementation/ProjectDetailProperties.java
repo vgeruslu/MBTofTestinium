@@ -1,27 +1,45 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ProjectDetailProperties extends ExecutionContext implements org.graphwalker.Project_Detail_Properties {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProjectDetailProperties.class);
+    private static final Logger logger = LogManager.getLogger(ProjectDetailProperties.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public ProjectDetailProperties() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -32,21 +50,6 @@ public class ProjectDetailProperties extends ExecutionContext implements org.gra
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void e_No_Action() {
@@ -95,14 +98,14 @@ public class ProjectDetailProperties extends ExecutionContext implements org.gra
 
         By saveButtonBy = methods.getBy("saveButtonInProjectDetailProperties");
         methods.checkElementVisible(saveButtonBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(methods.getBy("projectNameInProjectDetailProperties"));
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(methods.getBy("gitProjectFolderNameInProjectDetailProperties"));
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(methods.getBy("projectNameInProjectDetailProperties"),"a");
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(methods.getBy("gitProjectFolderNameInProjectDetailProperties"),"a");
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 

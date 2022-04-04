@@ -1,28 +1,47 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class CreateScenario extends ExecutionContext implements org.graphwalker.Create_Scenario {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreateScenario.class);
+    private static final Logger logger = LogManager.getLogger(CreateScenario.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
     Boolean modelLocationStillCreateScenarioPage = false;
 
     public CreateScenario() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -33,21 +52,6 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Verify_In_Create_Scenario_Page_SHARED() {
@@ -79,7 +83,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
 
         if(!modelLocationStillCreateScenarioPage) {
             setAttribute("isProjectSelected",
-                    Boolean.parseBoolean(methods.getValueInTestMap("projectSelectedForScenario").toString()));
+                    Value.asValue(Boolean.parseBoolean(methods.getValueInTestMap("projectSelectedForScenario").toString())));
         }
         modelLocationStillCreateScenarioPage = true;
     }
@@ -89,16 +93,16 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By javaParameterNameBy = methods.getBy("javaParameterNameInCreateScenario");
         By javaParameterValueBy = methods.getBy("javaParameterValueInCreateScenario");
         By javaParameterAddButtonBy = methods.getBy("javaParametersAddButtonInCreateScenario");
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(javaParameterNameBy);
         methods.sendKeys(javaParameterNameBy,"newParameter");
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(javaParameterValueBy);
         methods.sendKeys(javaParameterValueBy,"newValue");
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(javaParameterAddButtonBy);
         methods.checkElementClickable(javaParameterAddButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(javaParameterAddButtonBy);
     }
 
@@ -171,11 +175,11 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         methods.selectByVisibleText(projectNameBy
                 , String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(scenarioNameBy);
-        methods.clearElementWithBackSpace(scenarioNameBy);
-        methods.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(scenarioNameBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -212,7 +216,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
 
         methods.checkElementVisible(projectNameBy);
         methods.checkElementVisible(scenarioNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         Assert.assertTrue("", methods.getAttribute(projectNameBy,"class").contains("ng-valid"));
         Assert.assertTrue("", methods.getAttribute(scenarioNameBy,"class").contains("ng-invalid"));
         Assert.assertEquals("","#d0021b"
@@ -246,12 +250,12 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
 
         By sourceFileBy = methods.getByWithKeySetValue("selectSourceFileKeyValueContainInCreateScenario"
                 , String.valueOf(methods.getValueInTestMap("testSourceFileName")));
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
         methods.checkElementVisible(sourceFileBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementClickable(sourceFileBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(sourceFileBy);
     }
 
@@ -261,12 +265,12 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By scenarioNameBy = methods.getBy("scenarioNameInCreateScenario");
         By saveButtonBy = methods.getBy("saveButtonInCreateScenario");
         methods.checkElementVisible(scenarioNameBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(scenarioNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(scenarioNameBy,"a");
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -283,16 +287,16 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
         methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
         By projectSelectBy = methods.getBy("projectSelectInAllScenarios");
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.selectByVisibleText(projectSelectBy
                 , "All Projects");
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.selectByVisibleText(projectSelectBy
                 , String.valueOf(methods.getValueInTestMap("currentProject")));
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.checkElementVisible(projectSelectBy);
         methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(methods.getByWithKeySetValue("tableScenarioWithProjectNameInAllScenarios"
                 , projectName));
         Assert.assertTrue("", methods.isElementInVisible(methods
@@ -302,7 +306,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
          */
         By planCountBy = methods.getBy("planCountTextInAllSuites");
         methods.checkElementVisible(planCountBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         int planCount = Integer.parseInt(methods.getText(planCountBy)
                 .replace("\r\n","").trim().split("out of")[1]
                 .replace("\r\n","").trim());
@@ -325,9 +329,9 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
                     methods.checkElementVisible(paginationPrevBy);
                     methods.checkElementVisible(paginationNextBy);
                     methods.checkElementClickable(paginationNextBy);
-                    methods.waitByMilliSeconds(300);
+                    methodsUtil.waitByMilliSeconds(300);
                     methods.clickElement(paginationNextBy);
-                    methods.waitByMilliSeconds(200);
+                    methodsUtil.waitByMilliSeconds(200);
                     methods.checkElementVisible(paginationPanelBy);
                 }
 
@@ -365,23 +369,23 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
                 , "newParameter!!newValue!!");
 
         methods.checkElementClickable(javaParametersEditButtonBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(javaParametersEditButtonBy);
         Assert.assertTrue("", methods.isElementInVisible(javaParameterAddButtonBy,30));
         methods.checkElementVisible(javaParameterCancelButtonBy);
         methods.checkElementVisible(javaParameterSaveButtonBy);
         methods.checkElementVisible(javaParameterNameBy);
         methods.checkElementVisible(javaParameterValueBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(javaParameterNameBy);
         methods.sendKeys(javaParameterNameBy,"editedParameter");
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(javaParameterValueBy);
         methods.sendKeys(javaParameterValueBy,"editedValue");
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(javaParameterSaveButtonBy);
         methods.checkElementClickable(javaParameterSaveButtonBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(javaParameterSaveButtonBy);
     }
 
@@ -403,11 +407,11 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
 
         By projectNameBy = methods.getBy("projectNameInCreateScenario");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.selectByVisibleText(projectNameBy
                 , String.valueOf(methods.getValueInTestMap("appiumProject")));
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.selectByVisibleText(projectNameBy
                 , String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(projectNameBy);
@@ -418,10 +422,10 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By scenarioNameBy = methods.getBy("scenarioNameInCreateScenario");
         By saveButtonBy = methods.getBy("saveButtonInCreateScenario");
         methods.checkElementVisible(scenarioNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(scenarioNameBy);
         methods.sendKeys(scenarioNameBy,"newScenarioName");
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
         methods.clickElement(saveButtonBy);
@@ -440,62 +444,62 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         methods.checkElementVisible(scenarioNameBy);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(projectNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.selectByVisibleText(projectNameBy, String.valueOf(methods.getValueInTestMap("appiumProject")));
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(projectNameBy);
         methods.checkElementClickable(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.selectByVisibleText(projectNameBy, String.valueOf(methods.getValueInTestMap("currentProject")));
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.checkElementVisible(projectNameBy);
         methods.clearElement(scenarioNameBy);
-        methods.waitByMilliSeconds(300);
-        String newScenarioName = "newScenarioName" + methods.randomString(6);
+        methodsUtil.waitByMilliSeconds(300);
+        String newScenarioName = "newScenarioName" + methodsUtil.randomString(6);
         methods.sendKeys(scenarioNameBy, newScenarioName);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(scenarioNameBy);
         methods.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
         methods.checkElementVisible(methods.getBy("selectTestMethodsPanelInCreateScenario"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(testSourceFileBy);
         methods.checkElementClickable(testSourceFileBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(testSourceFileBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
 
         /**
          * TODO: Error Could not read file
          * if testMethod not exist
          */
         if(!methods.isElementVisible(testMethodBy,3)){
-            methods.waitBySeconds(1);
+            methodsUtil.waitBySeconds(1);
             methods.selectByVisibleText(projectNameBy, String.valueOf(methods.getValueInTestMap("appiumProject")));
-            methods.waitByMilliSeconds(300);
+            methodsUtil.waitByMilliSeconds(300);
             methods.checkElementVisible(projectNameBy);
             methods.checkElementClickable(projectNameBy);
-            methods.waitByMilliSeconds(300);
+            methodsUtil.waitByMilliSeconds(300);
             methods.selectByVisibleText(projectNameBy, String.valueOf(methods.getValueInTestMap("currentProject")));
-            methods.waitBySeconds(1);
+            methodsUtil.waitBySeconds(1);
             methods.checkElementVisible(projectNameBy);
-            methods.waitByMilliSeconds(500);
+            methodsUtil.waitByMilliSeconds(500);
             methods.checkElementVisible(testSourceFileBy);
             methods.checkElementClickable(testSourceFileBy);
-            methods.waitByMilliSeconds(500);
+            methodsUtil.waitByMilliSeconds(500);
             methods.clickElement(testSourceFileBy);
-            methods.waitByMilliSeconds(300);
+            methodsUtil.waitByMilliSeconds(300);
         }
 
         methods.checkElementVisible(testMethodBy);
         methods.checkElementClickable(testMethodBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(testMethodBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(saveButtonBy);
-        methods.focusToElementJs(saveButtonBy);
-        methods.waitBySeconds(1);
+        methods.scrollElementJs(saveButtonBy,"3");
+        methodsUtil.waitBySeconds(1);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(saveButtonBy);
         methods.putValueInTestMap("newScenarioName", newScenarioName);
         modelLocationStillCreateScenarioPage = false;
@@ -506,7 +510,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By javaParametersDeleteButtonBy = methods.getByWithKeySetValue("javaParametersDeleteButtonKeyValueInCreateScenario"
                 , "editedParameter!!editedValue!!");
         methods.checkElementClickable(javaParametersDeleteButtonBy);
-        methods.waitByMilliSeconds(250);
+        methodsUtil.waitByMilliSeconds(250);
         methods.clickElement(javaParametersDeleteButtonBy);
     }
 
@@ -515,7 +519,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By cancelButtonBy = methods.getBy("cancelButtonInCreateScenario");
         methods.checkElementVisible(cancelButtonBy);
         methods.checkElementClickable(cancelButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(cancelButtonBy);
         modelLocationStillCreateScenarioPage = false;
     }
@@ -528,7 +532,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By selectSourceFilePanelBy = methods.getBy("selectSourceFilePanelWindowInCreateScenario");
         By selectTestMethodsPanelBy = methods.getBy("selectTestMethodsPanelWindowInCreateScenario");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         Assert.assertTrue("", methods.getAttribute(projectNameBy,"class").contains("ng-invalid"));
         methods.checkElementVisible(errorBlockProjectNameBy);
         Assert.assertEquals("","This field is required.", methods.getText(errorBlockProjectNameBy).trim());

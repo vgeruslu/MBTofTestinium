@@ -13,8 +13,8 @@ import org.graphwalker.core.model.Element;
 import org.graphwalker.core.model.Model;
 import org.graphwalker.core.model.Vertex;
 import org.junit.Assert;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GraphDenemeStreamObserverNewVersion2_1 implements Observer {
 
-    private static final Logger logger = LoggerFactory.getLogger(GraphDenemeStreamObserverNewVersion2_1.class);
+    private static final Logger logger = LogManager.getLogger(GraphDenemeStreamObserverNewVersion2_1.class);
 
     public static JFrame frame = null;
     private static JTabbedPane tabbedPane = null;

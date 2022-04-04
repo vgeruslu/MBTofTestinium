@@ -1,29 +1,47 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class AllSuites extends ExecutionContext implements org.graphwalker.All_Suites {
 
-    private static final Logger logger = LoggerFactory.getLogger(AllSuites.class);
+    private static final Logger logger = LogManager.getLogger(AllSuites.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public AllSuites() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
         methods.putValueInTestMap("allSuitesMobile",false);
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -36,31 +54,16 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
     }
 
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
-    }
-
     public void e_click_Mobile_Checbox() {
 
         By iosOptionBy = methods.getBy("mobileIosShowOnlyOptionInAllSuites");
         By androidOptionBy = methods.getBy("mobileAndroidShowOnlyOptionInAllSuites");
         methods.checkElementClickable(iosOptionBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(iosOptionBy);
         methods.checkElementVisible(androidOptionBy);
         methods.checkElementClickable(androidOptionBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(androidOptionBy);
         methods.putValueInTestMap("allSuitesMobile",true);
     }
@@ -70,7 +73,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By createButtonBy = methods.getBy("createPlanInAllSuites");
         methods.checkElementVisible(createButtonBy);
         methods.checkElementClickable(createButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(createButtonBy);
         methods.putValueInTestMap("projectSelectedForPlan",false);
     }
@@ -103,7 +106,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         methods.checkElementVisible(methods.getBy("reportsTab"));
         methods.checkElementVisible(methods.getBy("automatedTestTab"));
 
-        methods.waitByMilliSeconds(400);
+        methodsUtil.waitByMilliSeconds(400);
 
         if(methods.getAttribute(methods.getByWithKeySetValue("checkboxShowOnlyOptionKeyValueInAllSuites","Mobile (iOS)")
                 ,"class").contains("checked")){
@@ -138,14 +141,14 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         //if(!methods.getFirstSelectedOption(selectProjectBy)
           //      .getText().trim().equals("All Projects")){
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.selectByVisibleText(selectProjectBy,
                 methods.getValueInTestMap("appiumProject").toString());
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
             methods.checkElementVisible(selectProjectBy);
             methods.selectByVisibleText(selectProjectBy,"All Projects");
             methods.checkElementVisible(selectProjectBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
             methods.checkElementVisible(methods.getBy("tableInAllSuites"));
             methods.checkElementVisible(methods.getBy("suiteForTableInAllSuites"));
         //}
@@ -157,7 +160,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
         methods.checkElementVisible(methods.getBy("suiteForTableInAllSuites"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         String projectName = String.valueOf(methods.getValueInTestMap("deleteProjectNameInAllSuites"));
         String planName = String.valueOf(methods.getValueInTestMap("deletePlanNameInAllSuites"));
         Assert.assertTrue("",methods.isElementVisible(methods.getByWithKeySetValue("tablePlanKeyValueInAllSuites"
@@ -169,7 +172,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By webAllOptionBy = methods.getBy("webAllShowOnlyOptionInAllSuites");
         methods.checkElementVisible(webAllOptionBy);
         methods.checkElementClickable(webAllOptionBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(webAllOptionBy);
     }
 
@@ -178,9 +181,9 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(yesButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(yesButtonBy);
     }
 
@@ -212,14 +215,14 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By suiteNameBy = methods.getByWithKeySetValue("tableSuiteNameWithProjectNameNumberReportInAllSuites",
                 projectName + "!!" + "last()");
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         String planName = methods.getText(suiteNameBy).trim().split(" ")[0];
         By reportButtonBy = methods.getByWithKeySetValue("reportButtonTableSuiteNameKeyValueInAllSuites"
                 , projectName + "!!" + planName);
         methods.checkElementVisible(reportButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(reportButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(reportButtonBy);
         methods.putValueInTestMap("currentPlan", planName);
     }
@@ -241,42 +244,42 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         methods.checkElementVisible(methods.getBy("selectProjectInAllSuites"));
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
         methods.checkElementVisible(methods.getBy("suiteForTableInAllSuites"));
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
 
         if(methods.isElementVisible(methods.getBy("runButtonTableInAllSuites"), 2)){
 
-            setAttribute("hasProjectASuite",true);
+            setAttribute("hasProjectASuite", Value.asValue(true));
 
             if(methods.isElementVisible(methods.getBy("reportButtonTableInAllSuites"),2)){
 
-                setAttribute("hasProjectAReport",true);
+                setAttribute("hasProjectAReport", Value.asValue(true));
             }else {
 
-                setAttribute("hasProjectAReport",false);
+                setAttribute("hasProjectAReport", Value.asValue(false));
             }
         }else {
-            setAttribute("hasProjectASuite",false);
-            setAttribute("hasProjectAReport",false);
+            setAttribute("hasProjectASuite", Value.asValue(false));
+            setAttribute("hasProjectAReport", Value.asValue(false));
         }
 
        //mobile ignore
 
         if(Boolean.parseBoolean(methods.getValueInTestMap("allSuitesMobile").toString())){
 
-            setAttribute("hasProjectASuite",false);
-            methods.putValueInTestMap("allSuitesMobile",false);
+            setAttribute("hasProjectASuite", Value.asValue(false));
+            methods.putValueInTestMap("allSuitesMobile", Value.asValue(false));
         }
     }
 
     public void v_Control_Are_You_Sure_Message() {
 
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
     }
 
     public void e_Click_Delete() {
@@ -284,9 +287,9 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By projectNameBy = methods.getByWithKeySetValue("tableProjectNameInAllSuites","last()");
         By tableSuiteNameBy = methods.getByWithKeySetValue("tableSuiteNameInAllSuites","last()");
         methods.checkElementVisible(projectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementVisible(tableSuiteNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         String projectName = methods.getText(projectNameBy).trim();
         //split eklendi editPlan1 (1) yüzünden
         String planName = methods.getText(tableSuiteNameBy).trim().split(" ")[0];
@@ -295,9 +298,9 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By deleteButtonBy = methods.getByWithKeySetValue("deleteButtonTableSuiteNameKeyValueInAllSuites"
                 , projectName + "!!" + planName);
         methods.checkElementVisible(deleteButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(deleteButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(deleteButtonBy);
     }
 
@@ -314,13 +317,13 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By planNameBy = methods.getByWithKeySetValue("tableSuiteNameByProjectNameInAllSuites",
                 projectName + "!!1");
         methods.checkElementVisible(planNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         String planName = methods.getText(planNameBy).trim().split(" ")[0];;
         By editButtonBy = methods.getByWithKeySetValue("editButtonTableSuiteNameKeyValueInAllSuites"
                 , projectName + "!!" + planName);
         methods.checkElementVisible(editButtonBy);
         methods.checkElementClickable(editButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(editButtonBy);
         methods.putValueInTestMap("editPlanName", planName);
         methods.putValueInTestMap("editProjectName", projectName);
@@ -349,11 +352,11 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
     public void v_control_Are_You_Sure_Message() {
 
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
     }
 
     /**
@@ -367,11 +370,11 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By androidOptionBy = methods.getBy("mobileAndroidShowOnlyOptionInAllSuites");
         methods.checkElementVisible(iosOptionBy);
         methods.checkElementClickable(iosOptionBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(iosOptionBy);
         methods.checkElementVisible(androidOptionBy);
         methods.checkElementClickable(androidOptionBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(androidOptionBy);
         methods.putValueInTestMap("allSuitesMobile",true);
     }
@@ -381,7 +384,7 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         By webAllOptionBy = methods.getBy("webAllShowOnlyOptionInAllSuites");
         methods.checkElementVisible(webAllOptionBy);
         methods.checkElementClickable(webAllOptionBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(webAllOptionBy);
     }
 
@@ -414,11 +417,11 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(yesButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(yesButtonBy);
-        setAttribute("isRunYes",false);
+        setAttribute("isRunYes", Value.asValue(false));
     }
 
     public void e_Click_Run() {
@@ -426,15 +429,15 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
         String projectName = String.valueOf(methods.getValueInTestMap("currentProject"));
         By suiteNameBy = methods.getByWithKeySetValue("tableSuiteNameWithProjectNameInAllSuites", projectName);
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(400);
+        methodsUtil.waitByMilliSeconds(400);
         String planName = methods.getText(suiteNameBy).trim().split(" ")[0];;
         By runButtonBy = methods.getByWithKeySetValue("runButtonTableSuiteNameKeyValueInAllSuites"
                 , projectName + "!!" + planName);
         methods.checkElementVisible(runButtonBy);
-        methods.waitByMilliSeconds(500);
-        methods.isElementEnabled(runButtonBy);
+        methodsUtil.waitByMilliSeconds(500);
+        methods.isElementEnabled(runButtonBy,30);
         methods.checkElementClickable(runButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElementForStaleElement(runButtonBy);
         methods.putValueInTestMap("currentPlan", planName);
     }
@@ -479,9 +482,9 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(noButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 
@@ -489,9 +492,9 @@ public class AllSuites extends ExecutionContext implements org.graphwalker.All_S
 
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(noButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 

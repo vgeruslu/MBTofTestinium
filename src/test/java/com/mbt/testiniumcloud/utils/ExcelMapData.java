@@ -1,39 +1,45 @@
 package com.mbt.testiniumcloud.utils;
 
-import com.mbt.testiniumcloud.driver.DriverCreater;
+import com.mbt.testiniumcloud.driver.Driver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.graphwalker.core.machine.Context;
 import org.graphwalker.core.machine.Machine;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.core.model.Element;
 import org.graphwalker.core.model.Model;
 import org.graphwalker.core.model.Vertex;
-import org.joda.time.*;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ExcelMapData {
 
+    private static final Logger logger = LogManager.getLogger(ExcelMapData.class);
+
     public void createMapData(Machine machine){
 
-        DriverCreater.ModelDurationMap.put("TotalStepCount", Integer.parseInt("0"));
+        Driver.ModelDurationMap.put("TotalStepCount", Integer.parseInt("0"));
         List<String> modelNameList = new ArrayList<String>();
-        DriverCreater.ModelDurationMap.put("ModelNameList", (List<String>) modelNameList);
+        Driver.ModelDurationMap.put("ModelNameList", (List<String>) modelNameList);
         List<Context> contextList = machine.getContexts();
         for(int i = 0; i < contextList.size(); i++){
             setMapBefore(contextList.get(i).getModel());
         }
+
     }
 
+    @SuppressWarnings("unchecked")
     public void setMapBefore(Model.RuntimeModel model){
 
         ConcurrentHashMap<String,Integer> vertexNumberMap = new ConcurrentHashMap<String, Integer>();
         ConcurrentHashMap<String, Object> elementMap = new ConcurrentHashMap<String, Object>();
         String modelName = model.getName().trim();
-        ((List<String>) DriverCreater.ModelDurationMap.get("ModelNameList")).add(modelName);
+        ((List<String>) Driver.ModelDurationMap.get("ModelNameList")).add(modelName);
         List<Vertex.RuntimeVertex> modelVertexList = new ArrayList<Vertex.RuntimeVertex>();
         List<Edge.RuntimeEdge> modelEdgeList = new ArrayList<Edge.RuntimeEdge>();
         List<String> vertexNameList = new ArrayList<String>();
@@ -51,7 +57,7 @@ public class ExcelMapData {
         }
         elementMap.put("vertexNameList", setVertex(modelName, modelVertexList, vertexNameList, elementMap, vertexNumberMap));
         elementMap.put("edgeNameList", setEdge(modelName, modelEdgeList, edgeNameList, elementMap, vertexNumberMap));
-        DriverCreater.ModelDurationMap.put(modelName, elementMap);
+        Driver.ModelDurationMap.put(modelName, elementMap);
     }
 
     public List<String> setVertex(String modelName, List<Vertex.RuntimeVertex> vertexList, List<String> vertexNameList, ConcurrentHashMap<String, Object> elementMap, ConcurrentHashMap<String,Integer> vertexNumberMap){
@@ -70,8 +76,11 @@ public class ExcelMapData {
             map.put("elementId", vertex.getId().trim());
             map.put("stepNumberList",(List<Integer>) list);
             map.put("stepCount", Integer.parseInt("0"));
+            List<String> requirementList = new ArrayList<String>();
+            vertex.getRequirements().parallelStream().forEach(requirement -> requirementList.add(requirement.getKey()));
+            map.put("requirements", requirementList);
             elementMap.put(vertexName, map);
-            DriverCreater.ModelDurationMap.put(vertex.getId().trim() + modelName, vertexName);
+            Driver.ModelDurationMap.put(vertex.getId().trim() + modelName, vertexName);
         }
         //System.out.println(vertexNameList);
         return vertexNameList;
@@ -106,7 +115,7 @@ public class ExcelMapData {
             map.put("sourceVertex", sourceVertex);
             map.put("targetVertex", targetVertex);
             elementMap.put(edgeName, map);
-            DriverCreater.ModelDurationMap.put(edge.getId() + modelName, edgeName);
+            Driver.ModelDurationMap.put(edge.getId() + modelName, edgeName);
         }
         //System.out.println(elementNameList);
         return elementNameList;
@@ -116,7 +125,13 @@ public class ExcelMapData {
 
         StringBuilder firstChars = new StringBuilder();
         String[] array = vertexName.split("_");
-        for (int i=1; i < array.length; i++){
+        int startIndex = 0;
+
+        if (array[0].equalsIgnoreCase("v")){
+            startIndex = 1;
+        }
+
+        for (int i=startIndex; i < array.length; i++){
 
             firstChars.append(array[i].substring(0, 1).toUpperCase());
         }
@@ -124,45 +139,59 @@ public class ExcelMapData {
         return firstChars.toString();
     }
 
-    public void setBeforeElementData(String modelName, String elementId, String modelElementName){
+    @SuppressWarnings("unchecked")
+    public void setBeforeElementData(Model.RuntimeModel model, Element element){
 
-        int step = ++DriverCreater.stepCount;
+        int step = ++Driver.stepCount;
         String currentTime = getTime("dd/MM/yyyy HH:mm:ss.SSS");
-        if(DriverCreater.excelActive) {
+        String modelName = model.getName();
+        String elementId = element.getId().trim();
+        String modelElementName = element.getName().trim();
+        String elementType = element instanceof Edge.RuntimeEdge ? "Edge" : "Vertex";
+
+        if(Driver.excelActive) {
             ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<String, Object>();
-            String elementName = DriverCreater.ModelDurationMap
+            String elementName = Driver.ModelDurationMap
                     .get(elementId + modelName).toString();
             map.put("modelName", modelName);
             map.put("elementName", elementName);
             map.put("currentTime", currentTime);
             map.put("Failure", "");
-            DriverCreater.ModelDurationMap.put(String.valueOf(step), map);
+            Driver.ModelDurationMap.put(String.valueOf(step), map);
 
-            ConcurrentHashMap<String, Object> ElementMap = (ConcurrentHashMap<String, Object>) DriverCreater.ModelDurationMap.get(modelName);
+            ConcurrentHashMap<String, Object> ElementMap = (ConcurrentHashMap<String, Object>) Driver.ModelDurationMap.get(modelName);
             ConcurrentHashMap<String, Object> elementValuesMap = (ConcurrentHashMap<String, Object>) ElementMap.get(elementName);
             ((List<Integer>) elementValuesMap.get("stepNumberList")).add(step);
             elementValuesMap.put("stepCount", (Integer.parseInt(elementValuesMap.get("stepCount").toString()) + 1));
         }
-        System.out.println("Test Step " + step + " : " + currentTime + " " + modelName + " " + modelElementName);
+        System.out.println("Test Step " + step + " : " + currentTime + "  " + modelName + "  "
+                + modelElementName + "  " + elementType
+                /** + (elementType.equals("Edge") ? "  "
+                + ((Edge.RuntimeEdge) element).getSourceVertex().getName() + "  "
+                + ((Edge.RuntimeEdge) element).getTargetVertex().getName() : "")*/
+                );
+
     }
 
     public void setTestResult(String testResult){
 
-        int step = ++DriverCreater.stepCount;
+        int step = ++Driver.stepCount;
         String currentTime = getTime("dd/MM/yyyy HH:mm:ss.SSS");
 
-        if (DriverCreater.excelActive) {
+        if (Driver.excelActive) {
             ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<String, Object>();
             map.put("modelName", "TEST_RESULT");
             map.put("elementName", "");
             map.put("currentTime", currentTime);
             map.put("Failure", testResult);
-            DriverCreater.ModelDurationMap.put(String.valueOf(step), map);
-            DriverCreater.ModelDurationMap.put("TotalStepCount", step);
+            Driver.ModelDurationMap.put(String.valueOf(step), map);
+            Driver.ModelDurationMap.put("TotalStepCount", step);
         }
         System.out.println("Test Step " + step + " : " + currentTime + " " + "TEST_RESULT" + " " + testResult);
+
     }
 
+    @SuppressWarnings("unchecked")
     public void createExcel(){
 
         ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<String, Integer>();
@@ -177,10 +206,10 @@ public class ExcelMapData {
         String currentTime = "";
         String elementName = "";
         String currentElementName = "";
-        int totalStepCount = Integer.parseInt(DriverCreater.ModelDurationMap.get("TotalStepCount").toString());
+        int totalStepCount = Integer.parseInt(Driver.ModelDurationMap.get("TotalStepCount").toString());
         for (int i=1; i < (totalStepCount+1); i++){
             pathlist = new ArrayList<String>();
-            ConcurrentHashMap<String, Object> stepMap = (ConcurrentHashMap<String, Object>) DriverCreater
+            ConcurrentHashMap<String, Object> stepMap = (ConcurrentHashMap<String, Object>) Driver
                     .ModelDurationMap.get(String.valueOf(i));
             currentModelName = stepMap.get("modelName").toString();
             currentTime = stepMap.get("currentTime").toString();
@@ -222,7 +251,7 @@ public class ExcelMapData {
 
         List<String> timeList = getTimeList(timeMap);
 
-        List<String> modelNameList = (List<String>) DriverCreater.ModelDurationMap.get("ModelNameList");
+        List<String> modelNameList = (List<String>) Driver.ModelDurationMap.get("ModelNameList");
         List<String> visitList;
         List<String> modelTotalTime;
         List<String> totalTime = new ArrayList<>();
@@ -243,9 +272,11 @@ public class ExcelMapData {
 
             modelTotalTime = new ArrayList<>();
             modelName = modelList.get(i);
-            ConcurrentHashMap<String, Object> modelMap = (ConcurrentHashMap<String, Object>) DriverCreater
+            ConcurrentHashMap<String, Object> modelMap = (ConcurrentHashMap<String, Object>) Driver
                     .ModelDurationMap.get(modelName);
-            List<String> list = (List<String>) modelMap.get("vertexNameList");
+            List<String> list = new ArrayList<>();
+            List<String> vertexNameList = (List<String>) modelMap.get("vertexNameList");
+            list.addAll(vertexNameList);
             List<String> edgeNameList = (List<String>) modelMap.get("edgeNameList");
             list.addAll(edgeNameList);
             for(int j=0; j < list.size(); j++){
@@ -281,7 +312,6 @@ public class ExcelMapData {
                 modelEntityVisitCountList.add((List<String>) visitList);
             }
         }
-
         new CreateMBTExcel().createExcel(testPathDurationsList, modelEntityVisitCountList, getSumTimeWithHour(totalTime), timeList, modelList);
     }
 
@@ -328,6 +358,29 @@ public class ExcelMapData {
         PeriodFormatter printer =
                 new PeriodFormatterBuilder()
                         .printZeroAlways().minimumPrintedDigits(2)
+                        .appendMinutes().appendLiteral(":")
+                        .appendSeconds().appendLiteral(".")
+                        .appendMillis3Digit().toFormatter();
+        return printer.print(period.normalizedStandard());
+    }
+
+    public String getDifferenceTimeWithHour(String before, String after){
+
+        PeriodFormatter parser =
+                new PeriodFormatterBuilder()
+                        .appendDays().appendLiteral("/")
+                        .appendMonths().appendLiteral("/")
+                        .appendYears().appendLiteral(" ")
+                        .appendHours().appendLiteral(":")
+                        .appendMinutes().appendLiteral(":")
+                        .appendSeconds().appendLiteral(".")
+                        .appendMillis3Digit().toFormatter();
+        Period period = Period.ZERO;
+        period = period.plus(parser.parsePeriod(after)).minus(parser.parsePeriod(before));
+        PeriodFormatter printer =
+                new PeriodFormatterBuilder()
+                        .printZeroAlways().minimumPrintedDigits(2)
+                        .appendHours().appendLiteral(":")
                         .appendMinutes().appendLiteral(":")
                         .appendSeconds().appendLiteral(".")
                         .appendMillis3Digit().toFormatter();

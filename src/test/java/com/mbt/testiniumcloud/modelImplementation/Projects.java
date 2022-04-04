@@ -1,27 +1,45 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class Projects extends ExecutionContext implements org.graphwalker.Projects {
 
-    private static final Logger logger = LoggerFactory.getLogger(Projects.class);
+    private static final Logger logger = LogManager.getLogger(Projects.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public Projects() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -34,27 +52,12 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
 
     }
 
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
-    }
-
     public void e_Click_No_Button() {
 
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
         methods.checkElementClickable(noButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 
@@ -89,7 +92,7 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
         methods.checkElementClickable(yesButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(yesButtonBy);
     }
 
@@ -108,7 +111,7 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
         By createProjectPanelBy = methods.getBy("createProjectPanelInProjects");
         methods.checkElementVisible(createProjectPanelBy);
         methods.checkElementClickable(createProjectPanelBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(createProjectPanelBy);
     }
 
@@ -140,7 +143,7 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
                 String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(suitesButtonBy);
         methods.checkElementClickable(suitesButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(suitesButtonBy);
     }
 
@@ -174,7 +177,7 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
                 String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(addAScenariosBy);
         methods.checkElementClickable(addAScenariosBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(addAScenariosBy);
         methods.putValueInTestMap("projectSelectedForScenario",true);
     }
@@ -235,11 +238,11 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
 
     public void v_Control_Are_You_Sure_Message() {
 
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
     }
 
     public void e_Click_Project_Scenarios() {
@@ -249,13 +252,13 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
                 String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(scenariosButtonBy);
         methods.checkElementClickable(scenariosButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(scenariosButtonBy);
     }
 
     public void e_Click_Delete() {
 
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         // ignore project name for delete
         By deleteProjectNameBy = methods.getByWithKeySetValue("deleteProjectNameInProjects",
                 methods.getValueInTestMap("runProject")
@@ -264,26 +267,26 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
                         + "!!" + methods.getValueInTestMap("appiumProject")
                         + "!!" + methods.getValueInTestMap("ignoreDeleteProjectNameContain"));
         methods.checkElementVisible(deleteProjectNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         String projectName = methods.getText(deleteProjectNameBy).trim();
         By projectBy = methods.getByWithKeySetValue("projectPanelProjectNameKeyValueInProjects",
                 projectName);
         methods.checkElementVisible(projectBy);
-        methods.waitByMilliSeconds(500);
-        methods.scrollElement(projectBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
+        methods.scrollElementJs(projectBy,"3");
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(projectBy);
         By dropdownTridotButtonBy = methods.getByWithKeySetValue("dropdownTridotWithSelectedProjectInProjects",
                 projectName);
         methods.checkElementVisible(dropdownTridotButtonBy);
         methods.checkElementClickable(dropdownTridotButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(dropdownTridotButtonBy);
         By deleteButtonBy = methods.getByWithKeySetValue("deleteButtonWithSelectedProjectInProjects",
                 projectName);
         methods.checkElementVisible(deleteButtonBy);
         methods.checkElementClickable(deleteButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(deleteButtonBy);
         methods.putValueInTestMap("deleteProjectName", projectName);
     }
@@ -293,12 +296,12 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
         By projectBy = methods.getByWithKeySetValue("projectPanelProjectNameKeyValueInProjects",
                 String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(projectBy);
-        methods.scrollElement(projectBy);
+        methods.scrollElementJs(projectBy,"3");
         By projectsTabBy = methods.getByWithKeySetValue("dropdownPlusButtonWithSelectedProjectInProjects",
                 String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(projectsTabBy);
         methods.checkElementClickable(projectsTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(projectsTabBy);
     }
 
@@ -363,7 +366,7 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
                 String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(summaryButtonBy);
         methods.checkElementClickable(summaryButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(summaryButtonBy);
     }
 
@@ -373,7 +376,7 @@ public class Projects extends ExecutionContext implements org.graphwalker.Projec
                 String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(addAPlanBy);
         methods.checkElementClickable(addAPlanBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(addAPlanBy);
         methods.putValueInTestMap("projectSelectedForPlan",true);
     }

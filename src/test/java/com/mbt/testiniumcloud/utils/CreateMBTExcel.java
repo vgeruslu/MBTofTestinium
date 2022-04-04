@@ -1,11 +1,10 @@
 package com.mbt.testiniumcloud.utils;
 
-import com.mbt.testiniumcloud.driver.DriverCreater;
+import com.mbt.testiniumcloud.driver.Driver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
-import org.joda.time.*;
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,10 +13,11 @@ import java.util.List;
 
 public class CreateMBTExcel {
 
+    private static final Logger logger = LogManager.getLogger(CreateMBTExcel.class);
+
     public void createExcel(List<List<String>> testPathDurationsList, List<List<String>> modelEntityVisitCountList, String totalTime, List<String> timeList, List<String> modelList){
 
-
-        String ExcelPath = DriverCreater.excelLocation;
+        String ExcelPath = Driver.excelLocation;
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet1 = workbook.createSheet("TestPathDurations");
@@ -392,7 +392,7 @@ public class CreateMBTExcel {
 
         try {
 
-            FileOutputStream outputStream = new FileOutputStream(new File(ExcelPath),false);
+            FileOutputStream outputStream = new FileOutputStream(ExcelPath,false);
             try {
                 workbook.write(outputStream);
             } catch (IOException e) {

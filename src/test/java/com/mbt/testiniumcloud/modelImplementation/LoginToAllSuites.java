@@ -1,40 +1,44 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
-import com.mbt.testiniumcloud.driver.DriverCreater;
+import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)//, start = "v_Start")
 public class LoginToAllSuites extends ExecutionContext implements org.graphwalker.LoginToAllSuites {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginToAllSuites.class);
+    private static final Logger logger = LogManager.getLogger(LoginToAllSuites.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public LoginToAllSuites() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
 
         // Projects
         methods.putValueInTestMap("runProject",
-                DriverCreater.ConfigurationProp.getString("runProject"));
+                Driver.ConfigurationProp.getString("runProject"));
         methods.putValueInTestMap("optionalProject",
-                DriverCreater.ConfigurationProp.getString("multiScenariosProject"));
+                Driver.ConfigurationProp.getString("multiScenariosProject"));
         methods.putValueInTestMap("editProject",
-                DriverCreater.ConfigurationProp.getString("editProject"));
+                Driver.ConfigurationProp.getString("editProject"));
         methods.putValueInTestMap("appiumProject",
-                DriverCreater.ConfigurationProp.getString("appiumProject"));
+                Driver.ConfigurationProp.getString("appiumProject"));
         methods.putValueInTestMap("ignoreDeleteProjectNameContain",
-                DriverCreater.ConfigurationProp.getString("ignoreDeleteProjectNameContain"));
+                Driver.ConfigurationProp.getString("ignoreDeleteProjectNameContain"));
         methods.putValueInTestMap("projectNameForReports",
                 String.valueOf(methods.getValueInTestMap("editProject")));
         methods.putValueInTestMap("testSourceFileName","BaseTest.java");
@@ -43,6 +47,20 @@ public class LoginToAllSuites extends ExecutionContext implements org.graphwalke
         methods.putValueInTestMap("currentProject",
                 String.valueOf(methods.getValueInTestMap("optionalProject")));
         methods.putValueInTestMap("testRun",false);
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -55,45 +73,30 @@ public class LoginToAllSuites extends ExecutionContext implements org.graphwalke
 
     }
 
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
-    }
-
     public void e_Valid_Login() {
 
         By signInButtonBy = methods.getBy("signInInLogin");
         By userNameBy = methods.getBy("userNameInLogin");
-        String userName = DriverCreater.ConfigurationProp.getString("VALID_USERNAME");
+        String userName = Driver.ConfigurationProp.getString("VALID_USERNAME");
         By passwordBy = methods.getBy("passwordInLogin");
-        String password = DriverCreater.ConfigurationProp.getString("VALID_PASSWORD");
+        String password = Driver.ConfigurationProp.getString("VALID_PASSWORD");
         methods.checkElementVisible(userNameBy);
         methods.checkElementVisible(passwordBy);
         methods.checkElementVisible(signInButtonBy);
         methods.checkElementClickable(signInButtonBy);
-        methods.clearElementWithBackSpace(userNameBy);
+        methods.clearElementWithBackSpace(userNameBy,"a");
         methods.checkElementVisible(userNameBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(userNameBy, userName);
         methods.checkElementClickable(passwordBy);
-        methods.clearElementWithBackSpace(passwordBy);
+        methods.clearElementWithBackSpace(passwordBy,"a");
         methods.checkElementClickable(passwordBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.sendKeys(passwordBy, password);
         methods.checkElementVisible(signInButtonBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.checkElementClickable(signInButtonBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.clickElement(signInButtonBy);
     }
 
@@ -101,9 +104,9 @@ public class LoginToAllSuites extends ExecutionContext implements org.graphwalke
 
         By allSuitesTabBy = methods.getBy("allSuitesTab");
         methods.checkElementVisible(allSuitesTabBy);
-        methods.waitByMilliSeconds(500);
-        methods.scrollElementCenterWithJs(allSuitesTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
+        methods.scrollElementCenterJs(allSuitesTabBy,"3");
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(allSuitesTabBy);
         methods.clickElement(allSuitesTabBy);
     }
@@ -162,11 +165,11 @@ public class LoginToAllSuites extends ExecutionContext implements org.graphwalke
 
         By dashboardButtonBy = methods.getBy("dashboardButton");
         methods.checkElementVisible(dashboardButtonBy);
-        methods.waitByMilliSeconds(500);
-        methods.scrollElementCenterWithJs(dashboardButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
+        methods.scrollElementCenterJs(dashboardButtonBy,"3");
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(dashboardButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(dashboardButtonBy);
     }
 

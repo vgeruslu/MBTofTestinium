@@ -1,27 +1,46 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ProjectDetailScenarios extends ExecutionContext implements org.graphwalker.Project_Detail_Scenarios {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProjectDetailScenarios.class);
+    private static final Logger logger = LogManager.getLogger(ProjectDetailScenarios.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public ProjectDetailScenarios() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -32,21 +51,6 @@ public class ProjectDetailScenarios extends ExecutionContext implements org.grap
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void e_Select_A_Suite() {
@@ -121,7 +125,7 @@ public class ProjectDetailScenarios extends ExecutionContext implements org.grap
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
         methods.checkElementClickable(noButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 
@@ -137,13 +141,13 @@ public class ProjectDetailScenarios extends ExecutionContext implements org.grap
 
         By scenarioNameBy = methods.getByWithKeySetValue("tableScenarioNameInProjectDetailScenarios","last()");
         methods.checkElementVisible(scenarioNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         String scenarioName = methods.getText(scenarioNameBy);
         By deleteButtonBy = methods.getByWithKeySetValue("deleteButtonWithScenarioNameInProjectDetailScenarios",
                 scenarioName);
         methods.checkElementVisible(deleteButtonBy);
         methods.checkElementClickable(deleteButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(deleteButtonBy);
         methods.putValueInTestMap("deleteScenario", scenarioName);
     }
@@ -177,7 +181,7 @@ public class ProjectDetailScenarios extends ExecutionContext implements org.grap
         By summaryTabBy = methods.getBy("summaryTabInProjectDetail");
         methods.checkElementVisible(summaryTabBy);
         methods.checkElementClickable(summaryTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(summaryTabBy);
     }
 
@@ -208,17 +212,17 @@ public class ProjectDetailScenarios extends ExecutionContext implements org.grap
 
             methods.checkElementVisible(methods.getBy("editButtonInProjectDetailScenarios"));
             methods.checkElementVisible(methods.getBy("deleteButtonInProjectDetailScenarios"));
-            setAttribute("hasProjectAScenario",true);
+            setAttribute("hasProjectAScenario", Value.asValue(true));
             if (methods.isElementVisible(methods
                     .getByWithKeySetValue("suitesSelectWithOptionValueInProjectDetailScenarios", ""), 2)) {
 
-                setAttribute("hasProjectAPlan", true);
+                setAttribute("hasProjectAPlan", Value.asValue(true));
             } else {
-                setAttribute("hasProjectAPlan", false);
+                setAttribute("hasProjectAPlan", Value.asValue(false));
             }
         }else {
-            setAttribute("hasProjectAScenario",false);
-            setAttribute("hasProjectAPlan", false);
+            setAttribute("hasProjectAScenario",Value.asValue(false));
+            setAttribute("hasProjectAPlan", Value.asValue(false));
         }
     }
 
@@ -234,10 +238,10 @@ public class ProjectDetailScenarios extends ExecutionContext implements org.grap
         By editButtonBy = methods.getBy("editButtonInProjectDetailScenarios");
         methods.checkElementVisible(scenarioNameBy);
         methods.checkElementVisible(editButtonBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         String scenarioName = methods.getText(scenarioNameBy).trim();
         methods.checkElementClickable(editButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(editButtonBy);
         methods.putValueInTestMap("currentScenario", scenarioName);
     }

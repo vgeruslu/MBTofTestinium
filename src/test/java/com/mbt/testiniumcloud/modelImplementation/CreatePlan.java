@@ -1,21 +1,25 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class CreatePlan extends ExecutionContext implements org.graphwalker.Create_Plan {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreatePlan.class);
+    private static final Logger logger = LogManager.getLogger(CreatePlan.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
     Boolean modelLocationStillCreatePlanPage = false;
     Boolean appiumPlan = false;
@@ -23,7 +27,22 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
     public CreatePlan() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -34,21 +53,6 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Verify_In_All_Suites_Page_SHARED() {
@@ -87,25 +91,25 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         methods.checkElementVisible(methods.getBy("operatingSystemAreaInCreatePlan"));
         methods.checkElementVisible(operatingSystemBy);
         methods.checkElementClickable(operatingSystemBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(operatingSystemBy);
         methods.checkElementVisible(methods.getBy("browserAreaInCreatePlan"));
         methods.checkElementVisible(browserOptionBy);
         methods.checkElementClickable(browserOptionBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(browserOptionBy);
         methods.checkElementVisible(methods.getBy("versionAreaInCreatePlan"));
         methods.checkElementVisible(versionOptionBy);
         methods.checkElementClickable(versionOptionBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(versionOptionBy);
         methods.checkElementVisible(methods.getBy("screenResolutionInCreatePlan"));
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(methods.getByWithKeySetValue("screenResolutionSelectOptionKeyValueInCreatePlan","1280x1024"));
         By screenResolutionAddButtonBy = methods.getBy("screenResolutionAddButtonInCreatePlan");
         methods.checkElementVisible(screenResolutionAddButtonBy);
         methods.checkElementClickable(screenResolutionAddButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(screenResolutionAddButtonBy);
     }
 
@@ -118,7 +122,7 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         By saveButtonBy = methods.getBy("saveButtonInCreatePlan");
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(saveButtonBy);
     }
 
@@ -142,7 +146,7 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
 
         if (!modelLocationStillCreatePlanPage) {
             setAttribute("isProjectSelected",
-                    Boolean.parseBoolean(methods.getValueInTestMap("projectSelectedForPlan").toString()));
+                    Value.asValue(Boolean.parseBoolean(methods.getValueInTestMap("projectSelectedForPlan").toString())));
         }
         modelLocationStillCreatePlanPage = true;
     }
@@ -154,18 +158,18 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         By saveButtonBy = methods.getBy("saveButtonInCreatePlan");
         methods.checkElementVisible(projectBy);
         methods.checkElementClickable(projectBy);
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
         methods.selectByVisibleText(projectBy
                 , String.valueOf(methods.getValueInTestMap("currentProject")));
         methods.checkElementVisible(projectBy);
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(200);
-        methods.clearElementWithBackSpace(suiteNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
+        methods.clearElementWithBackSpace(suiteNameBy,"a");
+        methodsUtil.waitByMilliSeconds(200);
         methods.checkElementVisible(suiteNameBy);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(saveButtonBy);
     }
 
@@ -176,13 +180,13 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         By saveButtonBy = methods.getBy("saveButtonInCreatePlan");
         methods.checkElementVisible(projectBy);
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(suiteNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(suiteNameBy,"a");
+        methodsUtil.waitByMilliSeconds(200);
         methods.checkElementVisible(suiteNameBy);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
 
@@ -203,7 +207,7 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         methods.checkElementVisible(mobileDeviceBy);
         By versionTextBy = methods.getByWithKeySetValue("mobileVersionOptionTextInCreatePlan","last()");
         methods.checkElementVisible(versionTextBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         String version = methods.getText(versionTextBy).trim();
         By versionBy = methods.getByWithKeySetValue("mobileVersionOptionKeyValueInCreatePlan", version);
         methods.checkElementVisible(versionBy);
@@ -212,7 +216,7 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         By addButtonBy = methods.getBy("addButtonInCreatePlan");
         methods.checkElementVisible(addButtonBy);
         methods.checkElementClickable(addButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(addButtonBy);
         methods.putValueInTestMap("mobileVersion", version);
         appiumPlan = true;
@@ -226,7 +230,7 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         methods.checkElementVisible(projectBy);
         methods.checkElementVisible(suiteNameBy);
         methods.checkElementVisible(projectNameErrorBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertEquals("","This field is required.", methods.getText(projectNameErrorBy).trim());
         methods.checkElementVisible(methods.getBy("notAnyScenarioForScenariosInCreatePlan"));
         methods.checkElementVisible(methods.getBy("notAnyScenarioForScenarioOrderInCreatePlan"));
@@ -258,20 +262,20 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
 
         logger.info(getAttribute("isCreatePlanWebPlatform").toString());
         logger.info(getAttribute("isCreatePlanMobilePlatform").toString());
-        String newPlan = "newPlan" + methods.randomString(6);
+        String newPlan = "newPlan" + methodsUtil.randomString(6);
         By projectBy = methods.getBy("projectNameInCreatePlan");
         By suiteNameBy = methods.getBy("suiteNameInCreatePlan");
         methods.checkElementVisible(projectBy);
         methods.checkElementClickable(projectBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         if(!appiumPlan){
             methods.putValueInTestMap("currentProject", methods.getValueInTestMap("appiumProject").toString());
-            setAttribute("isCreatePlanWebPlatform",false);
-            setAttribute("isCreatePlanMobilePlatform",true);
+            setAttribute("isCreatePlanWebPlatform", Value.asValue(false));
+            setAttribute("isCreatePlanMobilePlatform", Value.asValue(true));
         }else {
             methods.putValueInTestMap("currentProject", methods.getValueInTestMap("optionalProject").toString());
-            setAttribute("isCreatePlanWebPlatform",true);
-            setAttribute("isCreatePlanMobilePlatform",false);
+            setAttribute("isCreatePlanWebPlatform", Value.asValue(true));
+            setAttribute("isCreatePlanMobilePlatform", Value.asValue(false));
         }
         methods.selectByVisibleText(projectBy
                 , String.valueOf(methods.getValueInTestMap("currentProject")));
@@ -280,15 +284,15 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         methods.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
         methods.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(300);
-        methods.clearElementWithBackSpace(suiteNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(300);
+        methods.clearElementWithBackSpace(suiteNameBy,"a");
+        methodsUtil.waitByMilliSeconds(200);
         methods.checkElementVisible(suiteNameBy);
         methods.sendKeys(suiteNameBy, newPlan);
         methods.putValueInTestMap("newPlan", newPlan);
         logger.info(getAttribute("isCreatePlanWebPlatform").toString());
         logger.info(getAttribute("isCreatePlanMobilePlatform").toString());
-        methods.waitByMilliSeconds(300);
+        methodsUtil.waitByMilliSeconds(300);
     }
 
     public void e_Click_Save_Filled_Suite_Name() {
@@ -297,15 +301,15 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         By saveButtonBy = methods.getBy("saveButtonInCreatePlan");
         methods.checkElementVisible(methods.getBy("projectNameInCreatePlan"));
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(200);
-        methods.clearElementWithBackSpace(suiteNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
+        methods.clearElementWithBackSpace(suiteNameBy,"a");
+        methodsUtil.waitByMilliSeconds(200);
         methods.checkElementVisible(suiteNameBy);
         methods.sendKeys(suiteNameBy, "newPlan");
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.checkElementVisible(saveButtonBy);
         methods.checkElementClickable(saveButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(saveButtonBy);
     }
 
@@ -330,9 +334,9 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
 
         By cancelButtonBy = methods.getBy("cancelButtonInCreatePlan");
         methods.checkElementVisible(cancelButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(cancelButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(cancelButtonBy);
         modelLocationStillCreatePlanPage = false;
     }
@@ -347,25 +351,25 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         methods.checkElementVisible(methods.getBy("createPlanInAllSuites"));
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
         methods.checkElementVisible(methods.getBy("suiteForTableInAllSuites"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         String projectName = String.valueOf(methods.getValueInTestMap("currentProject"));
         methods.selectByVisibleText(projectBy, projectName);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(projectBy);
         methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         Assert.assertTrue("", methods.isElementInVisible(methods
                 .getByWithKeySetValue("tablePlanWithNotProjectNameInAllSuites", projectName),60));
         methods.checkElementVisible(methods.getByWithKeySetValue("tablePlanWithProjectNameInAllSuites"
                 , projectName));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         String newPlan = String.valueOf(methods.getValueInTestMap("newPlan"));
         /**
          * TODO: pagination
          */
         By planCountBy = methods.getBy("planCountTextInAllSuites");
         methods.checkElementVisible(planCountBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         int planCount = Integer.parseInt(methods.getText(planCountBy)
                 .replace("\r\n","").trim().split("out of")[1]
                 .replace("\r\n","").trim());
@@ -388,9 +392,9 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
                     methods.checkElementVisible(paginationPrevBy);
                     methods.checkElementVisible(paginationNextBy);
                     methods.checkElementClickable(paginationNextBy);
-                    methods.waitByMilliSeconds(300);
+                    methodsUtil.waitByMilliSeconds(300);
                     methods.clickElement(paginationNextBy);
-                    methods.waitByMilliSeconds(200);
+                    methodsUtil.waitByMilliSeconds(200);
                     methods.checkElementVisible(paginationPanelBy);
                 }
 
@@ -453,10 +457,10 @@ public class CreatePlan extends ExecutionContext implements org.graphwalker.Crea
         methods.checkElementVisible(methods.getBy("scenarioForScenariosSelectListInCreatePlan"));
         methods.checkElementVisible(scenarioNameForScenariosBy);
         methods.checkElementClickable(scenarioNameForScenariosBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         String scenarioName = methods.getText(scenarioNameForScenariosBy).trim();
         methods.putValueInTestMap("scenarioNameInNewPlan",scenarioName);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         methods.clickElement(scenarioNameForScenariosBy);
     }
 

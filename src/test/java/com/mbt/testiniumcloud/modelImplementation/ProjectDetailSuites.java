@@ -1,27 +1,46 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ProjectDetailSuites extends ExecutionContext implements org.graphwalker.Project_Detail_Suites {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProjectDetailSuites.class);
+    private static final Logger logger = LogManager.getLogger(ProjectDetailSuites.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public ProjectDetailSuites() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -32,21 +51,6 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Verify_In_Reports_Page_SHARED() {
@@ -90,7 +94,7 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
 
     public void v_Verify_Suite_Is_Not_Running() {
 
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertTrue("", methods.isElementInVisible(methods
                 .getBy("TestRunSuccessfullStarted"),30));
     }
@@ -98,19 +102,19 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
     public void v_Verify_Suite_Is_Running() {
 
         methods.checkElementVisible(methods.getBy("TestRunSuccessfullStarted"));
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
     }
 
     public void e_click_Yes() {
 
         By yesButtonBy = methods.getBy("popupYesButtonInProjects");
         methods.checkElementVisible(yesButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(yesButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(yesButtonBy);
         methods.putValueInTestMap("testRun",true);
-        setAttribute("suiteRunYes",false);
+        setAttribute("suiteRunYes", Value.asValue(false));
     }
 
     public void e_Click_Report() {
@@ -121,9 +125,9 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
         methods.putValueInTestMap("reportPlan", planName);
         By planReportButtonBy = methods.getByWithKeySetValue("reportButtonWithPlanNameInProjectDetailSuites",planName);
         methods.checkElementVisible(planReportButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementClickable(planReportButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(planReportButtonBy);
     }
 
@@ -140,10 +144,10 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
         if(!Boolean.parseBoolean(methods.getValueInTestMap("testRun").toString())
                 && methods.getValueInTestMap("currentProject").toString().trim()
                 .equals(methods.getValueInTestMap("editProject").toString())){
-            setAttribute("suiteRunYes",true);
+            setAttribute("suiteRunYes",Value.asValue(true));
         }
         else {
-        setAttribute("suiteRunYes",false);
+        setAttribute("suiteRunYes",Value.asValue(false));
         }
     }
 
@@ -176,15 +180,15 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
             methods.checkElementVisible(methods.getBy("runButtonInProjectDetailSuites"));
             methods.checkElementVisible(methods.getBy("editButtonInProjectDetailSuites"));
             methods.checkElementVisible(methods.getBy("deleteButtonInProjectDetailSuites"));
-            setAttribute("hasProjectAPlan",true);
+            setAttribute("hasProjectAPlan",Value.asValue(true));
             if (methods.isElementVisible(methods.getBy("reportButtonInProjectDetailSuites"),2)){
-                setAttribute("isReportAvailable",true);
+                setAttribute("isReportAvailable",Value.asValue(true));
             }else {
-                setAttribute("isReportAvailable",false);
+                setAttribute("isReportAvailable",Value.asValue(false));
             }
         }else {
-            setAttribute("hasProjectAPlan",false);
-            setAttribute("isReportAvailable",false);
+            setAttribute("hasProjectAPlan",Value.asValue(false));
+            setAttribute("isReportAvailable",Value.asValue(false));
         }
 
         /**
@@ -201,24 +205,24 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
         methods.checkElementClickable(noButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 
     public void v_Control_Are_You_Sure_Message() {
 
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
     }
 
     public void e_Click_Delete() {
 
         By planNameBy = methods.getBy("tablePlanNameInProjectDetailSuites");
         methods.checkElementVisible(planNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         String planName = methods.getText(planNameBy).trim();
         methods.putValueInTestMap("deletePlan", planName);
         By planDeleteButtonBy = methods.getByWithKeySetValue("deleteButtonWithPlanNameInProjectDetailSuites", planName);
@@ -256,7 +260,7 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
         By summaryTabBy = methods.getBy("summaryTabInProjectDetail");
         methods.checkElementVisible(summaryTabBy);
         methods.checkElementClickable(summaryTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(summaryTabBy);
     }
 
@@ -264,7 +268,7 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
 
         By planNameBy = methods.getBy("tablePlanNameInProjectDetailSuites");
         methods.checkElementVisible(planNameBy);
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         String planName = methods.getText(planNameBy).trim();
         methods.putValueInTestMap("editPlanName", planName);
         methods.putValueInTestMap("editProjectName", methods.getValueInTestMap("currentProject").toString());
@@ -279,7 +283,7 @@ public class ProjectDetailSuites extends ExecutionContext implements org.graphwa
         methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
         methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
         methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
     }
 
     public void v_Verify_In_Plan_Edit_Page_SHARED() {

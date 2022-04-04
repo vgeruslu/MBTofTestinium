@@ -18,6 +18,8 @@ public class ElementInfo
   @Expose
   private int index;
 
+  private int fileNameIndex;
+
   public ElementInfo(){
 
   }
@@ -52,5 +54,13 @@ public class ElementInfo
 
   public void setIndex(int index) {
     this.index = index;
+  }
+
+  public int getFileNameIndex() {
+    return fileNameIndex;
+  }
+
+  public void setFileNameIndex(int fileNameIndex) {
+    this.fileNameIndex = fileNameIndex;
   }
 }

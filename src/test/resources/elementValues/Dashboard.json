@@ -51,7 +51,7 @@
   },
   {
     "key": "allSuitesTab",
-    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[text()=\"ALL SUITES\"]",
+    "value": "//div[@id=\"navbar\"]/ul[@class=\"nav navbar-nav\"]/li/a[text()=\"ALL PLANS\"]",
     "type": "xpath"
   },
   {

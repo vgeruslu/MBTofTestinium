@@ -1,27 +1,45 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class Create extends ExecutionContext implements org.graphwalker.Create {
 
-    private static final Logger logger = LoggerFactory.getLogger(Create.class);
+    private static final Logger logger = LogManager.getLogger(Create.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public Create() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -32,21 +50,6 @@ public class Create extends ExecutionContext implements org.graphwalker.Create {
     @AfterExecution
     public void cleanup() {
 
-    }
-
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     public void v_Verify_In_Create_Page_SHARED() {
@@ -104,7 +107,7 @@ public class Create extends ExecutionContext implements org.graphwalker.Create {
 
         By createNewPlanButtonBy = methods.getBy("createPlanInCreatePage");
         methods.checkElementClickable(createNewPlanButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(createNewPlanButtonBy);
         methods.putValueInTestMap("projectSelectedForPlan",false);
     }
@@ -156,7 +159,7 @@ public class Create extends ExecutionContext implements org.graphwalker.Create {
 
         By createNewProjectButtonBy = methods.getBy("createNewProjectInCreatePage");
         methods.checkElementClickable(createNewProjectButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(createNewProjectButtonBy);
     }
 
@@ -164,7 +167,7 @@ public class Create extends ExecutionContext implements org.graphwalker.Create {
 
         By createNewScenarioButtonBy = methods.getBy("createScenarioInCreatePage");
         methods.checkElementClickable(createNewScenarioButtonBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(createNewScenarioButtonBy);
         methods.putValueInTestMap("projectSelectedForScenario",false);
     }

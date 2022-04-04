@@ -1,28 +1,47 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
 import com.mbt.testiniumcloud.methods.Methods;
+import com.mbt.testiniumcloud.methods.MethodsUtil;
 import com.mbt.testiniumcloud.utils.CoverageValue;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
+import com.mbt.testiniumcloud.utils.SharedNodeControl;
+import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.model.Edge;
 import org.graphwalker.java.annotation.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @GraphWalker(value = CoverageValue.RandomEdgeCoverage100)
 public class ProjectDetailSummary extends ExecutionContext implements org.graphwalker.Project_Detail_Summary {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProjectDetailSummary.class);
+    private static final Logger logger = LogManager.getLogger(ProjectDetailSummary.class);
     Methods methods;
+    MethodsUtil methodsUtil;
     ExcelMapData excelMapData;
 
     public ProjectDetailSummary() {
 
         methods = new Methods();
+        methodsUtil = new MethodsUtil();
         excelMapData = new ExcelMapData();
         methods.putValueInTestMap("controlProjectDetailSummary",false);
+    }
+
+    @BeforeElement
+    public void beforeElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
+        excelMapData.setBeforeElementData(getModel(), getCurrentElement());
+        SharedNodeControl.sharedNodeElementControl(getCurrentElement());
+    }
+
+    @AfterElement
+    public void afterElement() {
+
+        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
     }
 
     @BeforeExecution
@@ -35,31 +54,16 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
 
     }
 
-    @BeforeElement
-    public void beforeElement() {
-
-        excelMapData.setBeforeElementData(getModel().getName().trim()
-                , getCurrentElement().getId().trim(), getCurrentElement().getName().trim());
-        logger.info("═════════  " + getCurrentElement().getName() + "   " + getModel().getName() + "  ═════════");
-    }
-
-    @AfterElement
-    public void afterElement() {
-
-        logger.info(getCurrentElement() instanceof Edge.RuntimeEdge ? "Edge" : "Vertex");
-        logger.info("══════════════════════════════════════════════════════════════════════════════════════════════════════");
-    }
-
     public void e_Click_Run_Suite() {
 
         By suiteNameBy = methods.getByWithKeySetValue("suiteNameInProjectDetailSummary","1");
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         String planName = methods.getText(suiteNameBy).trim();
         By runSuiteBy = methods.getByWithKeySetValue("runSuiteWithSuiteNameInProjectDetailSummary", planName);
         methods.checkElementVisible(runSuiteBy);
         methods.checkElementClickable(runSuiteBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(runSuiteBy);
         methods.putValueInTestMap("currentPlan", planName);
     }
@@ -69,7 +73,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         By suitesTabBy = methods.getBy("suitesTabInProjectDetail");
         methods.checkElementVisible(suitesTabBy);
         methods.checkElementClickable(suitesTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(suitesTabBy);
         methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
@@ -86,7 +90,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         By scenariosTabBy = methods.getBy("scenariosTabInProjectDetail");
         methods.checkElementVisible(scenariosTabBy);
         methods.checkElementClickable(scenariosTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(scenariosTabBy);
         methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
@@ -173,7 +177,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         By propertiesTabBy = methods.getBy("propertiesTabInProjectDetail");
         methods.checkElementVisible(propertiesTabBy);
         methods.checkElementClickable(propertiesTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(propertiesTabBy);
         methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
@@ -189,12 +193,12 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
 
         By suiteNameBy = methods.getByWithKeySetValue("suiteNameInProjectDetailSummary", "last()");
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         String planName = methods.getText(suiteNameBy).trim();
         By deleteDropDownBy = methods.getByWithKeySetValue("deleteDropDownSuiteWithSuiteNameInProjectDetailSummary"
                 , planName);
         methods.checkElementClickable(deleteDropDownBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(deleteDropDownBy);
         methods.putValueInTestMap("currentPlan", planName);
         methods.putValueInTestMap("controlProjectDetailSummary",false);
@@ -213,7 +217,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
 
     public void v_Verify_Suite_Is_Not_Running() {
 
-        methods.waitByMilliSeconds(200);
+        methodsUtil.waitByMilliSeconds(200);
         Assert.assertTrue("Hata", methods
                 .isElementInVisible(methods.getBy("TestRunSuccessfullStarted"),30));
     }
@@ -223,7 +227,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         By projectsTabBy = methods.getBy("projectsTab");
         methods.checkElementVisible(projectsTabBy);
         methods.checkElementClickable(projectsTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(projectsTabBy);
         methods.putValueInTestMap("controlProjectDetailSummary",false);
     }
@@ -233,7 +237,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         By summaryTabBy = methods.getBy("summaryTabInProjectDetail");
         methods.checkElementVisible(summaryTabBy);
         methods.checkElementClickable(summaryTabBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(summaryTabBy);
     }
 
@@ -249,12 +253,12 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
 
         By suiteNameBy = methods.getByWithKeySetValue("suiteNameInProjectDetailSummary","last()");
         methods.checkElementVisible(suiteNameBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         String planName = methods.getText(suiteNameBy).trim();
         By dropDownSuiteBy = methods.getByWithKeySetValue("dropDownSuiteWithSuiteNameInProjectDetailSummary", planName);
         methods.checkElementVisible(dropDownSuiteBy);
         methods.checkElementClickable(dropDownSuiteBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(dropDownSuiteBy);
         methods.putValueInTestMap("currentPlan", planName);
     }
@@ -264,7 +268,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
         methods.checkElementClickable(noButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 
@@ -273,7 +277,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
         methods.checkElementVisible(noButtonBy);
         methods.checkElementClickable(noButtonBy);
-        methods.waitBySeconds(1);
+        methodsUtil.waitBySeconds(1);
         methods.clickElement(noButtonBy);
     }
 
@@ -282,7 +286,7 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
         By createNewSuitePanelBy = methods.getBy("createNewSuitePanelInProjectDetailSummary");
         methods.checkElementVisible(createNewSuitePanelBy);
         methods.checkElementClickable(createNewSuitePanelBy);
-        methods.waitByMilliSeconds(500);
+        methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(createNewSuitePanelBy);
         methods.putValueInTestMap("projectSelectedForPlan",true);
         methods.putValueInTestMap("controlProjectDetailSummary",false);
@@ -316,9 +320,9 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
                 methods.checkElementVisible(methods.getBy("dropDownSuiteInProjectDetailSummary"));
                 methods.checkElementVisible(methods.getBy("reportSuiteInProjectDetailSummary"));
                 methods.checkElementVisible(methods.getBy("runSuiteInProjectDetailSummary"));
-                setAttribute("hasProjectAPlan", true);
+                setAttribute("hasProjectAPlan", Value.asValue(true));
             } else {
-                setAttribute("hasProjectAPlan", false);
+                setAttribute("hasProjectAPlan", Value.asValue(false));
             }
             methods.putValueInTestMap("controlProjectDetailSummary", true);
         }
