@@ -172,7 +172,7 @@ public class Driver {
                     + result.getResults().toString(2).split("\"totalFailedNumberOfModels\"")[1] + "]");
         }
 
-        assertTrue(isSuccess, isSuccess ? "" : result.getErrors().toString().split("Caused by:")[1]);
+        assertTrue(isSuccess, result.getErrors().toString().split("Caused by:")[1]);
     }
 
     public void createDriver() throws MalformedURLException, Exception {
