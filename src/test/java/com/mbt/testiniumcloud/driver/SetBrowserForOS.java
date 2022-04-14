@@ -59,9 +59,6 @@ public class SetBrowserForOS {
                 webDriverName = "safaridriver";
                 break;
             case "edge":
-                if (!os.equals("WINDOWS")) {
-                    throw new NullPointerException("Edge Browser sadece Windows işletim sisteminde mevcut");
-                }
                 driverName = "edge";
                 webDriverName = "MicrosoftWebDriver";
                 // terminal
