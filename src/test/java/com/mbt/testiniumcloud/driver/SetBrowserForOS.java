@@ -60,7 +60,7 @@ public class SetBrowserForOS {
                 break;
             case "edge":
                 driverName = "edge";
-                webDriverName = "MicrosoftWebDriver";
+                webDriverName = "msedgedriver";
                 // terminal
                 //DISM.exe /Online /Add-Capability /CapabilityName:Microsoft.WebDriver~~~~0.0.1.0
                 break;

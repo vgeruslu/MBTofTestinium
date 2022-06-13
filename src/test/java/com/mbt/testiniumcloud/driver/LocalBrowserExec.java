@@ -226,30 +226,8 @@ public class LocalBrowserExec {
 
     private static EdgeDriver getEdgeDriver(){
 
-      //  DesiredCapabilities capabilities = new DesiredCapabilities().edge();
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        //capabilities.setCapability(CapabilityType.SUPPORTS_WEB_STORAGE,false);
-        //capabilities.setCapability(CapabilityType.HAS_NATIVE_EVENTS,false);
-        /**capabilities.setCapability("locationContextEnabled",false);
-        capabilities.setCapability("applicationCacheEnabled",false);
-        capabilities.setCapability("webStorageEnabled",false);
-        capabilities.setCapability("nativeEvents",false);*/
-       // capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-        //capabilities
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--disable-notifications");
-        chromeOptions.addArguments("test-type");
-        chromeOptions.addArguments("disable-popup-blocking");
-        chromeOptions.addArguments("ignore-certificate-errors");
-        chromeOptions.addArguments("disable-translate");
-        chromeOptions.addArguments("disable-infobars");
-        chromeOptions.addArguments("--no-sandbox");
-        chromeOptions.addArguments("disable-plugins");
-       // chromeOptions.addArguments("--disable-local-storage");
-        //chromeOptions.addArguments("disable-extensions");
-        chromeOptions.setExperimentalOption("w3c",false);
-        chromeOptions.setBinary(Driver.ConfigurationProp.getString("edgeBrowserLocation"));
-        EdgeOptions edgeOptions = new EdgeOptions().merge(chromeOptions);
+        EdgeOptions edgeOptions = new EdgeOptions();
         // options
         setProxy(capabilities);
         edgeOptions.merge(capabilities);
