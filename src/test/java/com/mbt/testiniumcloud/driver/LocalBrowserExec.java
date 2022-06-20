@@ -21,10 +21,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+
+import java.util.*;
 import java.util.logging.Level;
 
 public class LocalBrowserExec {
@@ -130,6 +128,7 @@ public class LocalBrowserExec {
         chromeOptions.addArguments("ignore-certificate-errors");
         chromeOptions.addArguments("disable-translate");
         chromeOptions.addArguments("disable-extensions");
+        chromeOptions.addArguments("--start-fullscreen");
         chromeOptions.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
        // chromeOptions.addArguments("--disable-web-security");
        // chromeOptions.addArguments("--no-proxy-server");
@@ -228,6 +227,18 @@ public class LocalBrowserExec {
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         EdgeOptions edgeOptions = new EdgeOptions();
+
+        //edgeOptions.setCapability("--ignore-certificate-errors", true);
+        //edgeOptions.setCapability("disable-gpu", true);
+        //edgeOptions.setCapability("disable-plugins", true);
+        //edgeOptions.setCapability("--disable-notifications", true);
+       // edgeOptions.setCapability("--start-fullscreen",true);
+        Map<String, Object> map = new HashMap<>();
+        List<String> args = Arrays.asList("--start-fullscreen","--disable-blink-features=AutomationControlled"
+                //,"-inprivate"
+                ,"--ignore-certificate-errors");
+        map.put("args", args);
+        edgeOptions.setCapability("ms:edgeOptions", map);
         // options
         setProxy(capabilities);
         edgeOptions.merge(capabilities);
