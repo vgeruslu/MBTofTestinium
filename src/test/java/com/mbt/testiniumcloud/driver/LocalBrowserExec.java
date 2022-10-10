@@ -1,5 +1,6 @@
 package com.mbt.testiniumcloud.driver;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
@@ -12,31 +13,32 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-
 import java.util.*;
-import java.util.logging.Level;
 
 public class LocalBrowserExec {
 
     private static final Logger logger = LogManager.getLogger(LocalBrowserExec.class);
+    private static Boolean useWebDriverManager;
 
     public static WebDriver LocalExec(String browser) throws Exception{
 
-        SetBrowserForOS.setDriverPath(browser);
+        useWebDriverManager = Boolean.parseBoolean(Driver.ConfigurationProp.getString("useWebDriverManager"));
+        if(!useWebDriverManager){
+            SetBrowserForOS.setDriverPath(browser);
+        }
 
         WebDriver driver;
         switch (browser.toLowerCase(Locale.ENGLISH)){
 
             case "chrome" :
+                if(useWebDriverManager) {
+                    WebDriverManager.chromedriver().setup();
+                }
                 driver = getChromeDriver();
                 if(Boolean.parseBoolean(Driver.ConfigurationProp.getString("chromeZoomActive"))
                         && Driver.ConfigurationProp.getString("chromeZoomPlatform").contains(Driver.osName)) {
@@ -49,19 +51,19 @@ public class LocalBrowserExec {
                 }
                 break;
             case "firefox" :
+                if(useWebDriverManager) {
+                    WebDriverManager.firefoxdriver().setup();
+                }
                 driver = getFirefoxDriver();
                 break;
             case "safari" :
                 driver = getSafariDriver();
                 break;
             case "edge" :
+                if(useWebDriverManager) {
+                    WebDriverManager.edgedriver().setup();
+                }
                 driver = getEdgeDriver();
-                break;
-            case "ie" :
-                driver = getieDriver();
-                break;
-            case "opera" :
-                driver = getOperaDriver();
                 break;
             default:
                 throw new Exception("Hata");
@@ -101,16 +103,6 @@ public class LocalBrowserExec {
          * chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
          */
         //chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
-
-        // performance logs
-        if(Driver.ConfigurationProp.getString("performanceLog").equals("true")) {
-            LoggingPreferences logPrefs = new LoggingPreferences();
-            //logPrefs.addPreferences(new string[] { "devtools.network" });
-            logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
-            //chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
-            capabilities.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
-            chromeOptions.setCapability("goog:loggingPrefs", logPrefs);
-        }
 
         if (Driver.ConfigurationProp.getString("remoteDebuggingPort").equals("true")) {
             chromeOptions.addArguments("--remote-debugging-port=9222");
@@ -243,38 +235,6 @@ public class LocalBrowserExec {
         setProxy(capabilities);
         edgeOptions.merge(capabilities);
         return new EdgeDriver(edgeOptions);
-    }
-
-     private static InternetExplorerDriver getieDriver(){
-
-        //DesiredCapabilities capabilities = new DesiredCapabilities().internetExplorer();
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("ignoreZoomSetting", true);
-        capabilities.setCapability("ignoreProtectedModeSettings",1);
-        capabilities.setCapability("nativeEvents",false);
-     //capabilities.setCapability("requireWindowFocus","true");
-         capabilities.setCapability("requireWindowFocus", true);
-         capabilities.setCapability("enablePersistentHover", false);
-         capabilities.setCapability(InternetExplorerDriver.ELEMENT_SCROLL_BEHAVIOR, true);
-         //capabilities.internetExplorer().setCapability("ignoreProtectedModeSettings", true);
-         capabilities.setCapability("ignoreProtectedModeSettings", true);
-         capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,true);
-     //capabilities
-         InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions();
-         internetExplorerOptions.introduceFlakinessByIgnoringSecurityDomains();
-     // options
-         setProxy(capabilities);
-         internetExplorerOptions.merge(capabilities);
-         return new InternetExplorerDriver(internetExplorerOptions);
-     }
-
-    private static OperaDriver getOperaDriver(){
-
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        OperaOptions operaOptions = new OperaOptions();
-        setProxy(capabilities);
-        operaOptions.merge(capabilities);
-        return new OperaDriver(operaOptions);
     }
 
     private static void setProxy(DesiredCapabilities capabilities){

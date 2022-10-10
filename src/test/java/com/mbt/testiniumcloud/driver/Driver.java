@@ -21,6 +21,7 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriver;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import static org.apache.logging.log4j.LogManager.*;
@@ -34,7 +35,7 @@ public class Driver {
     public static WebDriver driver;
     public static String baseUrl;
     public static String osName = FindOS.getOperationSystemName();
-    public static ResourceBundle ConfigurationProp = ReadProperties.readProp("Configuration.properties");
+    public static ResourceBundle ConfigurationProp = ReadProperties.readPropDir("./src/test/resources/Configuration.properties");
     public static String platformName;
     public static Result result;
     public static String testResult = "";
@@ -46,7 +47,7 @@ public class Driver {
     public static String TestClassName = "";
     public static String TestCaseName = "";
     public static boolean excelActive = false;
-    public static String userDir = System.getProperty("user.dir");
+    public static String userDir = Paths.get("").toAbsolutePath().toString();
     public static boolean chromeZoomCondition = false;
     public static boolean firefoxZoomCondition = false;
     public static boolean isSafari = false;
