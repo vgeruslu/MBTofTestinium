@@ -35,7 +35,7 @@
     <apache.httpmine.version>4.5.13</apache.httpmine.version>
     <apache.httpcore.version>4.4.15</apache.httpcore.version>
     <commons-compress.version>1.21</commons-compress.version>
-    <org.json.version>20220924</org.json.version>
+    <org.json.version>20230227</org.json.version>
     <google.zxing.version>3.5.0</google.zxing.version>
     <commons-codec.version>1.15</commons-codec.version>
     <hamcrest.version>2.2</hamcrest.version>
