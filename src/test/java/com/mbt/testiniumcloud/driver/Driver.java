@@ -179,7 +179,7 @@ public class Driver {
     public void createDriver() throws MalformedURLException, Exception {
 
         //ConfigurationProp = ReadProperties.readProp("Configuration.properties");
-        String key = System.getProperty("key");
+       // String key = System.getProperty("key");
         browserName = ConfigurationProp.getString("browserName");
         baseUrl = ConfigurationProp.getString("baseUrl");
         isFullScreen = Boolean.parseBoolean(ConfigurationProp.getString("isFullScreen"));

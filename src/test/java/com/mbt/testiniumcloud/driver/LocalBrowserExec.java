@@ -1,6 +1,5 @@
 package com.mbt.testiniumcloud.driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
@@ -11,8 +10,6 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -23,22 +20,15 @@ import java.util.*;
 public class LocalBrowserExec {
 
     private static final Logger logger = LogManager.getLogger(LocalBrowserExec.class);
-    private static Boolean useWebDriverManager;
 
     public static WebDriver LocalExec(String browser) throws Exception{
 
-        useWebDriverManager = Boolean.parseBoolean(Driver.ConfigurationProp.getString("useWebDriverManager"));
-        if(!useWebDriverManager){
-            SetBrowserForOS.setDriverPath(browser);
-        }
+        //SetBrowserForOS.setDriverPath(browser);
 
         WebDriver driver;
         switch (browser.toLowerCase(Locale.ENGLISH)){
 
             case "chrome" :
-                if(useWebDriverManager) {
-                    WebDriverManager.chromedriver().setup();
-                }
                 driver = getChromeDriver();
                 if(Boolean.parseBoolean(Driver.ConfigurationProp.getString("chromeZoomActive"))
                         && Driver.ConfigurationProp.getString("chromeZoomPlatform").contains(Driver.osName)) {
@@ -51,18 +41,12 @@ public class LocalBrowserExec {
                 }
                 break;
             case "firefox" :
-                if(useWebDriverManager) {
-                    WebDriverManager.firefoxdriver().setup();
-                }
                 driver = getFirefoxDriver();
                 break;
             case "safari" :
                 driver = getSafariDriver();
                 break;
             case "edge" :
-                if(useWebDriverManager) {
-                    WebDriverManager.edgedriver().setup();
-                }
                 driver = getEdgeDriver();
                 break;
             default:
