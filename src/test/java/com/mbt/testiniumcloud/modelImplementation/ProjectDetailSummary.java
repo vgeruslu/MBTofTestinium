@@ -1,5 +1,6 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
+import com.mbt.testiniumcloud.common.CommonProcess;
 import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
 import com.mbt.testiniumcloud.methods.MethodsUtil;
@@ -11,7 +12,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.java.annotation.*;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,14 +24,16 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
     private static final Logger logger = LogManager.getLogger(ProjectDetailSummary.class);
     Methods methods;
     MethodsUtil methodsUtil;
+    CommonProcess commonProcess;
     ExcelMapData excelMapData;
 
     public ProjectDetailSummary() {
 
         methods = new Methods();
         methodsUtil = new MethodsUtil();
+        commonProcess = new CommonProcess();
         excelMapData = new ExcelMapData();
-        methods.putValueInTestMap("controlProjectDetailSummary",false);
+        methodsUtil.putValueInTestMap("controlProjectDetailSummary",false);
         Configurator.setLevel(getLogger(ProjectDetailSummary.class), Level.toLevel(Driver.modelImplLogLevel));
     }
 
@@ -60,159 +63,145 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
 
     public void e_Click_Run_Suite() {
 
-        By suiteNameBy = methods.getByWithKeySetValue("suiteNameInProjectDetailSummary","1");
-        methods.checkElementVisible(suiteNameBy);
+        By suiteNameBy = commonProcess.getKeyValueChangerElement("suiteNameInProjectDetailSummary","suiteNameInProjectDetailSummary1","1");
+        commonProcess.checkElementVisible(suiteNameBy);
         methodsUtil.waitByMilliSeconds(500);
         String planName = methods.getText(suiteNameBy).trim();
-        By runSuiteBy = methods.getByWithKeySetValue("runSuiteWithSuiteNameInProjectDetailSummary", planName);
-        methods.checkElementVisible(runSuiteBy);
-        methods.checkElementClickable(runSuiteBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(runSuiteBy);
-        methods.putValueInTestMap("currentPlan", planName);
+        By runSuiteBy = commonProcess.getKeyValueChangerElement("runSuiteWithSuiteNameInProjectDetailSummary","runSuiteWithSuiteNameInProjectDetailSummary1", planName);
+        commonProcess.clickButton(runSuiteBy);
+        methodsUtil.putValueInTestMap("currentPlan", planName);
     }
 
     public void e_Click_Project_Detail_Suites_Tab() {
 
         By suitesTabBy = methods.getBy("suitesTabInProjectDetail");
-        methods.checkElementVisible(suitesTabBy);
-        methods.checkElementClickable(suitesTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(suitesTabBy);
-        methods.putValueInTestMap("controlProjectDetailSummary",false);
+        commonProcess.clickButton(suitesTabBy);
+        methodsUtil.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_Verify_Suite_Is_Available() {
 
-        By dropDownSuiteBy = methods.getByWithKeySetValue("dropDownSuiteWithSuiteNameInProjectDetailSummary"
-                , methods.getValueInTestMap("currentPlan").toString());
-        methods.checkElementVisible(dropDownSuiteBy);
+        By dropDownSuiteBy = commonProcess.getKeyValueChangerElement("dropDownSuiteWithSuiteNameInProjectDetailSummary"
+                ,"dropDownSuiteWithSuiteName1InProjectDetailSummary", methodsUtil.getValueInTestMap("currentPlan").toString());
+        commonProcess.checkElementVisible(dropDownSuiteBy);
     }
 
     public void e_Click_Project_Detail_Scenarios_Tab() {
 
         By scenariosTabBy = methods.getBy("scenariosTabInProjectDetail");
-        methods.checkElementVisible(scenariosTabBy);
-        methods.checkElementClickable(scenariosTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(scenariosTabBy);
-        methods.putValueInTestMap("controlProjectDetailSummary",false);
+        commonProcess.clickButton(scenariosTabBy);
+        methodsUtil.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_Verify_In_Create_Plan_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/plan/create",
+        assertTrue(methods.doesUrl("https://testinium.io/plan/create",
                 75,"startWith"));
-        methods.checkElementVisible(methods.getBy("logoInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("projectNameInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("suiteNameInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("saveButtonInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("logoInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("suiteNameInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInCreatePlan"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
     public void v_Verify_In_Project_Detail_Suites_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/project/detail/",
+        assertTrue(methods.doesUrl("https://testinium.io/project/detail/",
                 75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/plans",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoWithProjectNameInProjectDetailSuites"
-                , String.valueOf(methods.getValueInTestMap("currentProject"))));
-        methods.checkElementVisible(methods.getBy("fromInProjectDetailSuites"));
-        methods.checkElementVisible(methods.getBy("toInProjectDetailSuites"));
-        methods.checkElementVisible(methods.getBy("runningTestCheckboxInProjectDetailSuites"));
-        methods.checkElementVisible(methods.getBy("failedOnesInProjectDetailSuites"));
-        methods.checkElementVisible(methods.getBy("tableInProjectDetailSuites"));
-        methods.checkElementVisible(methods.getBy("propertiesTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("summaryTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("scenariosTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("suitesTabInProjectDetail"));
+        assertTrue(methods.doesUrl("/plans",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoWithProjectNameInProjectDetailSuites"
+                , String.valueOf(methodsUtil.getValueInTestMap("currentProject"))));
+        commonProcess.checkElementVisible(methods.getBy("fromInProjectDetailSuites"));
+        commonProcess.checkElementVisible(methods.getBy("toInProjectDetailSuites"));
+        commonProcess.checkElementVisible(methods.getBy("runningTestCheckboxInProjectDetailSuites"));
+        commonProcess.checkElementVisible(methods.getBy("failedOnesInProjectDetailSuites"));
+        commonProcess.checkElementVisible(methods.getBy("tableInProjectDetailSuites"));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("summaryTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("scenariosTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("suitesTabInProjectDetail"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
     public void v_Verify_In_Projects_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/project",75,"equal"));
-        methods.checkElementVisible(methods.getBy("projectsLogoTitleInProjects"));
-        methods.checkElementVisible(methods.getBy("projectPanelInProjects"));
-        methods.checkElementVisible(methods.getBy("createProjectPanelInProjects"));
-        methods.checkElementVisible(methods.getBy("createProjectInProjects"));
+        assertTrue(methods.doesUrl("https://testinium.io/project",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("projectsLogoTitleInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("projectPanelInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("createProjectPanelInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("createProjectInProjects"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
     public void v_Control_Drop_Down_Menu() {
 
-        By editDropDownBy = methods.getByWithKeySetValue("editDropDownSuiteWithSuiteNameInProjectDetailSummary"
-                , String.valueOf(methods.getValueInTestMap("currentPlan")));
-        By deleteDropDownBy = methods.getByWithKeySetValue("deleteDropDownSuiteWithSuiteNameInProjectDetailSummary"
-                , String.valueOf(methods.getValueInTestMap("currentPlan")));
-        methods.checkElementVisible(editDropDownBy);
-        methods.checkElementVisible(deleteDropDownBy);
+        By editDropDownBy = commonProcess.getKeyValueChangerElement("editDropDownSuiteWithSuiteNameInProjectDetailSummary"
+                ,"editDropDownSuiteWithSuiteName1InProjectDetailSummary", String.valueOf(methodsUtil.getValueInTestMap("currentPlan")));
+        By deleteDropDownBy = commonProcess.getKeyValueChangerElement("deleteDropDownSuiteWithSuiteNameInProjectDetailSummary"
+                ,"deleteDropDownSuiteWithSuiteName1InProjectDetailSummary", String.valueOf(methodsUtil.getValueInTestMap("currentPlan")));
+        commonProcess.checkElementVisible(editDropDownBy);
+        commonProcess.checkElementVisible(deleteDropDownBy);
     }
 
     public void e_Click_Properties() {
 
         By propertiesTabBy = methods.getBy("propertiesTabInProjectDetail");
-        methods.checkElementVisible(propertiesTabBy);
-        methods.checkElementClickable(propertiesTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(propertiesTabBy);
-        methods.putValueInTestMap("controlProjectDetailSummary",false);
+        commonProcess.clickButton(propertiesTabBy);
+        methodsUtil.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_Control_Are_You_Sure_Message() {
 
-        methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
-        methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
-        methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("popupTitleInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
     }
 
     public void e_Click_Delete() {
 
-        By suiteNameBy = methods.getByWithKeySetValue("suiteNameInProjectDetailSummary", "last()");
-        methods.checkElementVisible(suiteNameBy);
+        By suiteNameBy = commonProcess.getKeyValueChangerElement("suiteNameInProjectDetailSummary","suiteNameInProjectDetailSummary1","last()");
+        commonProcess.checkElementVisible(suiteNameBy);
         methodsUtil.waitByMilliSeconds(500);
         String planName = methods.getText(suiteNameBy).trim();
-        By deleteDropDownBy = methods.getByWithKeySetValue("deleteDropDownSuiteWithSuiteNameInProjectDetailSummary"
-                , planName);
-        methods.checkElementClickable(deleteDropDownBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(deleteDropDownBy);
-        methods.putValueInTestMap("currentPlan", planName);
-        methods.putValueInTestMap("controlProjectDetailSummary",false);
+        By deleteDropDownBy = commonProcess.getKeyValueChangerElement("deleteDropDownSuiteWithSuiteNameInProjectDetailSummary"
+                ,"deleteDropDownSuiteWithSuiteName1InProjectDetailSummary", planName);
+        commonProcess.clickButton(deleteDropDownBy);
+        methodsUtil.putValueInTestMap("currentPlan", planName);
+        methodsUtil.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_control_Are_You_Sure_Message() {
 
-        methods.checkElementVisible(methods.getBy("popupTitleInProjects"));
-        methods.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
-        methods.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("popupTitleInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("popupYesButtonInProjects"));
+        commonProcess.checkElementVisible(methods.getBy("popupNoButtonInProjects"));
     }
 
     public void e_No_Action() {
@@ -222,27 +211,20 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
     public void v_Verify_Suite_Is_Not_Running() {
 
         methodsUtil.waitByMilliSeconds(200);
-        Assert.assertTrue("Hata", methods
-                .isElementInVisible(methods.getBy("TestRunSuccessfullStarted"),30));
+        assertTrue(methods.isElementInVisible(methods.getBy("TestRunSuccessfullStarted"),30));
     }
 
     public void e_Click_Projects_Tab() {
 
         By projectsTabBy = methods.getBy("projectsTab");
-        methods.checkElementVisible(projectsTabBy);
-        methods.checkElementClickable(projectsTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(projectsTabBy);
-        methods.putValueInTestMap("controlProjectDetailSummary",false);
+        commonProcess.clickButton(projectsTabBy);
+        methodsUtil.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void e_Click_Summary() {
 
         By summaryTabBy = methods.getBy("summaryTabInProjectDetail");
-        methods.checkElementVisible(summaryTabBy);
-        methods.checkElementClickable(summaryTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(summaryTabBy);
+        commonProcess.clickButton(summaryTabBy);
     }
 
     public void e_No_action() {
@@ -255,80 +237,67 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
 
     public void e_Click_Suite_Drop_Down() {
 
-        By suiteNameBy = methods.getByWithKeySetValue("suiteNameInProjectDetailSummary","last()");
-        methods.checkElementVisible(suiteNameBy);
+        By suiteNameBy = commonProcess.getKeyValueChangerElement("suiteNameInProjectDetailSummary","suiteNameInProjectDetailSummary1","last()");
+        commonProcess.checkElementVisible(suiteNameBy);
         methodsUtil.waitByMilliSeconds(500);
         String planName = methods.getText(suiteNameBy).trim();
-        By dropDownSuiteBy = methods.getByWithKeySetValue("dropDownSuiteWithSuiteNameInProjectDetailSummary", planName);
-        methods.checkElementVisible(dropDownSuiteBy);
-        methods.checkElementClickable(dropDownSuiteBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(dropDownSuiteBy);
-        methods.putValueInTestMap("currentPlan", planName);
+        By dropDownSuiteBy = commonProcess.getKeyValueChangerElement("dropDownSuiteWithSuiteNameInProjectDetailSummary","dropDownSuiteWithSuiteName1InProjectDetailSummary", planName);
+        commonProcess.clickButton(dropDownSuiteBy);
+        methodsUtil.putValueInTestMap("currentPlan", planName);
     }
 
     public void e_Click_No() {
 
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
-        methods.checkElementVisible(noButtonBy);
-        methods.checkElementClickable(noButtonBy);
-        methodsUtil.waitBySeconds(1);
-        methods.clickElement(noButtonBy);
+        commonProcess.clickButton(noButtonBy);
     }
 
     public void e_click_No() {
 
         By noButtonBy = methods.getBy("popupNoButtonInProjects");
-        methods.checkElementVisible(noButtonBy);
-        methods.checkElementClickable(noButtonBy);
-        methodsUtil.waitBySeconds(1);
-        methods.clickElement(noButtonBy);
+        commonProcess.clickButton(noButtonBy);
     }
 
     public void e_Click_Create_New_Suite_Panel() {
 
         By createNewSuitePanelBy = methods.getBy("createNewSuitePanelInProjectDetailSummary");
-        methods.checkElementVisible(createNewSuitePanelBy);
-        methods.checkElementClickable(createNewSuitePanelBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(createNewSuitePanelBy);
-        methods.putValueInTestMap("projectSelectedForPlan",true);
-        methods.putValueInTestMap("controlProjectDetailSummary",false);
+        commonProcess.clickButton(createNewSuitePanelBy);
+        methodsUtil.putValueInTestMap("projectSelectedForPlan",true);
+        methodsUtil.putValueInTestMap("controlProjectDetailSummary",false);
     }
 
     public void v_Verify_In_Project_Detail_Summary_Page_SHARED() {
 
         logger.info(getAttribute("hasProjectAPlan").toString());
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/project/detail/",
-                75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/summary",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoWithProjectNameInProjectDetailSummary"
-                , String.valueOf(methods.getValueInTestMap("currentProject"))));
-        methods.checkElementVisible(methods.getBy("createNewSuitePanelInProjectDetailSummary"));
-        methods.checkElementVisible(methods.getBy("latestSuiteRunsTableWithTextInProjectDetailSummary"));
-        methods.checkElementVisible(methods.getBy("propertiesTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("summaryTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("scenariosTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("suitesTabInProjectDetail"));
+        assertTrue(methods.doesUrl("https://testinium.io/project/detail/",75,"startWith"));
+        assertTrue(methods.doesUrl("/summary",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoWithProjectNameInProjectDetailSummary"
+                ,"logoWithProjectName1InProjectDetailSummary", String.valueOf(methodsUtil.getValueInTestMap("currentProject"))));
+        commonProcess.checkElementVisible(methods.getBy("createNewSuitePanelInProjectDetailSummary"));
+        commonProcess.checkElementVisible(methods.getBy("latestSuiteRunsTableWithTextInProjectDetailSummary"));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("summaryTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("scenariosTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("suitesTabInProjectDetail"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
 
-        if(!Boolean.parseBoolean(methods.getValueInTestMap("controlProjectDetailSummary").toString())) {
+        if(!Boolean.parseBoolean(methodsUtil.getValueInTestMap("controlProjectDetailSummary").toString())) {
             if (methods.isElementVisible(methods.getBy("suiteInProjectDetailSummary"), 2)) {
                 logger.info("element görünür");
-                methods.checkElementVisible(methods.getBy("dropDownSuiteInProjectDetailSummary"));
-                methods.checkElementVisible(methods.getBy("reportSuiteInProjectDetailSummary"));
-                methods.checkElementVisible(methods.getBy("runSuiteInProjectDetailSummary"));
+                commonProcess.checkElementVisible(methods.getBy("dropDownSuiteInProjectDetailSummary"));
+                commonProcess.checkElementVisible(methods.getBy("reportSuiteInProjectDetailSummary"));
+                commonProcess.checkElementVisible(methods.getBy("runSuiteInProjectDetailSummary"));
                 setAttribute("hasProjectAPlan", Value.asValue(true));
             } else {
                 setAttribute("hasProjectAPlan", Value.asValue(false));
             }
-            methods.putValueInTestMap("controlProjectDetailSummary", true);
+            methodsUtil.putValueInTestMap("controlProjectDetailSummary", true);
         }
         logger.info(getAttribute("hasProjectAPlan").toString());
     }
@@ -336,57 +305,57 @@ public class ProjectDetailSummary extends ExecutionContext implements org.graphw
     public void v_Verify_In_Project_Detail_Scenarios_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/project/detail/",
+        assertTrue(methods.doesUrl("https://testinium.io/project/detail/",
                 75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/scenarios",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoWithProjectNameInProjectDetailScenarios"
-                , String.valueOf(methods.getValueInTestMap("currentProject"))));
-        methods.checkElementVisible(methods.getBy("exportTableInProjectDetailScenarios"));
-        methods.checkElementVisible(methods.getBy("suitesSelectInProjectDetailScenarios"));
-        methods.checkElementVisible(methods.getBy("tableInProjectDetailScenarios"));
-        methods.checkElementVisible(methods.getBy("propertiesTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("summaryTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("scenariosTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("suitesTabInProjectDetail"));
+        assertTrue(methods.doesUrl("/scenarios",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoWithProjectNameInProjectDetailScenarios"
+                , String.valueOf(methodsUtil.getValueInTestMap("currentProject"))));
+        commonProcess.checkElementVisible(methods.getBy("exportTableInProjectDetailScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("suitesSelectInProjectDetailScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableInProjectDetailScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("summaryTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("scenariosTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("suitesTabInProjectDetail"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
     public void v_Verify_In_Project_Detail_Properties_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/project/detail/",
+        assertTrue(methods.doesUrl("https://testinium.io/project/detail/",
                 75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/properties",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoWithProjectNameInProjectDetailProperties"
-                , String.valueOf(methods.getValueInTestMap("currentProject"))));
-        methods.checkElementVisible(methods.getBy("projectNameInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("testFrameworkInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("testFileTypeInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("testRunnerToolInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("gitProjectFolderNameInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("gitBranchOrTagsInProjectDetailProperties"));
-       // methods.checkElementVisible(methods.getBy("enableCheckboxInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("applyButtonInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("saveButtonInProjectDetailProperties"));
-        methods.checkElementVisible(methods.getBy("propertiesTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("summaryTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("scenariosTabInProjectDetail"));
-        methods.checkElementVisible(methods.getBy("suitesTabInProjectDetail"));
+        assertTrue(methods.doesUrl("/properties",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoWithProjectNameInProjectDetailProperties"
+                , String.valueOf(methodsUtil.getValueInTestMap("currentProject"))));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("testFrameworkInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("testFileTypeInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("testRunnerToolInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("gitProjectFolderNameInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("gitBranchOrTagsInProjectDetailProperties"));
+       // commonProcess.checkElementVisible(methods.getBy("enableCheckboxInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("applyButtonInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInProjectDetailProperties"));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("summaryTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("scenariosTabInProjectDetail"));
+        commonProcess.checkElementVisible(methods.getBy("suitesTabInProjectDetail"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 

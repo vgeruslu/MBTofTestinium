@@ -8,7 +8,6 @@ import com.mbt.testiniumcloud.utils.CreateMBTExcel;
 import com.mbt.testiniumcloud.utils.ExcelMapData;
 import com.mbt.testiniumcloud.utils.ReadProperties;
 import com.mbt.testiniumcloud.utils.SendMail;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +21,7 @@ import org.openqa.selenium.WebDriver;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import static org.apache.logging.log4j.LogManager.*;
@@ -39,15 +39,17 @@ public class Driver {
     public static String platformName;
     public static Result result;
     public static String testResult = "";
-    public static ConcurrentHashMap<String,Object> TestMap;
+    public static HashMap<String,Object> TestMap;
+    public static HashMap<String,Object> DatabaseMap;
+    public static String userDir = Paths.get("").toAbsolutePath().toString();
+    public static String slash = System.getProperty("file.separator");
+    public static ConcurrentHashMap<String, ConcurrentHashMap<String,Object>> apiMap;
     public static ConcurrentHashMap<String,Object> ModelDurationMap;
     public static Integer stepCount;
     public static String excelLocation;
-    public static String slash = FindOS.getOperationSystemName().equals("WINDOWS") ? "\\": "/";
     public static String TestClassName = "";
     public static String TestCaseName = "";
     public static boolean excelActive = false;
-    public static String userDir = Paths.get("").toAbsolutePath().toString();
     public static boolean chromeZoomCondition = false;
     public static boolean firefoxZoomCondition = false;
     public static boolean isSafari = false;
@@ -90,7 +92,9 @@ public class Driver {
         logger.info("_________________________________________________________________________" + "\r\n");
         logger.info("------------------------SCENARIO-------------------------");
 
-        TestMap = new ConcurrentHashMap<String, Object>();
+        TestMap = new HashMap<String, Object>();
+        DatabaseMap = new HashMap<String, Object>();
+        apiMap = new ConcurrentHashMap<String, ConcurrentHashMap<String,Object>>();
         ModelDurationMap = new ConcurrentHashMap<String, Object>();
         stepCount = 0;
         testResult = "";
@@ -149,7 +153,6 @@ public class Driver {
     @AfterClass
     public static void afterClass(){
 
-        System.out.println("");
         logger.info("*************************************************************************");
     }
 

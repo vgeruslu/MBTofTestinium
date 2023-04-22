@@ -10,7 +10,6 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.graphwalker.java.test.Result;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,10 +17,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class SendMail {
 
@@ -161,6 +157,7 @@ public class SendMail {
             sendMail(mail,testResultInfo,"testFailInfo.txt","testResult.txt", excelPath);
         }catch (Exception e){
             logger.info("Mail yollanamadı.");
+            e.printStackTrace();
         }
     }
 

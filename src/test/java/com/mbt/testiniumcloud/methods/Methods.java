@@ -5,14 +5,19 @@ import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.helper.ElementHelper;
 import com.mbt.testiniumcloud.helper.StoreHelper;
 import com.mbt.testiniumcloud.model.ElementInfo;
-import org.junit.Assert;
+import com.mbt.testiniumcloud.utils.ImageColor;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,27 +28,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Methods {
 
-    private static final Logger logger = LogManager.getLogger(Methods.class);
+    private final Logger logger = LogManager.getLogger(getClass());
     WebDriver driver;
     FluentWait<WebDriver> wait;
     JsMethods jsMethods;
     ActionMethods actionMethods;
     MethodsUtil methodsUtil;
-    long waitElementTimeout;
-    long pollingEveryValue;
+    long waitElementTimeout = 30;
+    long pollingEveryValue = 250;
 
     public Methods(){
 
         this.driver = Driver.driver;
-        waitElementTimeout = Long.parseLong(Driver.ConfigurationProp.getString("localWaitElementTimeout"));
-        pollingEveryValue = Long.parseLong(Driver.ConfigurationProp.getString("localPollingEveryMilliSecond"));
-        wait = setFluentWait(waitElementTimeout);
+        wait = setFluentWait(waitElementTimeout, pollingEveryValue);
         jsMethods = new JsMethods(driver);
         actionMethods = new ActionMethods(driver);
         methodsUtil = new MethodsUtil();
     }
 
     public FluentWait<WebDriver> setFluentWait(long timeout){
+
+        return setFluentWait(timeout, pollingEveryValue);
+    }
+
+    public FluentWait<WebDriver> setFluentWait(long timeout, long pollingEveryValue){
 
         FluentWait<WebDriver> fluentWait = new FluentWait<WebDriver>(driver);
         fluentWait.withTimeout(Duration.ofSeconds(timeout))
@@ -79,7 +87,7 @@ public class Methods {
         elementInfo.setValue(value);
         elementInfo.setType(type);
         elementInfo.setFileNameIndex(-1);
-        StoreHelper.INSTANCE.addElementInfoByKey(key,elementInfo);
+        StoreHelper.INSTANCE.addElementInfoByKey(key, elementInfo);
     }
 
     public WebDriver getDriver(){
@@ -91,20 +99,9 @@ public class Methods {
 
         ElementInfo elementInfo = getElementInfo(key);
         By by = ElementHelper.getElementInfoToBy(elementInfo);
-        logger.info(key + " elementi " + by.toString() + " by değerine sahip." + " Json dosya yolu: "
-                + getElementInfoJsonFileName(elementInfo.getFileNameIndex()));
+        Driver.TestMap.put("lastElement", elementInfo);
+        logger.info(key);
         return by;
-    }
-
-    public By getByWithKeySetValue(String key, String value){
-
-        ElementInfo elementInfo = getElementInfo(key);
-        String getValue = elementInfo.getValue();
-        String type = elementInfo.getType();
-        logger.info(value);
-        String[] arrayValue = Splitter.on("!!").splitToList(value).toArray(new String[0]);
-        String newValue = String.format(getValue, arrayValue);
-        return ElementHelper.getElementInfoToBy(newValue,type);
     }
 
     public List<String> getByValueAndSelectorType(By by){
@@ -135,19 +132,54 @@ public class Methods {
         return actionMethods;
     }
 
-    public Boolean isElementEnabled(By by, int timeout){
+    public Boolean isElementEnabled(By by){
 
-        for (int i = 0; i < 4*timeout; i++) {
-            try {
-                WebElement element = driver.findElement(by);
-                if (element.isDisplayed() && element.isEnabled()) {
-                    return true;
-                }
-            }catch (Exception e){
+        return findElement(by).isEnabled();
+    }
+
+    private Boolean isElementCondition(By by, int count, boolean condition, String valueType){
+
+        boolean value = false;
+        for (int i = 0; i < count; i++) {
+
+            switch (valueType){
+                case "enabled":
+                    value = findElement(by).isEnabled();
+                    break;
+                case "disabled":
+                    value = jsMethods.isElementDisabled(findElementForJs(by,"1"));
+                    break;
+                case "expanded":
+                    value = jsMethods.isElementExpanded(findElementForJs(by,"1"));
+                    break;
+                default:
             }
-            methodsUtil.waitByMilliSeconds(250);
+            if (condition && value) {
+                return true;
+            }
+            if (!condition && !value) {
+                return true;
+            }
+            if (count != 1) {
+                methodsUtil.waitByMilliSeconds(250,false);
+            }
         }
         return false;
+    }
+
+    public Boolean isElementEnabled(By by, int count, boolean condition){
+
+        return isElementCondition(by, count, condition,"enabled");
+    }
+
+    public Boolean isElementDisabledJs(By by, int count, boolean condition){
+
+       return isElementCondition(by, count, condition,"disabled");
+    }
+
+    public Boolean isElementExpandedJs(By by, int count, boolean condition){
+
+        return isElementCondition(by, count, condition,"expanded");
     }
 
     public void clickElementForStaleElement(By by){
@@ -200,7 +232,13 @@ public class Methods {
     public void clickElement(By by){
 
         findElement(by).click();
-        logger.info("Elemente tıklandı.");
+        logger.info(by.toString() + " elementine tıklandı.");
+    }
+
+    public void submitElement(By by){
+
+        findElement(by).submit();
+        logger.info(by.toString() + " elementine tıklandı.");
     }
 
     public void clearElement(By by){
@@ -219,7 +257,7 @@ public class Methods {
         }
         switch (value) {
             case "valueJs":
-                count = getValueJs(by,"3").toCharArray().length;
+                count = getValueJs(by,"3").toString().toCharArray().length;
                 break;
             case "text":
                 count = getText(by).toCharArray().length;
@@ -230,14 +268,14 @@ public class Methods {
             default:
                 clearElement(by);
                 methodsUtil.waitByMilliSeconds(100);
-                sendKeys(by, value.substring(0, 1)); // There was no other way
+                sendKeys(by, value.substring(0, 1));
                 methodsUtil.waitByMilliSeconds(100);
                 count = 1;
         }
         WebElement webElement = findElement(by);
         for (int i = 0; i < count; i++){
             webElement.sendKeys(Keys.valueOf("BACK_SPACE"));
-            //methodsUtil.waitByMilliSeconds(20);
+            //methodsUtil.waitByMilliSeconds(100);
         }
     }
 
@@ -262,6 +300,17 @@ public class Methods {
         logger.info("Elemente " + text + " texti yazıldı.");
     }
 
+    public void sendKeysByAction(String text){
+
+        actionMethods.sendKeys(text);
+        logger.info("Alana " + text + " texti yazıldı.");
+    }
+
+    public void sendKeysWithKeysByAction(String keys){
+
+        actionMethods.sendKeys(keys);
+    }
+
     public void sendKeysWithKeys(By by, String text){
 
         findElement(by).sendKeys(Keys.valueOf(text));
@@ -275,12 +324,6 @@ public class Methods {
 
             webElement.sendKeys(Keys.valueOf("NUMPAD" + String.valueOf(textArray[i])));
         }
-        logger.info("Elemente " + text + " texti yazıldı.");
-    }
-
-    public void sendKeysJs(By by, String text, String type){
-
-        jsMethods.sendKeys(findElementForJs(by,type), text);
         logger.info("Elemente " + text + " texti yazıldı.");
     }
 
@@ -321,14 +364,19 @@ public class Methods {
         return findElement(by).getAttribute(attribute);
     }
 
-    public String getAttributeJs(By by, String attribute, String type){
+    public Object getAttributeJs(By by, String attribute, String type){
 
         return jsMethods.getAttribute(findElementForJs(by,type), attribute);
     }
 
-    public String getValueJs(By by, String type){
+    public Object getValueJs(By by, String type){
 
         return jsMethods.getValue(findElementForJs(by,type));
+    }
+
+    public void setValueJs(By by, String type, String text, boolean isValueString){
+
+        jsMethods.setValue(findElementForJs(by,type), text, isValueString);
     }
 
     public String getCssValue(By by, String attribute){
@@ -343,12 +391,22 @@ public class Methods {
 
     public String getCssValueJs(By by, String attribute, String type){
 
-        return jsMethods.getCssValue(findElementForJs(by,type), attribute);
+        return jsMethods.getCssValue(findElementForJs(by,type), attribute).toString();
     }
 
     public String getHexCssValueJs(By by, String attribute, String type){
 
         return Color.fromString(getCssValueJs(by, attribute, type)).asHex();
+    }
+
+    public Object validationMessage(By by, String type){
+
+        return jsMethods.validationMessage(findElementForJs(by,type));
+    }
+
+    public Object checkValidity(By by, String type){
+
+        return jsMethods.checkValidity(findElementForJs(by,type));
     }
 
     public String getPageSource(){
@@ -369,6 +427,12 @@ public class Methods {
     public Dimension getDriverSize(){
 
         return driver.manage().window().getSize();
+    }
+
+    public void openNewWindowOrTab(boolean newWindowOrTab){
+
+        WindowType windowType = newWindowOrTab ? WindowType.WINDOW : WindowType.TAB;
+        driver.switchTo().newWindow(windowType);
     }
 
     public void openNewTabJs(String url){
@@ -428,6 +492,11 @@ public class Methods {
         driver.switchTo().defaultContent();
     }
 
+    public void get(String url){
+
+        driver.get(url);
+    }
+
     public void navigateTo(String url){
 
         driver.navigate().to(url);
@@ -479,6 +548,7 @@ public class Methods {
     }
 
     public void selectItemByIndex(By by, int index){
+
         WebElement element = findElement(by);
         actionMethods.selectItemByIndex(element, index);
     }
@@ -546,7 +616,7 @@ public class Methods {
     public void focusElementJs(By by){
 
         WebElement webElement = findElementForJs(by,"1");
-        jsMethods.scrollElement(webElement);
+        jsMethods.scrollElementCenter(webElement);
         jsMethods.focusElement(webElement);
     }
 
@@ -563,43 +633,31 @@ public class Methods {
             return true;
         }
         catch (Exception e) {
-            logger.info("false" + " " + e.getMessage());
+            logger.warn("false" + " " + e.getMessage());
             return false;
         }
     }
 
-    public void checkElementClickable(By by, long timeout){
-
-        assertTrue(isElementClickable(by, timeout),by.toString() + " elementi tıklanabilir değil.");
-    }
     public void checkElementNotClickable(By by, long timeout){
 
         assertFalse(isElementClickable(by, timeout),by.toString() + " elementi tıklanabilir.");
     }
 
-    public void checkElementClickable(By by){
-        checkElementClickable(by,30);
-    }
-
     public boolean isElementVisible(By by, long timeout){
 
+        return  isElementVisible(by, timeout, pollingEveryValue);
+    }
+
+    public boolean isElementVisible(By by, long timeout, long pollingEveryValue){
+
         try {
-            setFluentWait(timeout).until(ExpectedConditions.visibilityOfElementLocated(by));
+            setFluentWait(timeout, pollingEveryValue).until(ExpectedConditions.visibilityOfElementLocated(by));
             logger.info("true");
             return true;
         } catch (Exception e) {
-            logger.info("false" + " " + e.getMessage());
+            logger.warn("false" + " " + e.getMessage());
             return false;
         }
-    }
-
-    public void checkElementVisible(By by, long timeout) {
-
-        assertTrue(isElementVisible(by, timeout), by.toString() + " elementi görüntülenemedi.");
-    }
-
-    public void checkElementVisible(By by){
-        checkElementVisible(by,30);
     }
 
     public boolean isElementInVisible(By by, long timeout){
@@ -609,19 +667,9 @@ public class Methods {
             logger.info("true");
             return true;
         } catch (Exception e) {
-            logger.info("false" + " " + e.getMessage());
+            logger.warn("false" + " " + e.getMessage());
             return false;
         }
-    }
-
-    public void checkElementInVisible(By by, long timeout) {
-
-        assertTrue(isElementInVisible(by, timeout),by.toString() + " elementi görünür");
-    }
-
-    public void checkElementInVisible(By by) {
-
-        checkElementInVisible(by,30);
     }
 
     public boolean isElementLocated(By by, long timeout){
@@ -631,25 +679,16 @@ public class Methods {
             logger.info("true");
             return true;
         } catch (Exception e) {
-            logger.info("false" + " " + e.getMessage());
+            logger.warn("false" + " " + e.getMessage());
             return false;
         }
-    }
-
-    public void checkElementLocated(By by, long timeout) {
-
-        assertTrue(isElementLocated(by, timeout),by.toString() + " element located error.");
-    }
-
-    public void checkElementLocated(By by){
-        checkElementLocated(by,30);
     }
 
     public void hoverElementAction(By by, boolean isScrollElement) {
 
         WebElement webElement = findElementForJs(by,"1");
         if(isScrollElement){
-            jsMethods.scrollElement(webElement);
+            jsMethods.scrollElementCenter(webElement);
         }
         actionMethods.hoverElement(webElement);
     }
@@ -658,7 +697,7 @@ public class Methods {
 
         WebElement webElement = findElementForJs(by,"1");
         if(isScrollElement){
-            jsMethods.scrollElement(webElement);
+            jsMethods.scrollElementCenter(webElement);
         }
         actionMethods.moveAndClickElement(webElement);
     }
@@ -667,7 +706,7 @@ public class Methods {
 
         WebElement webElement = findElementForJs(by,"1");
         if(isScrollElement){
-            jsMethods.scrollElement(webElement);
+            jsMethods.scrollElementCenter(webElement);
         }
         actionMethods.clickElement(webElement);
     }
@@ -676,7 +715,7 @@ public class Methods {
 
         WebElement webElement = findElementForJs(by,"1");
         if(isScrollElement){
-            jsMethods.scrollElement(webElement);
+            jsMethods.scrollElementCenter(webElement);
         }
         actionMethods.doubleClickElement(webElement);
     }
@@ -685,7 +724,7 @@ public class Methods {
 
         WebElement webElement = findElementForJs(by,"1");
         if(isScrollElement){
-            jsMethods.scrollElement(webElement);
+            jsMethods.scrollElementCenter(webElement);
         }
         actionMethods.select(webElement, optionIndex);
     }
@@ -693,14 +732,7 @@ public class Methods {
     // 1 loop 400 ms
     public boolean isImageLoadingJs(By by, int loopCount){
 
-        boolean isImageLoading = false;
-        try {
-            isImageLoading = jsMethods.jsImageLoading(findElementForJs(by,"1"), loopCount);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return isImageLoading;
+        return jsMethods.jsImageLoading(findElementForJs(by,"1"), loopCount);
     }
 
     public void waitPageLoadCompleteJs() {
@@ -730,35 +762,36 @@ public class Methods {
 
     public boolean doesUrl(String url, int count, String condition){
 
-        int againCount = 0;
+        int actualCount = 0;
         boolean isUrl = false;
         String takenUrl = "";
         logger.info("Beklenen url: " + url);
         while (!isUrl) {
-            methodsUtil.waitByMilliSeconds(250);
-            if (againCount == count) {
-                System.err.println("Expected url " + url + " doesn't equal current url " + takenUrl);
-                logger.info("Alınan url: " + takenUrl);
+            methodsUtil.waitByMilliSeconds(250,false);
+            if (actualCount == count) {
+                logger.error("Expected url " + url + " doesn't equal current url " + takenUrl);
                 return false;
             }
             takenUrl = driver.getCurrentUrl();
             if (takenUrl != null) {
                 isUrl = methodsUtil.conditionValueControl(url,takenUrl,condition);
             }
-            againCount++;
+            actualCount++;
         }
-        logger.info("Alınan url: " + takenUrl);
+        logger.info(actualCount + " Alınan url: " + takenUrl);
         return true;
     }
 
     public void clickElementJs(By by){
 
         jsMethods.clickByElement(findElementForJs(by,"3"));
+        logger.info(by.toString() + " elementine tıklandı.");
     }
 
     public void clickElementJs(By by, boolean notClickByCoordinate){
 
         jsMethods.clickByElement(findElementForJs(by,"3"), notClickByCoordinate);
+        logger.info(by.toString() + " elementine tıklandı.");
     }
 
     public void clickByCoordinateJs(int x, int y){
@@ -769,11 +802,13 @@ public class Methods {
     public void clickByWebElementCoordinate(By by){
 
         jsMethods.clickByWebElementCoordinate(findElementForJs(by,"3"));
+        logger.info(by.toString() + " elementine tıklandı.");
     }
 
     public void clickByWebElementCoordinate(By by, int x, int y){
 
         jsMethods.clickByWebElementCoordinate(findElementForJs(by,"3"), x, y);
+        logger.info(by.toString() + " elementine tıklandı.");
     }
 
     public void checkElementExistWithUrl(By by, int elementControlCount, int repeatCount, String url, String errorMessage) {
@@ -782,7 +817,7 @@ public class Methods {
         int countAgain = 0;
         int elementCount;
         while (!isElementVisible) {
-            methodsUtil.waitByMilliSeconds(400);
+            methodsUtil.waitByMilliSeconds(400,false);
             if (countAgain == repeatCount*elementControlCount) {
                 fail(errorMessage);
                 break;
@@ -800,28 +835,51 @@ public class Methods {
         }
     }
 
-    public boolean doesElementExist(By by, int timeout){
+    public boolean doesElementExist(By by, int count){
+
+        return doesElementExist(by ,count,250);
+    }
+
+    public boolean doesElementExist(By by, int count, long milliSeconds){
+
+        return doesElementExist(by, count, milliSeconds,true);
+    }
+
+    public boolean doesElementExist(By by, int count, long milliSeconds, boolean logActive){
 
         int elementCount;
-        for (int i = 0; i < 4*timeout; i++) {
+        for (int i = 0; i < count; i++) {
+            if (i!=0){
+                methodsUtil.waitByMilliSeconds(milliSeconds,false);
+            }
             elementCount = driver.findElements(by).size();
             if (elementCount != 0) {
+                if (logActive)
+                    logger.info("true");
                 return true;
             }
-            methodsUtil.waitByMilliSeconds(250);
         }
+        if (logActive)
+            logger.info("false");
         return false;
     }
 
-    public boolean doesElementNotExist(By by, int timeout) {
+    public boolean doesElementNotExist(By by, int count) {
+
+        return doesElementNotExist(by,count,250);
+    }
+
+    public boolean doesElementNotExist(By by, int count, long milliSeconds) {
 
         int elementCount;
-        for (int i = 0; i < 4*timeout; i++) {
+        for (int i = 0; i < count; i++) {
+            if (i!=0){
+                methodsUtil.waitByMilliSeconds(milliSeconds,false);
+            }
             elementCount = driver.findElements(by).size();
             if (elementCount == 0) {
                 return true;
             }
-            methodsUtil.waitByMilliSeconds(250);
         }
         return false;
     }
@@ -831,32 +889,11 @@ public class Methods {
         ElementInfo elementInfo = getElementInfo(key);
         String getValue = elementInfo.getValue();
         String type = elementInfo.getType();
-        logger.info(value);
+        //logger.info(value);
         String[] arrayValue = Splitter.on(splitValue).splitToList(value).toArray(new String[0]);
         String newValue = String.format(getValue, arrayValue);
         logger.info(newValue);
         createElementInfo(newKey,newValue,type);
-    }
-
-    public String getKeyValueChangerStringBuilder(String value, String splitValue, String mapKeySuffix){
-
-        if(value.contains(mapKeySuffix)) {
-            String[] values = Splitter.on(splitValue).splitToList(value).toArray(new String[0]);
-            StringBuilder stringBuilder = new StringBuilder();
-            int valuesLength = values.length;
-            for (int i = 0; i < valuesLength; i++) {
-                String text = values[i];
-                if (text.endsWith(mapKeySuffix)) {
-                    text = Driver.TestMap.get(text).toString();
-                }
-                stringBuilder.append(text);
-                if (i != valuesLength - 1) {
-                    stringBuilder.append(splitValue);
-                }
-            }
-            value = stringBuilder.toString();
-        }
-        return value;
     }
 
     public WebElement findElementForJs(By by, String type){
@@ -915,107 +952,136 @@ public class Methods {
             textKey = "LEFT_CONTROL";
         }
         By by = By.xpath("//div[@id=\"tryNow\"]/preceding-sibling::input");
-        checkElementVisible(by);
+        assertTrue(isElementVisible(by,30));
         findElement(by).sendKeys(Keys.chord(Keys.valueOf(textKey), "v"));
-        return getValueJs(by,"3");
+        return getValueJs(by,"3").toString();
     }
 
     public void tabControl(){
         for (int i = 0; i < 20; i++){
-            methodsUtil.waitByMilliSeconds(400);
+            methodsUtil.waitByMilliSeconds(400,false);
             if (listTabs().size() > 1){
                 break;
             }
         }
     }
 
-    public Object getValueInTestMap(String key){
+    private String saveScreenshot(File srcFile, String fileNamePrefix){
 
-        return Driver.TestMap.get(key);
-    }
-
-    public void putValueInTestMap(String key, Object object){
-
-        Driver.TestMap.put(key, object);
-    }
-
-    public boolean doesAttributeValue(By by, String attribute, String value, String condition, int count){
-
-        int againCount = 0;
-        boolean attributeCondition = false;
-        String actualAttributeValue = "";
-        logger.info("Beklenen değer: " + attribute + " " + condition + " " + value);
-        while (!attributeCondition) {
-            methodsUtil.waitByMilliSeconds(400);
-            if (againCount == count) {
-                logger.info("Alınan değer: " + actualAttributeValue);
-                return false;
-            }
-            actualAttributeValue = findElement(by).getAttribute(attribute).trim();
-            if (actualAttributeValue != null) {
-                attributeCondition = methodsUtil.conditionValueControl(value, actualAttributeValue, condition);
-            }
-            againCount++;
+        String path = Driver.slash + "screenshotFiles"
+                + Driver.slash + fileNamePrefix + "-" + methodsUtil.getTime("dd_MM_yyyy-HH_mm_ss_SSS") + ".jpg";
+        String fileLocation = Driver.userDir + path;
+        File destFile = new File(fileLocation);
+        try {
+            FileUtils.copyFile(srcFile, destFile);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
         }
-        logger.info("Alınan değer: " + actualAttributeValue);
-        return true;
+        return fileLocation;
     }
 
-    public void checkElementExist(By by, int loopCount){
+    public String takeScreenshot(){
 
-        Assert.assertTrue("Element bulunamadı",doesElementExist(by,loopCount));
+        TakesScreenshot scrShot = ((TakesScreenshot)driver);
+        File srcFile =  scrShot.getScreenshotAs(OutputType.FILE);
+        return saveScreenshot(srcFile,"screenshot");
     }
 
-    public void closeAddsTab(int tabNumber, String urls, String bannedUrls) {
+    public String takeScreenshotForElement(By by){
 
-        methodsUtil.waitBySeconds(2);
-        List<String> windowList = new ArrayList<String>();
-        for (String winHandle : driver.getWindowHandles()) {
+        File srcFile = findElement(by).getScreenshotAs(OutputType.FILE);
+        return saveScreenshot(srcFile,"screenshotElement");
+    }
 
-            windowList.add(winHandle.trim());
+    public ImageColor getColor(By by, int widthPercent, int heightPercent) {
+
+        File srcFile = findElement(by).getScreenshotAs(OutputType.FILE);
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(srcFile);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        int x = (image.getWidth() * widthPercent)/100;
+        int y = (image.getHeight() * heightPercent)/100;
+        System.out.println("Element Screenshot coordinate x: " + x + " y: " + y);
 
-        logger.info("tabList: " + windowList.toString());
+        int clr = image.getRGB(x,y);
+        int red   = (clr & 0x00ff0000) >> 16;
+        int green = (clr & 0x0000ff00) >> 8;
+        int blue  =  clr & 0x000000ff;
+        ImageColor imageColor = new ImageColor(red, green, blue);
+        System.out.println("Red Color value = " + red);
+        System.out.println("Green Color value = " + green);
+        System.out.println("Blue Color value = " + blue);
+        return imageColor;
+    }
 
-        for (int i = 0; i < windowList.size(); i++) {
-            // Switch to new window opened
-            try {
-                driver.switchTo().window(windowList.get(i));
-                methodsUtil.waitBySeconds(1);
-                String newUrl = driver.getCurrentUrl();
-                if (!containsControlUrl(newUrl, urls) || containsControlUrl(newUrl, bannedUrls)) {
-                    methodsUtil.waitBySeconds(1);
-                    // Perform the actions on new window
-                    //this will close new opened window
-                    driver.close();
-                    methodsUtil.waitBySeconds(1);
-                }
-            }catch (Exception e){
-                logger.info("Tab bulunamadı");
+    public void checkElementCondition(By by, String valueType, String expectedValue, String condition, int count, String trimCondition, Object... parameters){
+
+        String actualValue = "";
+        for (int i = 0; i < count; i++) {
+
+            if (count != 1 && i!=0) {
+                methodsUtil.waitByMilliSeconds(250,false);
+            }
+            actualValue = getElementCondition(by, valueType, parameters);
+            actualValue = methodsUtil.stringTrim(actualValue, trimCondition);
+            if(methodsUtil.conditionValueControl(expectedValue, actualValue, condition)){
+                logger.info("expectedValue: " + expectedValue);
+                logger.info("actualValue: " + actualValue);
+                return;
             }
         }
-        windowList = new ArrayList<String>();
-        for (String winHandle : driver.getWindowHandles()) {
-            windowList.add(winHandle.trim());
-        }
-
-        driver.switchTo().window(windowList.get(tabNumber));
+        fail(expectedValue + " değeriyle " + actualValue + " degeri " + condition + " durumu eslesmedi");
     }
 
-    public boolean containsControlUrl(String currentUrl, String urls){
+    public String getElementCondition(By by, String valueType, Object... parameters){
 
-        String[] urlArray = urls.split(",");
-        boolean result=false;
-        for(int i = 0; i < urlArray.length; i++){
-            if(!urlArray[i].equals("")) {
-                result = currentUrl.contains(urlArray[i]);
-            }
-            if(result){
+        String actualValue = null;
+        Object result = null;
+        switch (valueType){
+
+            case "text":
+                actualValue = getText(by);
                 break;
-            }
+            case "textContentJs":
+                actualValue = getTextContentJs(by,"3");
+                break;
+            case "attribute":
+                actualValue = getAttribute(by, parameters[0].toString());
+                break;
+            case "valueJs":
+                result = getValueJs(by,"3");
+                if (result != null)
+                    actualValue = result.toString();
+                break;
+            case "checkValidity":
+                result = checkValidity(by, "3");
+                if (result != null)
+                    actualValue = result.toString();
+                break;
+            case "validationMessage":
+                result = validationMessage(by,"3");
+                if (result != null)
+                    actualValue = result.toString();
+                break;
+            default:
+                fail(valueType + " type hatalı");
         }
-        return result;
+        return actualValue;
     }
 
+    // reportValidity()
+
+    public void keyDownUp(String keyName){
+
+        actionMethods.keyDownUp(keyName);
+    }
+
+    public void highlightElement(By by){
+
+        jsMethods.highlightElement(findElementForJs(by,"3"));
+    }
 
 }

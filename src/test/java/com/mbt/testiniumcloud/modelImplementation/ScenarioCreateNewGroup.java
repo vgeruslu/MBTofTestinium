@@ -1,5 +1,6 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
+import com.mbt.testiniumcloud.common.CommonProcess;
 import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
 import com.mbt.testiniumcloud.methods.MethodsUtil;
@@ -10,7 +11,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.java.annotation.*;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,12 +23,14 @@ public class ScenarioCreateNewGroup extends ExecutionContext implements org.grap
     private static final Logger logger = LogManager.getLogger(ScenarioCreateNewGroup.class);
     Methods methods;
     MethodsUtil methodsUtil;
+    CommonProcess commonProcess;
     ExcelMapData excelMapData;
 
     public ScenarioCreateNewGroup() {
 
         methods = new Methods();
         methodsUtil = new MethodsUtil();
+        commonProcess = new CommonProcess();
         excelMapData = new ExcelMapData();
         Configurator.setLevel(getLogger(ScenarioCreateNewGroup.class), Level.toLevel(Driver.modelImplLogLevel));
     }
@@ -58,33 +61,30 @@ public class ScenarioCreateNewGroup extends ExecutionContext implements org.grap
 
     public void v_Verify_Create_New_Scenario_Group() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario",75,"equal"));
-        methods.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
         By projectSelectBy = methods.getBy("projectSelectInAllScenarios");
         methodsUtil.waitByMilliSeconds(500);
-        methods.selectByVisibleText(projectSelectBy
-                , String.valueOf(methods.getValueInTestMap("currentProject")));
+        methods.selectByVisibleText(projectSelectBy, String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
         methodsUtil.waitByMilliSeconds(500);
-        methods.checkElementVisible(projectSelectBy);
-        String projectName = String.valueOf(methods.getValueInTestMap("currentProject"));
-        String scenarioName = String.valueOf(methods.getValueInTestMap("groupScenarioName"));
-        By tableScenarioBy = methods.getByWithKeySetValue("tableScenarioNameKeyValueInAllScenarios"
-                , projectName + "!!"
-                        + scenarioName);
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("scenarioForTableInAllScenarios"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("tableScenarioWithProjectNameInAllScenarios"
-                , projectName));
-        Assert.assertTrue("", methods.isElementInVisible(methods
-                .getByWithKeySetValue("tableScenarioWithNotProjectNameInAllScenarios", projectName),30));
+        commonProcess.checkElementVisible(projectSelectBy);
+        String projectName = String.valueOf(methodsUtil.getValueInTestMap("currentProject"));
+        String scenarioName = String.valueOf(methodsUtil.getValueInTestMap("groupScenarioName"));
+        By tableScenarioBy = commonProcess.getKeyValueChangerElement("tableScenarioNameKeyValueInAllScenarios"
+                ,"tableScenarioNameKeyValue1InAllScenarios",projectName + "!!" + scenarioName);
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioForTableInAllScenarios"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("tableScenarioWithProjectNameInAllScenarios"
+                ,"tableScenarioWithProjectName1InAllScenarios", projectName));
+        assertTrue(methods.isElementInVisible(commonProcess.getKeyValueChangerElement("tableScenarioWithNotProjectNameInAllScenarios","tableScenarioWithNotProjectName1InAllScenarios", projectName),30));
         /**
          * TODO: pagination
          */
         By planCountBy = methods.getBy("planCountTextInAllSuites");
-        methods.checkElementVisible(planCountBy);
+        commonProcess.checkElementVisible(planCountBy);
         methodsUtil.waitByMilliSeconds(500);
         int planCount = Integer.parseInt(methods.getText(planCountBy)
                 .replace("\r\n","").trim().split("out of")[1]
@@ -98,39 +98,34 @@ public class ScenarioCreateNewGroup extends ExecutionContext implements org.grap
             By paginationPanelBy = methods.getBy("paginationPanelInAllSuites");
             By paginationPrevBy = methods.getBy("paginationPrevInAllSuites");
             By paginationNextBy = methods.getBy("paginationNextInAllSuites");
-            methods.checkElementVisible(paginationPanelBy);
-            methods.checkElementVisible(paginationPrevBy);
-            methods.checkElementVisible(paginationNextBy);
+            commonProcess.checkElementVisible(paginationPanelBy);
+            commonProcess.checkElementVisible(paginationPrevBy);
+            commonProcess.checkElementVisible(paginationNextBy);
             for (int i = 1; i < pageCount+1; i++){
 
                 if (i!=1){
-                    methods.checkElementVisible(paginationPanelBy);
-                    methods.checkElementVisible(paginationPrevBy);
-                    methods.checkElementVisible(paginationNextBy);
-                    methods.checkElementClickable(paginationNextBy);
-                    methodsUtil.waitByMilliSeconds(300);
-                    methods.clickElement(paginationNextBy);
+                    commonProcess.checkElementVisible(paginationPanelBy);
+                    commonProcess.checkElementVisible(paginationPrevBy);
+                    commonProcess.clickButton(paginationNextBy);
                     methodsUtil.waitByMilliSeconds(200);
-                    methods.checkElementVisible(paginationPanelBy);
+                    commonProcess.checkElementVisible(paginationPanelBy);
                 }
 
-                methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-                Assert.assertTrue("", methods.doesAttributeValue(methods
-                                .getByWithKeySetValue("paginationPageWithNumberInAllSuites", String.valueOf(i))
-                        ,"class","active","contain",50));
-                methods.checkElementVisible(methods.getByWithKeySetValue("tableScenarioWithProjectNameInAllScenarios"
-                        , projectName));
+                commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
+                methods.checkElementCondition(commonProcess.getKeyValueChangerElement("paginationPageWithNumberInAllSuites","paginationPageWithNumber1InAllSuites", String.valueOf(i))
+                        ,"attribute","active","contain",50,"false","class");
+                commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("tableScenarioWithProjectNameInAllScenarios"
+                        ,"tableScenarioWithProjectName1InAllScenarios", projectName));
                 if(methods.isElementVisible(tableScenarioBy,3)){
                     isScenarioVisible = true;
                     break;
                 }
             }
             if (!isScenarioVisible){
-                Assert.fail(projectName + " projesinin " + scenarioName + " senaryosu bulunamadı.");
+                fail(projectName + " projesinin " + scenarioName + " senaryosu bulunamadı.");
             }
         }else {
-            Assert.assertTrue(projectName + " projesinin " + scenarioName + " senaryosu bulunamadı."
-                    , methods.isElementVisible(tableScenarioBy,30));
+            assertTrue(methods.isElementVisible(tableScenarioBy,30),projectName + " projesinin " + scenarioName + " senaryosu bulunamadı.");
         }
     }
 
@@ -138,11 +133,11 @@ public class ScenarioCreateNewGroup extends ExecutionContext implements org.grap
 
         By projectNameErrorBlockBy = methods.getBy("projectNameErrorBlockInCreateNewGroup");
         By scenarioNameErrorBlockBy = methods.getBy("scenarioNameErrprBlockInCreateNewGroup");
-        methods.checkElementVisible(projectNameErrorBlockBy);
-        Assert.assertEquals("","This field is required."
+        commonProcess.checkElementVisible(projectNameErrorBlockBy);
+        assertEquals("This field is required."
                 , methods.getText(projectNameErrorBlockBy).trim());
-        methods.checkElementVisible(scenarioNameErrorBlockBy);
-        Assert.assertEquals("","This field is required."
+        commonProcess.checkElementVisible(scenarioNameErrorBlockBy);
+        assertEquals("This field is required."
                 , methods.getText(scenarioNameErrorBlockBy).trim());
     }
 
@@ -152,30 +147,26 @@ public class ScenarioCreateNewGroup extends ExecutionContext implements org.grap
 
     public void v_Verify_In_Create_New_Group_Page_SHARED() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario/group/create",
-                75,"equal"));
-        methods.checkElementVisible(methods.getBy("projectNameInCreateNewGroup"));
-        methods.checkElementVisible(methods.getBy("scenarioNameInCreateNewGroup"));
-        methods.checkElementVisible(methods.getBy("scenarioDescriptionInCreateNewGroup"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInCreateNewGroup"));
-        methods.checkElementVisible(methods.getBy("saveButtonInCreateNewGroup"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario/group/create",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInCreateNewGroup"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioNameInCreateNewGroup"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioDescriptionInCreateNewGroup"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInCreateNewGroup"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInCreateNewGroup"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
     }
 
     public void e_Click_Save_Empty_Inputs() {
 
         By saveButtonBy = methods.getBy("saveButtonInCreateNewGroup");
         methods.clearElementWithBackSpace(methods.getBy("scenarioNameInCreateNewGroup"),"a");
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
+        commonProcess.clickButton(saveButtonBy);
     }
 
     public void e_No_action() {
@@ -190,78 +181,66 @@ public class ScenarioCreateNewGroup extends ExecutionContext implements org.grap
 
         By projectNameErrorBlockBy = methods.getBy("projectNameErrorBlockInCreateNewGroup");
         By scenarioNameErrorBlockBy = methods.getBy("scenarioNameErrprBlockInCreateNewGroup");
-        Assert.assertTrue("", methods.isElementInVisible(projectNameErrorBlockBy,30));
-        methods.checkElementVisible(scenarioNameErrorBlockBy);
-        Assert.assertEquals("","This field is required."
-                , methods.getText(scenarioNameErrorBlockBy).trim());
+        assertTrue(methods.isElementInVisible(projectNameErrorBlockBy,30));
+        commonProcess.checkElementVisible(scenarioNameErrorBlockBy);
+        assertEquals("This field is required.", methods.getText(scenarioNameErrorBlockBy).trim());
     }
 
     public void e_Click_Save_No_Selected_Project() {
 
         By saveButtonBy = methods.getBy("saveButtonInCreateNewGroup");
-        methods.sendKeys(methods.getBy("scenarioNameInCreateNewGroup")
-        , "createGroupScenario");
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
+        methods.sendKeys(methods.getBy("scenarioNameInCreateNewGroup"),"createGroupScenario");
+        commonProcess.clickButton(saveButtonBy);
     }
 
     public void e_Click_Cancel() {
 
         By cancelButtonBy = methods.getBy("cancelButtonInCreateNewGroup");
-        methods.checkElementVisible(cancelButtonBy);
-        methods.checkElementClickable(cancelButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(cancelButtonBy);
+        commonProcess.clickButton(cancelButtonBy);
     }
 
     public void e_Click_Save_Blank_Scenario_Name() {
 
         By saveButtonBy = methods.getBy("saveButtonInCreateNewGroup");
         methods.selectByVisibleText(methods.getBy("projectNameInCreateNewGroup")
-                , String.valueOf(methods.getValueInTestMap("currentProject")));
-        methods.checkElementVisible(saveButtonBy);
+                , String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
+        commonProcess.checkElementVisible(saveButtonBy);
         methodsUtil.waitByMilliSeconds(300);
         methods.clearElementWithBackSpace(methods.getBy("scenarioNameInCreateNewGroup"),"a");
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
+        commonProcess.clickButton(saveButtonBy);
     }
 
     public void v_Verify_Invalid_Create_New_Group_None_Project() {
 
         By projectNameErrorBlockBy = methods.getBy("projectNameErrorBlockInCreateNewGroup");
         By scenarioNameErrorBlockBy = methods.getBy("scenarioNameErrprBlockInCreateNewGroup");
-        methods.checkElementVisible(projectNameErrorBlockBy);
-        Assert.assertEquals("","This field is required."
-                , methods.getText(projectNameErrorBlockBy).trim());
-        Assert.assertTrue("", methods.isElementInVisible(scenarioNameErrorBlockBy,30));
+        commonProcess.checkElementVisible(projectNameErrorBlockBy);
+        assertEquals("This field is required.", methods.getText(projectNameErrorBlockBy).trim());
+        assertTrue(methods.isElementInVisible(scenarioNameErrorBlockBy,30));
     }
 
     public void v_Verify_In_All_Scenarios_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario",75,"equal"));
-        methods.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("createScenarioInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("syncScenariosInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("createNewGroupInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("exportTableInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableViewModeNormalInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableViewModeFileInAllScenarios"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("createScenarioInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("syncScenariosInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("createNewGroupInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("exportTableInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableViewModeNormalInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableViewModeFileInAllScenarios"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
@@ -269,18 +248,15 @@ public class ScenarioCreateNewGroup extends ExecutionContext implements org.grap
 
         By saveButtonBy = methods.getBy("saveButtonInCreateNewGroup");
         methods.selectByVisibleText(methods.getBy("projectNameInCreateNewGroup")
-                , String.valueOf(methods.getValueInTestMap("currentProject")));
-        methods.checkElementVisible(saveButtonBy);
+                , String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
+        commonProcess.checkElementVisible(saveButtonBy);
         methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(methods.getBy("scenarioNameInCreateNewGroup"));
         String scenarioName = "groupScenario" + methodsUtil.randomString(6);
         methods.sendKeys(methods.getBy("scenarioNameInCreateNewGroup")
                 , scenarioName);
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
-        methods.putValueInTestMap("groupScenarioName", scenarioName);
+        commonProcess.clickButton(saveButtonBy);
+        methodsUtil.putValueInTestMap("groupScenarioName", scenarioName);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
+import com.mbt.testiniumcloud.common.CommonProcess;
 import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
 import com.mbt.testiniumcloud.methods.MethodsUtil;
@@ -10,7 +11,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.java.annotation.*;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,12 +23,14 @@ public class Create extends ExecutionContext implements org.graphwalker.Create {
     private static final Logger logger = LogManager.getLogger(Create.class);
     Methods methods;
     MethodsUtil methodsUtil;
+    CommonProcess commonProcess;
     ExcelMapData excelMapData;
 
     public Create() {
 
         methods = new Methods();
         methodsUtil = new MethodsUtil();
+        commonProcess = new CommonProcess();
         excelMapData = new ExcelMapData();
         Configurator.setLevel(getLogger(Create.class), Level.toLevel(Driver.modelImplLogLevel));
     }
@@ -58,111 +61,109 @@ public class Create extends ExecutionContext implements org.graphwalker.Create {
 
     public void v_Verify_In_Create_Page_SHARED() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/create",75,"equal"));
-        methods.checkElementVisible(methods.getBy("panelBodyCreateInCreatePage"));
-        methods.checkElementVisible(methods.getBy("panelBodyDefineInCreatePage"));
-        methods.checkElementVisible(methods.getBy("panelBodyArrangeInCreatePage"));
-        methods.checkElementVisible(methods.getBy("createButtonInCreatePage"));
-        methods.checkElementVisible(methods.getBy("createNewProjectInCreatePage"));
-        methods.checkElementVisible(methods.getBy("seeYourProjectInCreatePage"));
-        methods.checkElementVisible(methods.getBy("createScenarioInCreatePage"));
-        methods.checkElementVisible(methods.getBy("seeYourScenariosInCreatePage"));
-        methods.checkElementVisible(methods.getBy("createPlanInCreatePage"));
-        methods.checkElementVisible(methods.getBy("seeYourPlansInCreatePage"));
+        assertTrue(methods.doesUrl("https://testinium.io/create",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("panelBodyCreateInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("panelBodyDefineInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("panelBodyArrangeInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("createButtonInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("createNewProjectInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("seeYourProjectInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("createScenarioInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("seeYourScenariosInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("createPlanInCreatePage"));
+        commonProcess.checkElementVisible(methods.getBy("seeYourPlansInCreatePage"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
 
-        methods.putValueInTestMap("currentProject", methods.getValueInTestMap("optionalProject").toString());
+        methodsUtil.putValueInTestMap("currentProject", methodsUtil.getValueInTestMap("optionalProject").toString());
     }
 
     public void v_Verify_Create_Scenario_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario/create",75,"startWith"));
-        methods.checkElementVisible(methods.getBy("logoInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("projectNameInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("scenarioNameInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("scenarioDescriptionInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectGroupInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectMaxExecutionTimeInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParameterNameInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParameterValueInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectTestMethodsPanelInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("copyButtonInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("saveButtonInCreateScenario"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario/create",75,"startWith"));
+        commonProcess.checkElementVisible(methods.getBy("logoInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioNameInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioDescriptionInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectGroupInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectMaxExecutionTimeInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterNameInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterValueInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectTestMethodsPanelInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("copyButtonInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInCreateScenario"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
     public void e_Click_Create_A_New_Suite() {
 
         By createNewPlanButtonBy = methods.getBy("createPlanInCreatePage");
-        methods.checkElementClickable(createNewPlanButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(createNewPlanButtonBy);
-        methods.putValueInTestMap("projectSelectedForPlan",false);
+        commonProcess.clickButton(createNewPlanButtonBy);
+        methodsUtil.putValueInTestMap("projectSelectedForPlan",false);
     }
 
     public void v_Verify_In_Create_Project_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/project/create",75,"equal"));
-        methods.checkElementVisible(methods.getBy("logoTitleInCreateProject"));
-        methods.checkElementVisible(methods.getBy("projectNameInCreateProject"));
-        methods.checkElementVisible(methods.getBy("testFrameworkInCreateProject"));
-        methods.checkElementVisible(methods.getBy("testFileTypeInCreateProject"));
-        methods.checkElementVisible(methods.getBy("gitProjectFolderNameInCreateProject"));
-        methods.checkElementVisible(methods.getBy("templateCheckboxInCreateProject"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInCreateProject"));
-        methods.checkElementVisible(methods.getBy("saveButtonInCreateProject"));
+        assertTrue(methods.doesUrl("https://testinium.io/project/create",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("logoTitleInCreateProject"));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInCreateProject"));
+        commonProcess.checkElementVisible(methods.getBy("testFrameworkInCreateProject"));
+        commonProcess.checkElementVisible(methods.getBy("testFileTypeInCreateProject"));
+        commonProcess.checkElementVisible(methods.getBy("gitProjectFolderNameInCreateProject"));
+        commonProcess.checkElementVisible(methods.getBy("templateCheckboxInCreateProject"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInCreateProject"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInCreateProject"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
     public void v_Verify_In_Create_Plan_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/plan/create",75,"startWith"));
-        methods.checkElementVisible(methods.getBy("logoInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("projectNameInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("suiteNameInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("saveButtonInCreatePlan"));
+        assertTrue(methods.doesUrl("https://testinium.io/plan/create",75,"startWith"));
+        commonProcess.checkElementVisible(methods.getBy("logoInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("suiteNameInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInCreatePlan"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
     public void e_Click_Create_A_New_Project() {
 
         By createNewProjectButtonBy = methods.getBy("createNewProjectInCreatePage");
-        methods.checkElementClickable(createNewProjectButtonBy);
+        commonProcess.checkElementClickable(createNewProjectButtonBy);
         methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(createNewProjectButtonBy);
     }
@@ -170,10 +171,8 @@ public class Create extends ExecutionContext implements org.graphwalker.Create {
     public void e_Click_Create_A_New_Scenario() {
 
         By createNewScenarioButtonBy = methods.getBy("createScenarioInCreatePage");
-        methods.checkElementClickable(createNewScenarioButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(createNewScenarioButtonBy);
-        methods.putValueInTestMap("projectSelectedForScenario",false);
+        commonProcess.clickButton(createNewScenarioButtonBy);
+        methodsUtil.putValueInTestMap("projectSelectedForScenario",false);
     }
 
 }

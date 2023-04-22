@@ -1,5 +1,6 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
+import com.mbt.testiniumcloud.common.CommonProcess;
 import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
 import com.mbt.testiniumcloud.methods.MethodsUtil;
@@ -11,7 +12,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.java.annotation.*;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +24,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
     private static final Logger logger = LogManager.getLogger(CreateScenario.class);
     Methods methods;
     MethodsUtil methodsUtil;
+    CommonProcess commonProcess;
     ExcelMapData excelMapData;
     Boolean modelLocationStillCreateScenarioPage = false;
 
@@ -30,6 +32,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
 
         methods = new Methods();
         methodsUtil = new MethodsUtil();
+        commonProcess = new CommonProcess();
         excelMapData = new ExcelMapData();
         Configurator.setLevel(getLogger(CreateScenario.class), Level.toLevel(Driver.modelImplLogLevel));
     }
@@ -60,34 +63,33 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
 
     public void v_Verify_In_Create_Scenario_Page_SHARED() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario/create",
-                75,"startWith"));
-        methods.checkElementVisible(methods.getBy("logoInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("projectNameInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("scenarioNameInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("scenarioDescriptionInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectGroupInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectMaxExecutionTimeInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParameterNameInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParameterValueInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParametersAddButtonInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectTestMethodsPanelInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("createScenarioGroupSwitchInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("copyButtonInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("saveButtonInCreateScenario"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario/create",75,"startWith"));
+        commonProcess.checkElementVisible(methods.getBy("logoInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioNameInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioDescriptionInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectGroupInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectMaxExecutionTimeInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterNameInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterValueInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParametersAddButtonInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectTestMethodsPanelInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("createScenarioGroupSwitchInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("copyButtonInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInCreateScenario"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
 
         if(!modelLocationStillCreateScenarioPage) {
             setAttribute("isProjectSelected",
-                    Value.asValue(Boolean.parseBoolean(methods.getValueInTestMap("projectSelectedForScenario").toString())));
+                    Value.asValue(Boolean.parseBoolean(methodsUtil.getValueInTestMap("projectSelectedForScenario").toString())));
         }
         modelLocationStillCreateScenarioPage = true;
     }
@@ -104,10 +106,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         methods.clearElement(javaParameterValueBy);
         methods.sendKeys(javaParameterValueBy,"newValue");
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(javaParameterAddButtonBy);
-        methods.checkElementClickable(javaParameterAddButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(javaParameterAddButtonBy);
+        commonProcess.clickButton(javaParameterAddButtonBy);
     }
 
     public void v_Verify_Invalid_Create_Scenario_None_Project() {
@@ -117,57 +116,57 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By errorBlockProjectNameBy = methods.getBy("errorBlockProjectNameInCreateScenario");
         By selectSourceFilePanelBy = methods.getBy("selectSourceFilePanelWindowInCreateScenario");
         By selectTestMethodsPanelBy = methods.getBy("selectTestMethodsPanelWindowInCreateScenario");
-        methods.checkElementVisible(projectNameBy);
-        Assert.assertTrue("", methods.getAttribute(projectNameBy,"class").contains("ng-invalid"));
-        methods.checkElementVisible(errorBlockProjectNameBy);
-        Assert.assertEquals("","This field is required.", methods.getText(errorBlockProjectNameBy).trim());
-        methods.checkElementVisible(scenarioNameBy);
-        Assert.assertTrue("", methods.getAttribute(scenarioNameBy,"class").contains("ng-valid"));
-        methods.checkElementVisible(selectSourceFilePanelBy);
-        Assert.assertTrue("", methods.getAttribute(selectSourceFilePanelBy,"class").contains("error-border"));
-        methods.checkElementVisible(selectTestMethodsPanelBy);
-        Assert.assertTrue("", methods.getAttribute(selectTestMethodsPanelBy,"class").contains("error-border"));
-        Assert.assertEquals("","#d0021b"
+        commonProcess.checkElementVisible(projectNameBy);
+        assertTrue(methods.getAttribute(projectNameBy,"class").contains("ng-invalid"));
+        commonProcess.checkElementVisible(errorBlockProjectNameBy);
+        assertEquals("This field is required.", methods.getText(errorBlockProjectNameBy).trim());
+        commonProcess.checkElementVisible(scenarioNameBy);
+        assertTrue(methods.getAttribute(scenarioNameBy,"class").contains("ng-valid"));
+        commonProcess.checkElementVisible(selectSourceFilePanelBy);
+        assertTrue(methods.getAttribute(selectSourceFilePanelBy,"class").contains("error-border"));
+        commonProcess.checkElementVisible(selectTestMethodsPanelBy);
+        assertTrue(methods.getAttribute(selectTestMethodsPanelBy,"class").contains("error-border"));
+        assertEquals("#d0021b"
                 , methods.getHexCssValue(projectNameBy,"border-bottom-color"));
-        Assert.assertEquals("","#d0021b"
+        assertEquals("#d0021b"
                 , methods.getHexCssValue(selectSourceFilePanelBy,"border-bottom-color"));
-        Assert.assertEquals("","#d0021b"
+        assertEquals("#d0021b"
                 , methods.getHexCssValue(selectTestMethodsPanelBy,"border-bottom-color"));
     }
 
     public void v_Control_Edited_System_Parameter() {
 
-        By javaParametersTableParameterBy = methods.getByWithKeySetValue("javaParametersTableParameterKeyValueInCreateScenario"
-                , "newParameter!!newValue!!");
-        By javaParametersEditButtonBy = methods.getByWithKeySetValue("javaParametersEditButtonKeyValueInCreateScenario"
-                , "newParameter!!newValue!!");
-        By javaParametersDeleteButtonBy = methods.getByWithKeySetValue("javaParametersDeleteButtonKeyValueInCreateScenario"
-                , "newParameter!!newValue!!");
-        Assert.assertTrue("", methods.isElementInVisible(javaParametersTableParameterBy,30));
-        Assert.assertTrue("", methods.isElementInVisible(javaParametersEditButtonBy,30));
-        Assert.assertTrue("", methods.isElementInVisible(javaParametersDeleteButtonBy,30));
-        javaParametersTableParameterBy = methods.getByWithKeySetValue("javaParametersTableParameterKeyValueInCreateScenario"
-                , "editedParameter!!editedValue!!");
-        javaParametersEditButtonBy = methods.getByWithKeySetValue("javaParametersEditButtonKeyValueInCreateScenario"
-                , "editedParameter!!editedValue!!");
-        javaParametersDeleteButtonBy = methods.getByWithKeySetValue("javaParametersDeleteButtonKeyValueInCreateScenario"
-                , "editedParameter!!editedValue!!");
-        methods.checkElementVisible(javaParametersTableParameterBy);
-        methods.checkElementVisible(javaParametersEditButtonBy);
-        methods.checkElementVisible(javaParametersDeleteButtonBy);
+        By javaParametersTableParameterBy = commonProcess.getKeyValueChangerElement("javaParametersTableParameterKeyValueInCreateScenario"
+                ,"javaParametersTableParameterKeyValue1InCreateScenario", "newParameter!!newValue!!");
+        By javaParametersEditButtonBy = commonProcess.getKeyValueChangerElement("javaParametersEditButtonKeyValueInCreateScenario"
+                ,"javaParametersEditButtonKeyValue1InCreateScenario","newParameter!!newValue!!");
+        By javaParametersDeleteButtonBy = commonProcess.getKeyValueChangerElement("javaParametersDeleteButtonKeyValueInCreateScenario"
+                ,"javaParametersDeleteButtonKeyValue1InCreateScenario","newParameter!!newValue!!");
+        assertTrue(methods.isElementInVisible(javaParametersTableParameterBy,30));
+        assertTrue(methods.isElementInVisible(javaParametersEditButtonBy,30));
+        assertTrue(methods.isElementInVisible(javaParametersDeleteButtonBy,30));
+        javaParametersTableParameterBy = commonProcess.getKeyValueChangerElement("javaParametersTableParameterKeyValueInCreateScenario"
+                ,"javaParametersTableParameterKeyValue1InCreateScenario","editedParameter!!editedValue!!");
+        javaParametersEditButtonBy = commonProcess.getKeyValueChangerElement("javaParametersEditButtonKeyValueInCreateScenario"
+                ,"javaParametersEditButtonKeyValue1InCreateScenario","editedParameter!!editedValue!!");
+        javaParametersDeleteButtonBy = commonProcess.getKeyValueChangerElement("javaParametersDeleteButtonKeyValueInCreateScenario"
+                ,"javaParametersDeleteButtonKeyValue1InCreateScenario","editedParameter!!editedValue!!");
+        commonProcess.checkElementVisible(javaParametersTableParameterBy);
+        commonProcess.checkElementVisible(javaParametersEditButtonBy);
+        commonProcess.checkElementVisible(javaParametersDeleteButtonBy);
     }
 
     public void v_Verify_System_Parameter_Is_Not_Available() {
 
-        By javaParametersTableParameterBy = methods.getByWithKeySetValue("javaParametersTableParameterKeyValueInCreateScenario"
-                , "editedParameter!!editedValue!!");
-        By javaParametersEditButtonBy = methods.getByWithKeySetValue("javaParametersEditButtonKeyValueInCreateScenario"
-                , "editedParameter!!editedValue!!");
-        By javaParametersDeleteButtonBy = methods.getByWithKeySetValue("javaParametersDeleteButtonKeyValueInCreateScenario"
-                , "editedParameter!!editedValue!!");
-        Assert.assertTrue("", methods.isElementInVisible(javaParametersTableParameterBy,30));
-        Assert.assertTrue("", methods.isElementInVisible(javaParametersEditButtonBy,30));
-        Assert.assertTrue("", methods.isElementInVisible(javaParametersDeleteButtonBy,30));
+        By javaParametersTableParameterBy = commonProcess.getKeyValueChangerElement("javaParametersTableParameterKeyValueInCreateScenario"
+                ,"javaParametersTableParameterKeyValue1InCreateScenario","editedParameter!!editedValue!!");
+        By javaParametersEditButtonBy = commonProcess.getKeyValueChangerElement("javaParametersEditButtonKeyValueInCreateScenario"
+                ,"javaParametersEditButtonKeyValue1InCreateScenario","editedParameter!!editedValue!!");
+        By javaParametersDeleteButtonBy = commonProcess.getKeyValueChangerElement("javaParametersDeleteButtonKeyValueInCreateScenario"
+                ,"javaParametersDeleteButtonKeyValue1InCreateScenario","editedParameter!!editedValue!!");
+        assertTrue(methods.isElementInVisible(javaParametersTableParameterBy,30));
+        assertTrue(methods.isElementInVisible(javaParametersEditButtonBy,30));
+        assertTrue(methods.isElementInVisible(javaParametersDeleteButtonBy,30));
     }
 
     public void e_Click_Save_Blank_Scenario_Name() {
@@ -175,14 +174,14 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By projectNameBy = methods.getBy("projectNameInCreateScenario");
         By scenarioNameBy = methods.getBy("scenarioNameInCreateScenario");
         By saveButtonBy = methods.getBy("saveButtonInCreateScenario");
-        methods.checkElementVisible(projectNameBy);
+        commonProcess.checkElementVisible(projectNameBy);
         methods.selectByVisibleText(projectNameBy
-                , String.valueOf(methods.getValueInTestMap("currentProject")));
-        methods.checkElementVisible(scenarioNameBy);
+                , String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
+        commonProcess.checkElementVisible(scenarioNameBy);
         methods.clearElementWithBackSpace(scenarioNameBy,"a");
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
+        commonProcess.checkElementVisible(saveButtonBy);
+        commonProcess.checkElementClickable(saveButtonBy);
         methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(saveButtonBy);
     }
@@ -190,24 +189,24 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
     public void v_Verify_In_All_Scenarios_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario",75,"equal"));
-        methods.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("createScenarioInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("syncScenariosInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("createNewGroupInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("exportTableInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableViewModeNormalInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableViewModeFileInAllScenarios"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("createScenarioInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("syncScenariosInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("createNewGroupInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("exportTableInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableViewModeNormalInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableViewModeFileInAllScenarios"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
@@ -218,32 +217,31 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         //By selectSourceFilePanelBy = methods.getBy("selectSourceFilePanelWindowInCreateScenario");
         //By selectTestMethodsPanelBy = methods.getBy("selectTestMethodsPanelWindowInCreateScenario");
 
-        methods.checkElementVisible(projectNameBy);
-        methods.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(projectNameBy);
+        commonProcess.checkElementVisible(scenarioNameBy);
         methodsUtil.waitByMilliSeconds(500);
-        Assert.assertTrue("", methods.getAttribute(projectNameBy,"class").contains("ng-valid"));
-        Assert.assertTrue("", methods.getAttribute(scenarioNameBy,"class").contains("ng-invalid"));
-        Assert.assertEquals("","#d0021b"
-                , methods.getHexCssValue(scenarioNameBy,"border-bottom-color"));
+        assertTrue(methods.getAttribute(projectNameBy,"class").contains("ng-valid"));
+        assertTrue(methods.getAttribute(scenarioNameBy,"class").contains("ng-invalid"));
+        assertEquals("#d0021b", methods.getHexCssValue(scenarioNameBy,"border-bottom-color"));
     }
 
     public void v_Verify_New_System_Parameter() {
 
-        By javaParametersTableParameterBy = methods.getByWithKeySetValue("javaParametersTableParameterKeyValueInCreateScenario"
-                , "newParameter!!newValue!!");
-        By javaParametersEditButtonBy = methods.getByWithKeySetValue("javaParametersEditButtonKeyValueInCreateScenario"
-                , "newParameter!!newValue!!");
-        By javaParametersDeleteButtonBy = methods.getByWithKeySetValue("javaParametersDeleteButtonKeyValueInCreateScenario"
-                , "newParameter!!newValue!!");
-        methods.checkElementVisible(javaParametersTableParameterBy);
-        methods.checkElementVisible(javaParametersEditButtonBy);
-        methods.checkElementVisible(javaParametersDeleteButtonBy);
+        By javaParametersTableParameterBy = commonProcess.getKeyValueChangerElement("javaParametersTableParameterKeyValueInCreateScenario"
+                ,"javaParametersTableParameterKeyValue1InCreateScenario","newParameter!!newValue!!");
+        By javaParametersEditButtonBy = commonProcess.getKeyValueChangerElement("javaParametersEditButtonKeyValueInCreateScenario"
+                ,"javaParametersEditButtonKeyValue1InCreateScenario","newParameter!!newValue!!");
+        By javaParametersDeleteButtonBy = commonProcess.getKeyValueChangerElement("javaParametersDeleteButtonKeyValueInCreateScenario"
+                ,"javaParametersDeleteButtonKeyValue1InCreateScenario","newParameter!!newValue!!");
+        commonProcess.checkElementVisible(javaParametersTableParameterBy);
+        commonProcess.checkElementVisible(javaParametersEditButtonBy);
+        commonProcess.checkElementVisible(javaParametersDeleteButtonBy);
     }
 
     public void v_Control_Test_Methods() {
 
         By testCasesBy = methods.getBy("selectTestCaseInCreateScenario");
-        methods.checkElementVisible(testCasesBy);
+        commonProcess.checkElementVisible(testCasesBy);
     }
 
     public void e_No_Action() {
@@ -252,15 +250,11 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
 
     public void e_Click_A_Test_Methods_File() {
 
-        By sourceFileBy = methods.getByWithKeySetValue("selectSourceFileKeyValueContainInCreateScenario"
-                , String.valueOf(methods.getValueInTestMap("testSourceFileName")));
+        By sourceFileBy = commonProcess.getKeyValueChangerElement("selectSourceFileKeyValueContainInCreateScenario"
+                ,"selectSourceFileKeyValueContain1InCreateScenario", String.valueOf(methodsUtil.getValueInTestMap("testSourceFileName")));
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
-        methods.checkElementVisible(sourceFileBy);
-        methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementClickable(sourceFileBy);
-        methodsUtil.waitBySeconds(1);
-        methods.clickElement(sourceFileBy);
+        commonProcess.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
+        commonProcess.clickButton(sourceFileBy);
     }
 
     public void e_Click_Save_Empty_Inputs() {
@@ -268,48 +262,45 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         //By projectNameBy = methods.getBy("projectNameInCreateScenario");
         By scenarioNameBy = methods.getBy("scenarioNameInCreateScenario");
         By saveButtonBy = methods.getBy("saveButtonInCreateScenario");
-        methods.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(scenarioNameBy);
         methodsUtil.waitByMilliSeconds(300);
         methods.clearElementWithBackSpace(scenarioNameBy,"a");
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
+       commonProcess.clickButton(saveButtonBy);
     }
 
     public void v_Control_New_Scenario() {
 
-        String projectName = methods.getValueInTestMap("currentProject").toString();
-        String scenarioName = methods.getValueInTestMap("newScenarioName").toString();
-        By tableScenarioBy = methods.getByWithKeySetValue("tableScenarioNameKeyValueInAllScenarios"
-                , projectName + "!!" + scenarioName);
+        String projectName = methodsUtil.getValueInTestMap("currentProject").toString();
+        String scenarioName = methodsUtil.getValueInTestMap("newScenarioName").toString();
+        By tableScenarioBy = commonProcess.getKeyValueChangerElement("tableScenarioNameKeyValueInAllScenarios"
+                ,"tableScenarioNameKeyValue1InAllScenarios",projectName + "!!" + scenarioName);
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario",75,"equal"));
-        methods.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
         By projectSelectBy = methods.getBy("projectSelectInAllScenarios");
         methodsUtil.waitByMilliSeconds(500);
         methods.selectByVisibleText(projectSelectBy
                 , "All Projects");
         methodsUtil.waitBySeconds(1);
         methods.selectByVisibleText(projectSelectBy
-                , String.valueOf(methods.getValueInTestMap("currentProject")));
+                , String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
         methodsUtil.waitBySeconds(1);
-        methods.checkElementVisible(projectSelectBy);
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        commonProcess.checkElementVisible(projectSelectBy);
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(methods.getByWithKeySetValue("tableScenarioWithProjectNameInAllScenarios"
-                , projectName));
-        Assert.assertTrue("", methods.isElementInVisible(methods
-                .getByWithKeySetValue("tableScenarioWithNotProjectNameInAllScenarios", projectName),30));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("tableScenarioWithProjectNameInAllScenarios"
+                ,"tableScenarioWithProjectName1InAllScenarios", projectName));
+        assertTrue(methods.isElementInVisible(commonProcess.getKeyValueChangerElement("tableScenarioWithNotProjectNameInAllScenarios"
+                ,"tableScenarioWithNotProjectName1InAllScenarios", projectName),30));
         /**
          * TODO: pagination
          */
         By planCountBy = methods.getBy("planCountTextInAllSuites");
-        methods.checkElementVisible(planCountBy);
+        commonProcess.checkElementVisible(planCountBy);
         methodsUtil.waitByMilliSeconds(500);
         int planCount = Integer.parseInt(methods.getText(planCountBy)
                 .replace("\r\n","").trim().split("out of")[1]
@@ -323,38 +314,34 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
             By paginationPanelBy = methods.getBy("paginationPanelInAllSuites");
             By paginationPrevBy = methods.getBy("paginationPrevInAllSuites");
             By paginationNextBy = methods.getBy("paginationNextInAllSuites");
-            methods.checkElementVisible(paginationPanelBy);
-            methods.checkElementVisible(paginationPrevBy);
-            methods.checkElementVisible(paginationNextBy);
+            commonProcess.checkElementVisible(paginationPanelBy);
+            commonProcess.checkElementVisible(paginationPrevBy);
+            commonProcess.checkElementVisible(paginationNextBy);
             for (int i = 1; i < pageCount+1; i++){
 
                 if (i!=1){
-                    methods.checkElementVisible(paginationPanelBy);
-                    methods.checkElementVisible(paginationPrevBy);
-                    methods.checkElementVisible(paginationNextBy);
-                    methods.checkElementClickable(paginationNextBy);
-                    methodsUtil.waitByMilliSeconds(300);
-                    methods.clickElement(paginationNextBy);
+                    commonProcess.checkElementVisible(paginationPanelBy);
+                    commonProcess.checkElementVisible(paginationPrevBy);
+                    commonProcess.clickButton(paginationNextBy);
                     methodsUtil.waitByMilliSeconds(200);
-                    methods.checkElementVisible(paginationPanelBy);
+                    commonProcess.checkElementVisible(paginationPanelBy);
                 }
 
-                methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-                Assert.assertTrue("", methods.doesAttributeValue(methods
-                                .getByWithKeySetValue("paginationPageWithNumberInAllSuites", String.valueOf(i))
-                        ,"class","active","contain",50));
-                methods.checkElementVisible(methods.getByWithKeySetValue("tableScenarioWithProjectNameInAllScenarios"
-                        , projectName));
+                commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
+                methods.checkElementCondition(commonProcess.getKeyValueChangerElement("paginationPageWithNumberInAllSuites","paginationPageWithNumber1InAllSuites", String.valueOf(i))
+                        ,"attribute","active","contain",50,"false","class");
+                commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("tableScenarioWithProjectNameInAllScenarios"
+                        ,"tableScenarioWithProjectName1InAllScenarios", projectName));
                 if(methods.isElementVisible(tableScenarioBy,3)){
                     isScenarioVisible = true;
                     break;
                 }
             }
             if (!isScenarioVisible){
-                Assert.fail(projectName + " projesinin " + scenarioName + " senaryosu bulunamadı.");
+                fail(projectName + " projesinin " + scenarioName + " senaryosu bulunamadı.");
             }
         }else {
-            methods.checkElementVisible(tableScenarioBy);
+            commonProcess.checkElementVisible(tableScenarioBy);
         }
     }
 
@@ -369,17 +356,15 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By javaParameterAddButtonBy = methods.getBy("javaParametersAddButtonInCreateScenario");
         By javaParameterCancelButtonBy = methods.getBy("javaParametersCancelButtonInCreateScenario");
         By javaParameterSaveButtonBy = methods.getBy("javaParametersSaveButtonInCreateScenario");
-        By javaParametersEditButtonBy = methods.getByWithKeySetValue("javaParametersEditButtonKeyValueInCreateScenario"
-                , "newParameter!!newValue!!");
+        By javaParametersEditButtonBy = commonProcess.getKeyValueChangerElement("javaParametersEditButtonKeyValueInCreateScenario"
+                ,"javaParametersEditButtonKeyValue1InCreateScenario","newParameter!!newValue!!");
 
-        methods.checkElementClickable(javaParametersEditButtonBy);
-        methodsUtil.waitByMilliSeconds(200);
-        methods.clickElement(javaParametersEditButtonBy);
-        Assert.assertTrue("", methods.isElementInVisible(javaParameterAddButtonBy,30));
-        methods.checkElementVisible(javaParameterCancelButtonBy);
-        methods.checkElementVisible(javaParameterSaveButtonBy);
-        methods.checkElementVisible(javaParameterNameBy);
-        methods.checkElementVisible(javaParameterValueBy);
+        commonProcess.clickButton(javaParametersEditButtonBy);
+        assertTrue(methods.isElementInVisible(javaParameterAddButtonBy,30));
+        commonProcess.checkElementVisible(javaParameterCancelButtonBy);
+        commonProcess.checkElementVisible(javaParameterSaveButtonBy);
+        commonProcess.checkElementVisible(javaParameterNameBy);
+        commonProcess.checkElementVisible(javaParameterValueBy);
         methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(javaParameterNameBy);
         methods.sendKeys(javaParameterNameBy,"editedParameter");
@@ -387,10 +372,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         methods.clearElement(javaParameterValueBy);
         methods.sendKeys(javaParameterValueBy,"editedValue");
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(javaParameterSaveButtonBy);
-        methods.checkElementClickable(javaParameterSaveButtonBy);
-        methodsUtil.waitByMilliSeconds(300);
-        methods.clickElement(javaParameterSaveButtonBy);
+        commonProcess.clickButton(javaParameterSaveButtonBy);
     }
 
     public void e_No_action() {
@@ -400,7 +382,7 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
     public void v_Control_Project_Source_Files() {
 
         By sourceFilesBy = methods.getBy("selectSourceFileInCreateScenario");
-        methods.checkElementVisible(sourceFilesBy);
+        commonProcess.checkElementVisible(sourceFilesBy);
     }
 
     public void e_no_Action() {
@@ -410,29 +392,27 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
     public void e_Select_A_Project() {
 
         By projectNameBy = methods.getBy("projectNameInCreateScenario");
-        methods.checkElementVisible(projectNameBy);
+        commonProcess.checkElementVisible(projectNameBy);
         methodsUtil.waitByMilliSeconds(200);
         methods.selectByVisibleText(projectNameBy
-                , String.valueOf(methods.getValueInTestMap("appiumProject")));
-        methods.checkElementVisible(projectNameBy);
+                , String.valueOf(methodsUtil.getValueInTestMap("appiumProject")));
+        commonProcess.checkElementVisible(projectNameBy);
         methodsUtil.waitByMilliSeconds(300);
         methods.selectByVisibleText(projectNameBy
-                , String.valueOf(methods.getValueInTestMap("currentProject")));
-        methods.checkElementVisible(projectNameBy);
+                , String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
+        commonProcess.checkElementVisible(projectNameBy);
     }
 
     public void e_Click_Save_No_Selected_Project() {
 
         By scenarioNameBy = methods.getBy("scenarioNameInCreateScenario");
         By saveButtonBy = methods.getBy("saveButtonInCreateScenario");
-        methods.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(scenarioNameBy);
         methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(scenarioNameBy);
         methods.sendKeys(scenarioNameBy,"newScenarioName");
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methods.clickElement(saveButtonBy);
+        commonProcess.clickButton(saveButtonBy);
     }
 
     public void e_Create_New_Scenario() {
@@ -440,36 +420,33 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By projectNameBy = methods.getBy("projectNameInCreateScenario");
         By scenarioNameBy = methods.getBy("scenarioNameInCreateScenario");
         By saveButtonBy = methods.getBy("saveButtonInCreateScenario");
-        By testMethodBy = methods.getByWithKeySetValue("selectTestCaseKeyValueContainInCreateScenario"
-                , String.valueOf(methods.getValueInTestMap("testMethodFileName")));
-        By testSourceFileBy = methods.getByWithKeySetValue("selectSourceFileKeyValueContainInCreateScenario"
-                , String.valueOf(methods.getValueInTestMap("testSourceFileName")));
-        methods.checkElementVisible(projectNameBy);
-        methods.checkElementVisible(scenarioNameBy);
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(projectNameBy);
+        By testMethodBy = commonProcess.getKeyValueChangerElement("selectTestCaseKeyValueContainInCreateScenario"
+                ,"selectTestCaseKeyValueContain1InCreateScenario", String.valueOf(methodsUtil.getValueInTestMap("testMethodFileName")));
+        By testSourceFileBy = commonProcess.getKeyValueChangerElement("selectSourceFileKeyValueContainInCreateScenario"
+                ,"selectSourceFileKeyValueContain1InCreateScenario", String.valueOf(methodsUtil.getValueInTestMap("testSourceFileName")));
+        commonProcess.checkElementVisible(projectNameBy);
+        commonProcess.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(saveButtonBy);
+        commonProcess.checkElementClickable(projectNameBy);
         methodsUtil.waitByMilliSeconds(500);
-        methods.selectByVisibleText(projectNameBy, String.valueOf(methods.getValueInTestMap("appiumProject")));
+        methods.selectByVisibleText(projectNameBy, String.valueOf(methodsUtil.getValueInTestMap("appiumProject")));
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(projectNameBy);
-        methods.checkElementClickable(projectNameBy);
+        commonProcess.checkElementVisible(projectNameBy);
+        commonProcess.checkElementClickable(projectNameBy);
         methodsUtil.waitByMilliSeconds(300);
-        methods.selectByVisibleText(projectNameBy, String.valueOf(methods.getValueInTestMap("currentProject")));
+        methods.selectByVisibleText(projectNameBy, String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
         methodsUtil.waitBySeconds(1);
-        methods.checkElementVisible(projectNameBy);
+        commonProcess.checkElementVisible(projectNameBy);
         methods.clearElement(scenarioNameBy);
         methodsUtil.waitByMilliSeconds(300);
         String newScenarioName = "newScenarioName" + methodsUtil.randomString(6);
         methods.sendKeys(scenarioNameBy, newScenarioName);
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(scenarioNameBy);
-        methods.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectTestMethodsPanelInCreateScenario"));
+        commonProcess.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(methods.getBy("selectSourceFilePanelInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectTestMethodsPanelInCreateScenario"));
         methodsUtil.waitByMilliSeconds(500);
-        methods.checkElementVisible(testSourceFileBy);
-        methods.checkElementClickable(testSourceFileBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(testSourceFileBy);
+        commonProcess.clickButton(testSourceFileBy);
         methodsUtil.waitByMilliSeconds(300);
 
         /**
@@ -478,53 +455,39 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
          */
         if(!methods.isElementVisible(testMethodBy,3)){
             methodsUtil.waitBySeconds(1);
-            methods.selectByVisibleText(projectNameBy, String.valueOf(methods.getValueInTestMap("appiumProject")));
+            methods.selectByVisibleText(projectNameBy, String.valueOf(methodsUtil.getValueInTestMap("appiumProject")));
             methodsUtil.waitByMilliSeconds(300);
-            methods.checkElementVisible(projectNameBy);
-            methods.checkElementClickable(projectNameBy);
+            commonProcess.checkElementVisible(projectNameBy);
+            commonProcess.checkElementClickable(projectNameBy);
             methodsUtil.waitByMilliSeconds(300);
-            methods.selectByVisibleText(projectNameBy, String.valueOf(methods.getValueInTestMap("currentProject")));
+            methods.selectByVisibleText(projectNameBy, String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
             methodsUtil.waitBySeconds(1);
-            methods.checkElementVisible(projectNameBy);
+            commonProcess.checkElementVisible(projectNameBy);
             methodsUtil.waitByMilliSeconds(500);
-            methods.checkElementVisible(testSourceFileBy);
-            methods.checkElementClickable(testSourceFileBy);
-            methodsUtil.waitByMilliSeconds(500);
-            methods.clickElement(testSourceFileBy);
+            commonProcess.clickButton(testSourceFileBy);
             methodsUtil.waitByMilliSeconds(300);
         }
 
-        methods.checkElementVisible(testMethodBy);
-        methods.checkElementClickable(testMethodBy);
-        methodsUtil.waitByMilliSeconds(300);
-        methods.clickElement(testMethodBy);
+        commonProcess.clickButton(testMethodBy);
         methodsUtil.waitByMilliSeconds(500);
-        methods.checkElementVisible(saveButtonBy);
-        methods.scrollElementJs(saveButtonBy,"3");
-        methodsUtil.waitBySeconds(1);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(300);
-        methods.clickElement(saveButtonBy);
-        methods.putValueInTestMap("newScenarioName", newScenarioName);
+        commonProcess.checkElementVisible(saveButtonBy);
+        commonProcess.scrollElementCenter(saveButtonBy);
+        commonProcess.clickButton(saveButtonBy);
+        methodsUtil.putValueInTestMap("newScenarioName", newScenarioName);
         modelLocationStillCreateScenarioPage = false;
     }
 
     public void e_Delete_New_System_Parameter() {
 
-        By javaParametersDeleteButtonBy = methods.getByWithKeySetValue("javaParametersDeleteButtonKeyValueInCreateScenario"
-                , "editedParameter!!editedValue!!");
-        methods.checkElementClickable(javaParametersDeleteButtonBy);
-        methodsUtil.waitByMilliSeconds(250);
-        methods.clickElement(javaParametersDeleteButtonBy);
+        By javaParametersDeleteButtonBy = commonProcess.getKeyValueChangerElement("javaParametersDeleteButtonKeyValueInCreateScenario"
+                ,"javaParametersDeleteButtonKeyValue1InCreateScenario","editedParameter!!editedValue!!");
+        commonProcess.clickButton(javaParametersDeleteButtonBy);
     }
 
     public void e_Click_Cancel() {
 
         By cancelButtonBy = methods.getBy("cancelButtonInCreateScenario");
-        methods.checkElementVisible(cancelButtonBy);
-        methods.checkElementClickable(cancelButtonBy);
-        methodsUtil.waitBySeconds(1);
-        methods.clickElement(cancelButtonBy);
+        commonProcess.clickButton(cancelButtonBy);
         modelLocationStillCreateScenarioPage = false;
     }
 
@@ -535,25 +498,21 @@ public class CreateScenario extends ExecutionContext implements org.graphwalker.
         By errorBlockProjectNameBy = methods.getBy("errorBlockProjectNameInCreateScenario");
         By selectSourceFilePanelBy = methods.getBy("selectSourceFilePanelWindowInCreateScenario");
         By selectTestMethodsPanelBy = methods.getBy("selectTestMethodsPanelWindowInCreateScenario");
-        methods.checkElementVisible(projectNameBy);
+        commonProcess.checkElementVisible(projectNameBy);
         methodsUtil.waitByMilliSeconds(500);
-        Assert.assertTrue("", methods.getAttribute(projectNameBy,"class").contains("ng-invalid"));
-        methods.checkElementVisible(errorBlockProjectNameBy);
-        Assert.assertEquals("","This field is required.", methods.getText(errorBlockProjectNameBy).trim());
-        methods.checkElementVisible(scenarioNameBy);
-        Assert.assertTrue("", methods.getAttribute(scenarioNameBy,"class").contains("ng-invalid"));
-        methods.checkElementVisible(selectSourceFilePanelBy);
-        Assert.assertTrue("", methods.getAttribute(selectSourceFilePanelBy,"class").contains("error-border"));
-        methods.checkElementVisible(selectTestMethodsPanelBy);
-        Assert.assertTrue("", methods.getAttribute(selectTestMethodsPanelBy,"class").contains("error-border"));
-        Assert.assertEquals("","#d0021b"
-                , methods.getHexCssValue(projectNameBy,"border-bottom-color"));
-        Assert.assertEquals("","#d0021b"
-                , methods.getHexCssValue(scenarioNameBy,"border-bottom-color"));
-        Assert.assertEquals("","#d0021b"
-                , methods.getHexCssValue(selectSourceFilePanelBy,"border-bottom-color"));
-        Assert.assertEquals("","#d0021b"
-                , methods.getHexCssValue(selectTestMethodsPanelBy,"border-bottom-color"));
+        assertTrue(methods.getAttribute(projectNameBy,"class").contains("ng-invalid"));
+        commonProcess.checkElementVisible(errorBlockProjectNameBy);
+        assertEquals("This field is required.", methods.getText(errorBlockProjectNameBy).trim());
+        commonProcess.checkElementVisible(scenarioNameBy);
+        assertTrue(methods.getAttribute(scenarioNameBy,"class").contains("ng-invalid"));
+        commonProcess.checkElementVisible(selectSourceFilePanelBy);
+        assertTrue(methods.getAttribute(selectSourceFilePanelBy,"class").contains("error-border"));
+        commonProcess.checkElementVisible(selectTestMethodsPanelBy);
+        assertTrue(methods.getAttribute(selectTestMethodsPanelBy,"class").contains("error-border"));
+        assertEquals("#d0021b", methods.getHexCssValue(projectNameBy,"border-bottom-color"));
+        assertEquals("#d0021b", methods.getHexCssValue(scenarioNameBy,"border-bottom-color"));
+        assertEquals("#d0021b", methods.getHexCssValue(selectSourceFilePanelBy,"border-bottom-color"));
+        assertEquals("#d0021b", methods.getHexCssValue(selectTestMethodsPanelBy,"border-bottom-color"));
         //#d0021b
         // border-bottom-color
         // #4a4a4a

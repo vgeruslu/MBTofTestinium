@@ -1,5 +1,6 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
+import com.mbt.testiniumcloud.common.CommonProcess;
 import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
 import com.mbt.testiniumcloud.methods.MethodsUtil;
@@ -11,7 +12,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.graalvm.polyglot.Value;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.java.annotation.*;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,12 +24,14 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
     private static final Logger logger = LogManager.getLogger(PlanEdit.class);
     Methods methods;
     MethodsUtil methodsUtil;
+    CommonProcess commonProcess;
     ExcelMapData excelMapData;
 
     public PlanEdit() {
 
         methods = new Methods();
         methodsUtil = new MethodsUtil();
+        commonProcess = new CommonProcess();
         excelMapData = new ExcelMapData();
         Configurator.setLevel(getLogger(PlanEdit.class), Level.toLevel(Driver.modelImplLogLevel));
     }
@@ -59,48 +62,46 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
 
     public void v_Verify_Advanced_Settings_Tab() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/plan/edit/",
-                75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/advanced",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoTitleForAdvancedSettingsInPlanEdit"
-                , String.valueOf(methods.getValueInTestMap("editPlanName"))), 30);
-        methods.checkElementVisible(methods.getBy("faildTestRetryCountForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("parallelTestLimitForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("maxExecutionTimeForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("bandwidthTypeForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("screenshotTypeForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("recordVideoForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("capturePerformanceDataForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("tunnelForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("javaParameterNameForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("javaParameterValueForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("javaParameterDescriptionForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("addButtonForAdvancedSettingsInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("applyButtonOtherTabInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("saveButtonOtherTabInPlanEdit"));
+        assertTrue(methods.doesUrl("https://testinium.io/plan/edit/",75,"startWith"));
+        assertTrue(methods.doesUrl("/advanced",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoTitleForAdvancedSettingsInPlanEdit","logoTitleForAdvancedSettings1InPlanEdit", String.valueOf(methodsUtil.getValueInTestMap("editPlanName"))));
+        commonProcess.checkElementVisible(methods.getBy("faildTestRetryCountForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("parallelTestLimitForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("maxExecutionTimeForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("bandwidthTypeForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("screenshotTypeForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("recordVideoForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("capturePerformanceDataForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("tunnelForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterNameForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterValueForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterDescriptionForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("addButtonForAdvancedSettingsInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("applyButtonOtherTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonOtherTabInPlanEdit"));
 
-        methods.checkElementVisible(methods.getBy("propertiesTabInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("advancedTabInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("scheduleAndNotificationsTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("advancedTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("scheduleAndNotificationsTabInPlanEdit"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
     }
 
     public void e_Select_Platform() {
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
-        methods.checkElementVisible(planNameBy);
+        commonProcess.checkElementVisible(planNameBy);
         methodsUtil.waitByMilliSeconds(500);
         methods.clearElement(planNameBy);
         methodsUtil.waitByMilliSeconds(200);
-        methods.sendKeys(planNameBy, methods.getValueInTestMap("editPlanName").toString());
-        methods.checkElementVisible(methods.getBy("browserTableInCreatePlan"));
+        methods.sendKeys(planNameBy, methodsUtil.getValueInTestMap("editPlanName").toString());
+        commonProcess.checkElementVisible(methods.getBy("browserTableInCreatePlan"));
         methodsUtil.waitByMilliSeconds(500);
         By environmentNameBy = methods.getBy("environmentNameInPlanEdit");
         String browserName = "";
@@ -108,12 +109,9 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         if(methods.isElementVisible(environmentNameBy,3)) {
             browserName = methods.getText(environmentNameBy).trim();
             By deleteButtonForPlatformBy = methods.getBy("deleteButtonForPlatformInPlanEdit");
-            methods.checkElementVisible(deleteButtonForPlatformBy);
-            methods.checkElementClickable(deleteButtonForPlatformBy);
-            methodsUtil.waitByMilliSeconds(300);
-            methods.clickElement(deleteButtonForPlatformBy);
+            commonProcess.clickButton(deleteButtonForPlatformBy);
         }
-        By operatingSystemBy = methods.getByWithKeySetValue("operatingSystemOptionKeyValueInCreatePlan","Windows 10");
+        By operatingSystemBy = commonProcess.getKeyValueChangerElement("operatingSystemOptionKeyValueInCreatePlan","operatingSystemOptionKeyValue1InCreatePlan","Windows 10");
 
         if(!browserName.equals("") && browserName.equalsIgnoreCase("chrome")) {
 
@@ -123,92 +121,72 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
             browserName = "CHROME";
         }
 
-        By browserOptionBy = methods.getByWithKeySetValue("browserOptionKeyValueInCreatePlan", browserName);
-        methods.checkElementVisible(methods.getBy("operatingSystemAreaInCreatePlan"));
-        methods.checkElementVisible(operatingSystemBy);
-        methods.checkElementClickable(operatingSystemBy);
-        methodsUtil.waitByMilliSeconds(200);
-        methods.clickElement(operatingSystemBy);
-        methods.checkElementVisible(methods.getBy("browserAreaInCreatePlan"));
-        methods.checkElementVisible(browserOptionBy);
-        methods.checkElementClickable(browserOptionBy);
-        methodsUtil.waitByMilliSeconds(200);
-        methods.clickElement(browserOptionBy);
+        By browserOptionBy = commonProcess.getKeyValueChangerElement("browserOptionKeyValueInCreatePlan","browserOptionKeyValue1InCreatePlan", browserName);
+        commonProcess.checkElementVisible(methods.getBy("operatingSystemAreaInCreatePlan"));
+        commonProcess.clickButton(operatingSystemBy);
+        commonProcess.checkElementVisible(methods.getBy("browserAreaInCreatePlan"));
+        commonProcess.clickButton(browserOptionBy);
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(methods.getBy("versionAreaInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("versionAreaInCreatePlan"));
         methodsUtil.waitByMilliSeconds(500);
         if(browserName.equals("CHROME")){
 
             browserVersion = "LATEST";
         }else {
 
-            browserVersion = methods.getText(methods
-                    .getByWithKeySetValue("versionNumberForVersionPanelInCreatePlan", "last()")).trim();
+            browserVersion = methods.getText(commonProcess.getKeyValueChangerElement("versionNumberForVersionPanelInCreatePlan","versionNumberForVersionPanel1InCreatePlan","last()")).trim();
         }
 
-        By versionOptionBy = methods.getByWithKeySetValue("versionOptionKeyValueInCreatePlan", browserVersion);
-        methods.checkElementVisible(versionOptionBy);
-        methods.checkElementClickable(versionOptionBy);
+        By versionOptionBy = commonProcess.getKeyValueChangerElement("versionOptionKeyValueInCreatePlan","versionOptionKeyValue1InCreatePlan", browserVersion);
+        commonProcess.clickButton(versionOptionBy);
+        commonProcess.checkElementVisible(methods.getBy("screenResolutionInCreatePlan"));
         methodsUtil.waitByMilliSeconds(200);
-        methods.clickElement(versionOptionBy);
-        methods.checkElementVisible(methods.getBy("screenResolutionInCreatePlan"));
-        methodsUtil.waitByMilliSeconds(200);
-        methods.clickElement(methods
-                .getByWithKeySetValue("screenResolutionSelectOptionKeyValueInCreatePlan","1280x1024"));
+        commonProcess.clickButton(commonProcess.getKeyValueChangerElement("screenResolutionSelectOptionKeyValueInCreatePlan","screenResolutionSelectOptionKeyValue1InCreatePlan","1280x1024"));
         By screenResolutionAddButtonBy = methods.getBy("screenResolutionAddButtonInCreatePlan");
-        methods.checkElementVisible(screenResolutionAddButtonBy);
-        methods.checkElementClickable(screenResolutionAddButtonBy);
-        methodsUtil.waitBySeconds(1);
-        methods.clickElement(screenResolutionAddButtonBy);
-        methods.putValueInTestMap("browserNameEditPlan", browserName);
-        methods.putValueInTestMap("browserVersionEditPlan", browserVersion);
+        commonProcess.clickButton(screenResolutionAddButtonBy);
+        methodsUtil.putValueInTestMap("browserNameEditPlan", browserName);
+        methodsUtil.putValueInTestMap("browserVersionEditPlan", browserVersion);
     }
 
     public void v_Verify_In_All_Suites_Page_SHARED() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/plan",75,"equal"));
-        methods.checkElementVisible(methods.getBy("allSuitesLogoTitleInAllSuites"));
+        assertTrue(methods.doesUrl("https://testinium.io/plan",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesLogoTitleInAllSuites"));
         By selectProjectBy = methods.getBy("selectProjectInAllSuites");
-        methods.checkElementVisible(selectProjectBy);
-        methods.checkElementVisible(methods.getBy("exportTableInAllSuites"));
-        methods.checkElementVisible(methods.getBy("createPlanInAllSuites"));
-        methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        methods.checkElementVisible(methods.getBy("suiteForTableInAllSuites"));
-        methods.checkElementVisible(methods.getBy("mobileIosShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("mobileAndroidShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("webAllShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("webFirefoxShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("webChromeShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("webIEShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("webSafariShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("webOperaShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("webEdgeShowOnlyOptionInAllSuites"));
-        methods.checkElementVisible(methods.getBy("runningSuitesShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementVisible(methods.getBy("exportTableInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("createPlanInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("suiteForTableInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("mobileIosShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("mobileAndroidShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("webAllShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("webFirefoxShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("webChromeShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("webIEShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("webSafariShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("webOperaShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("webEdgeShowOnlyOptionInAllSuites"));
+        commonProcess.checkElementVisible(methods.getBy("runningSuitesShowOnlyOptionInAllSuites"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
     }
 
     public void e_Click_Advanced_Settings_Tab() {
 
         By advancedTabBy = methods.getBy("advancedTabInPlanEdit");
-        methods.checkElementVisible(advancedTabBy);
-        methods.checkElementClickable(advancedTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(advancedTabBy);
+        commonProcess.clickButton(advancedTabBy);
     }
 
     public void e_Click_Save() {
 
         By saveButtonBy = methods.getBy("saveButtonInPlanEdit");
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
+        commonProcess.clickButton(saveButtonBy);
     }
 
     public void e_No_Action() {
@@ -217,60 +195,55 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
 
     public void v_Verify_Schedule_And_Notifications_Tab() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/plan/edit/",
-                75, "startWith"));
-        Assert.assertTrue("", methods.doesUrl("/schedule", 75, "endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoTitleForScheduleInPlanEdit"
-                , String.valueOf(methods.getValueInTestMap("editPlanName"))), 30);
-        methods.checkElementVisible(methods.getBy("periodTypePanelForScheduleInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("manuallyRunForScheduleInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("automaticallyRunCheckboxForScheduleInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("repeatCheckboxForScheduleInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("applyButtonOtherTabInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("saveButtonOtherTabInPlanEdit"));
+        assertTrue(methods.doesUrl("https://testinium.io/plan/edit/",75, "startWith"));
+        assertTrue(methods.doesUrl("/schedule", 75, "endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoTitleForScheduleInPlanEdit","logoTitleForSchedule1InPlanEdit", String.valueOf(methodsUtil.getValueInTestMap("editPlanName"))));
+        commonProcess.checkElementVisible(methods.getBy("periodTypePanelForScheduleInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("manuallyRunForScheduleInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("automaticallyRunCheckboxForScheduleInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("repeatCheckboxForScheduleInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("applyButtonOtherTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonOtherTabInPlanEdit"));
 
-        methods.checkElementVisible(methods.getBy("propertiesTabInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("advancedTabInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("scheduleAndNotificationsTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("advancedTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("scheduleAndNotificationsTabInPlanEdit"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
     }
 
     public void e_Change_Suite_Name() {
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
-        methods.checkElementVisible(planNameBy);
+        commonProcess.checkElementVisible(planNameBy);
         methodsUtil.waitByMilliSeconds(300);
         methods.clearElement(planNameBy);
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(planNameBy);
+        commonProcess.checkElementVisible(planNameBy);
         String planName = "TestPlan" + methodsUtil.randomString(5);
         methods.sendKeys(planNameBy, planName);
         methodsUtil.waitByMilliSeconds(300);
-        methods.putValueInTestMap("editPlanName", planName);
+        methodsUtil.putValueInTestMap("editPlanName", planName);
     }
 
     public void v_Control_Invalid_Suite_Name() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/plan/edit/",
-                75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/properties",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoTitleInPlanEdit"
-                , String.valueOf(methods.getValueInTestMap("editPlanName"))));
-        methods.checkElementVisible(methods.getBy("projectNameInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("planNameInPlanEdit"));
+        assertTrue(methods.doesUrl("https://testinium.io/plan/edit/",75,"startWith"));
+        assertTrue(methods.doesUrl("/properties",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoTitleInPlanEdit","logoTitle1InPlanEdit"
+                , String.valueOf(methodsUtil.getValueInTestMap("editPlanName"))));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("planNameInPlanEdit"));
         By planNameErrorBlockBy = methods.getBy("planNameErrorBlockInPlanEdit");
-        methods.checkElementVisible(planNameErrorBlockBy);
-        Assert.assertEquals("","This field is required."
-                , methods.getText(planNameErrorBlockBy).trim());
-        Assert.assertEquals("","#d0021b"
-                , methods.getHexCssValue(planNameErrorBlockBy,"border-bottom-color"));
+        commonProcess.checkElementVisible(planNameErrorBlockBy);
+        assertEquals("This field is required.", methods.getText(planNameErrorBlockBy).trim());
+        assertEquals("#d0021b", methods.getHexCssValue(planNameErrorBlockBy,"border-bottom-color"));
     }
 
     public void v_Control_Edited_Plan() {
@@ -281,17 +254,17 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
         By webFirefoxCheckboxBy = methods.getBy("webFirefoxShowOnlyOptionInAllSuites");
         By checkboxFirstBy = null;
         //By checkboxSecondBy = null;
-        String projectName = String.valueOf(methods.getValueInTestMap("editProjectName"));
-        methods.checkElementVisible(selectProjectBy);
-        methods.checkElementClickable(selectProjectBy);
+        String projectName = String.valueOf(methodsUtil.getValueInTestMap("editProjectName"));
+        commonProcess.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementClickable(selectProjectBy);
         methods.selectByVisibleText(selectProjectBy, projectName);
-        methods.checkElementVisible(selectProjectBy);
-        String planName = String.valueOf(methods.getValueInTestMap("editPlanName"));
-        methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        Assert.assertTrue("",methods.isElementVisible(methods.getByWithKeySetValue("tablePlanKeyValueInAllSuites"
-                , projectName + "!!" + planName),30));
+        commonProcess.checkElementVisible(selectProjectBy);
+        String planName = String.valueOf(methodsUtil.getValueInTestMap("editPlanName"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllSuites"));
+        assertTrue(methods.isElementVisible(commonProcess.getKeyValueChangerElement("tablePlanKeyValueInAllSuites","tablePlanKeyValue1InAllSuites"
+                ,projectName + "!!" + planName),30));
 
-        if(String.valueOf(methods.getValueInTestMap("browserNameEditPlan"))
+        if(String.valueOf(methodsUtil.getValueInTestMap("browserNameEditPlan"))
                 .equalsIgnoreCase("chrome")){
             checkboxFirstBy = webChromeCheckboxBy;
           //  checkboxSecondBy = webFirefoxCheckboxBy;
@@ -299,149 +272,129 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
             checkboxFirstBy = webFirefoxCheckboxBy;
           //  checkboxSecondBy = webChromeCheckboxBy;
         }
-        methods.checkElementVisible(checkboxFirstBy);
-        methods.checkElementClickable(checkboxFirstBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(checkboxFirstBy);
-        /**methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        Assert.assertTrue("",methods.isElementInVisible(methods
+        commonProcess.clickButton(checkboxFirstBy);
+        /**commonProcess.checkElementVisible(methods.getBy("tableInAllSuites"));
+        assertTrue("",methods.isElementInVisible(methods
                 .getByWithKeySetValue("tablePlanKeyValueInAllSuites"
                 , projectName + "!!" + planName),30));
-        methods.checkElementVisible(checkboxFirstBy);
-        methods.checkElementClickable(checkboxFirstBy);
+        commonProcess.checkElementVisible(checkboxFirstBy);
+        commonProcess.checkElementClickable(checkboxFirstBy);
         methodsUtil.waitByMilliSeconds(500);
         methods.clickElement(checkboxFirstBy);*/
-        methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        Assert.assertTrue("",methods.isElementVisible(methods.getByWithKeySetValue("tablePlanKeyValueInAllSuites"
-                , projectName + "!!" + planName),30));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllSuites"));
+        assertTrue(methods.isElementVisible(commonProcess.getKeyValueChangerElement("tablePlanKeyValueInAllSuites","tablePlanKeyValue1InAllSuites"
+                ,projectName + "!!" + planName),30));
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(checkboxFirstBy);
-        methods.checkElementClickable(checkboxFirstBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(checkboxFirstBy);
-        methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        methods.checkElementVisible(selectProjectBy);
-        methods.checkElementClickable(selectProjectBy);
+        commonProcess.clickButton(checkboxFirstBy);
+        commonProcess.checkElementVisible(methods.getBy("tableInAllSuites"));
+        commonProcess.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementClickable(selectProjectBy);
         methodsUtil.waitByMilliSeconds(500);
         methods.selectByVisibleText(selectProjectBy, "All Projects");
         methodsUtil.waitByMilliSeconds(300);
-        methods.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementVisible(selectProjectBy);
     }
 
     public void e_Click_Save_Empty_Suite_Name() {
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
         By saveButtonBy = methods.getBy("saveButtonInPlanEdit");
-        methods.checkElementVisible(planNameBy);
+        commonProcess.checkElementVisible(planNameBy);
         methodsUtil.waitByMilliSeconds(400);
         methods.clearElementWithBackSpace(planNameBy,"a");
         methodsUtil.waitByMilliSeconds(500);
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
+        commonProcess.clickButton(saveButtonBy);
     }
 
     public void v_Verify_Suite_Name() {
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
-        methods.checkElementVisible(planNameBy);
+        commonProcess.checkElementVisible(planNameBy);
         methodsUtil.waitByMilliSeconds(200);
-        Assert.assertEquals("", methods.getValueInTestMap("editPlanName")
-        , methods.getAttribute(planNameBy,"value").trim());
+        assertEquals( methodsUtil.getValueInTestMap("editPlanName"), methods.getAttribute(planNameBy,"value").trim());
     }
 
     public void v_control_Edited_Plan() {
 
         v_Verify_In_All_Suites_Page_SHARED();
         By selectProjectBy = methods.getBy("selectProjectInAllSuites");
-        String projectName = String.valueOf(methods.getValueInTestMap("editProjectName"));
-        methods.checkElementVisible(selectProjectBy);
-        methods.checkElementClickable(selectProjectBy);
+        String projectName = String.valueOf(methodsUtil.getValueInTestMap("editProjectName"));
+        commonProcess.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementClickable(selectProjectBy);
         methods.selectByVisibleText(selectProjectBy, projectName);
-        methods.checkElementVisible(selectProjectBy);
-        String planName = String.valueOf(methods.getValueInTestMap("editPlanName"));
-        methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        Assert.assertTrue("",methods.isElementVisible(methods.getByWithKeySetValue("tablePlanKeyValueInAllSuites"
-                , projectName + "!!" + planName),30));
-        methods.checkElementVisible(selectProjectBy);
-        methods.checkElementClickable(selectProjectBy);
+        commonProcess.checkElementVisible(selectProjectBy);
+        String planName = String.valueOf(methodsUtil.getValueInTestMap("editPlanName"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllSuites"));
+        assertTrue(methods.isElementVisible(commonProcess.getKeyValueChangerElement("tablePlanKeyValueInAllSuites","tablePlanKeyValue1InAllSuites"
+                ,projectName + "!!" + planName),30));
+        commonProcess.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementClickable(selectProjectBy);
         methods.selectByVisibleText(selectProjectBy, "All Projects");
-        methods.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementVisible(selectProjectBy);
     }
 
     public void e_Click_Schedule_And_Notifications_Tab() {
 
         By scheduleTabBy = methods.getBy("scheduleAndNotificationsTabInPlanEdit");
-        methods.checkElementVisible(scheduleTabBy);
-        methods.checkElementClickable(scheduleTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(scheduleTabBy);
+        commonProcess.clickButton(scheduleTabBy);
     }
 
     public void v_Verify_Selected_Test_Cases() {
 
-        methods.checkElementVisible(methods.getBy("scenarioForScenarioOrderInCreatePlan"));
-        By scenarioForScenarioOrderBy = methods.getByWithKeySetValue("scenarioKeyValueForScenarioOrderInCreatePlan"
-                , String.valueOf(methods.getValueInTestMap("scenarioNameInEditPlan")));
-        methods.checkElementVisible(scenarioForScenarioOrderBy);
+        commonProcess.checkElementVisible(methods.getBy("scenarioForScenarioOrderInCreatePlan"));
+        By scenarioForScenarioOrderBy = commonProcess.getKeyValueChangerElement("scenarioKeyValueForScenarioOrderInCreatePlan","scenarioKeyValueForScenarioOrder1InCreatePlan"
+                , String.valueOf(methodsUtil.getValueInTestMap("scenarioNameInEditPlan")));
+        commonProcess.checkElementVisible(scenarioForScenarioOrderBy);
     }
 
     public void e_Click_Cancel() {
 
         By cancelButtonBy = methods.getBy("cancelButtonInPlanEdit");
-        methods.checkElementVisible(cancelButtonBy);
-        methods.checkElementClickable(cancelButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(cancelButtonBy);
+        commonProcess.clickButton(cancelButtonBy);
     }
 
     public void e_Click_Properties_Tab() {
 
         By propertiesTabBy = methods.getBy("propertiesTabInPlanEdit");
-        methods.checkElementVisible(propertiesTabBy);
-        methods.checkElementClickable(propertiesTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(propertiesTabBy);
+        commonProcess.clickButton(propertiesTabBy);
     }
 
     public void v_Verify_Selected_Platform() {
 
-        By tableBy = methods.getByWithKeySetValue("browserTableKeyValueInCreatePlan"
-                , "Windows 10!!" + String.valueOf(methods.getValueInTestMap("browserNameEditPlan")).toLowerCase()
-                        + "!!" + String.valueOf(methods.getValueInTestMap("browserVersionEditPlan")) + "!!1280x1024");
-        methods.checkElementVisible(tableBy);
+        By tableBy = commonProcess.getKeyValueChangerElement("browserTableKeyValueInCreatePlan","browserTableKeyValue1InCreatePlan"
+                ,"Windows 10!!" + String.valueOf(methodsUtil.getValueInTestMap("browserNameEditPlan")).toLowerCase()
+                        + "!!" + String.valueOf(methodsUtil.getValueInTestMap("browserVersionEditPlan")) + "!!1280x1024");
+        commonProcess.checkElementVisible(tableBy);
     }
 
     public void v_Verify_In_Plan_Edit_Page_SHARED() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/plan/edit/",
-                75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/properties",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoTitleInPlanEdit"
-                , String.valueOf(methods.getValueInTestMap("editPlanName"))));
-        methods.checkElementVisible(methods.getBy("projectNameInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("planNameInPlanEdit"));
-        //methods.checkElementVisible(methods.getBy("enableSwitchInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("scenarioNameForScenariosPanelInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("saveButtonInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("applyButtonInPlanEdit"));
+        assertTrue(methods.doesUrl("https://testinium.io/plan/edit/",75,"startWith"));
+        assertTrue(methods.doesUrl("/properties",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoTitleInPlanEdit","logoTitle1InPlanEdit"
+                , String.valueOf(methodsUtil.getValueInTestMap("editPlanName"))));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("planNameInPlanEdit"));
+        //commonProcess.checkElementVisible(methods.getBy("enableSwitchInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioNameForScenariosPanelInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("applyButtonInPlanEdit"));
         //scenarioForScenariosSelectListInCreatePlan
         //Mac 	1920x1080
 
-        methods.checkElementVisible(methods.getBy("propertiesTabInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("advancedTabInPlanEdit"));
-        methods.checkElementVisible(methods.getBy("scheduleAndNotificationsTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("advancedTabInPlanEdit"));
+        commonProcess.checkElementVisible(methods.getBy("scheduleAndNotificationsTabInPlanEdit"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
         methodsUtil.waitBySeconds(1);
         String projectName = methods.getFirstSelectedOption(methods.getBy("projectNameInPlanEdit")).getText().trim();
         /**
@@ -458,49 +411,48 @@ public class PlanEdit extends ExecutionContext implements org.graphwalker.Plan_E
 
         v_Verify_In_All_Suites_Page_SHARED();
         By selectProjectBy = methods.getBy("selectProjectInAllSuites");
-        String projectName = String.valueOf(methods.getValueInTestMap("editProjectName"));
-        methods.checkElementVisible(selectProjectBy);
-        methods.checkElementClickable(selectProjectBy);
+        String projectName = String.valueOf(methodsUtil.getValueInTestMap("editProjectName"));
+        commonProcess.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementClickable(selectProjectBy);
         methodsUtil.waitByMilliSeconds(200);
         methods.selectByVisibleText(selectProjectBy, projectName);
         methodsUtil.waitByMilliSeconds(200);
-        methods.checkElementVisible(selectProjectBy);
-        String planName = String.valueOf(methods.getValueInTestMap("editPlanName"));
-        methods.checkElementVisible(methods.getBy("tableInAllSuites"));
-        Assert.assertTrue("",methods.isElementVisible(methods.getByWithKeySetValue("tablePlanKeyValueInAllSuites"
-                , projectName + "!!" + planName),30));
-        methods.checkElementVisible(selectProjectBy);
-        methods.checkElementClickable(selectProjectBy);
+        commonProcess.checkElementVisible(selectProjectBy);
+        String planName = String.valueOf(methodsUtil.getValueInTestMap("editPlanName"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllSuites"));
+        assertTrue(methods.isElementVisible(commonProcess.getKeyValueChangerElement("tablePlanKeyValueInAllSuites","tablePlanKeyValue1InAllSuites"
+                ,projectName + "!!" + planName),30));
+        commonProcess.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementClickable(selectProjectBy);
         methodsUtil.waitByMilliSeconds(200);
         methods.selectByVisibleText(selectProjectBy, "All Projects");
         methodsUtil.waitByMilliSeconds(200);
-        methods.checkElementVisible(selectProjectBy);
+        commonProcess.checkElementVisible(selectProjectBy);
     }
 
     public void e_Select_Test_Cases() {
 
         By planNameBy = methods.getBy("planNameInPlanEdit");
-        methods.checkElementVisible(planNameBy);
+        commonProcess.checkElementVisible(planNameBy);
         methodsUtil.waitByMilliSeconds(500);
         methods.clearElement(planNameBy);
         methodsUtil.waitByMilliSeconds(200);
-        methods.sendKeys(planNameBy, methods.getValueInTestMap("editPlanName").toString());
-        methods.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
-        By scenarioNameForScenariosBy = methods.getByWithKeySetValue("scenarioForScenariosSelectListNumberInCreatePlan"
-                , "1");
-        methods.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
-        methods.checkElementVisible(methods.getBy("scenarioForScenariosSelectListInCreatePlan"));
-        methods.checkElementVisible(scenarioNameForScenariosBy);
-        methods.checkElementClickable(scenarioNameForScenariosBy);
+        methods.sendKeys(planNameBy, methodsUtil.getValueInTestMap("editPlanName").toString());
+        commonProcess.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
+        By scenarioNameForScenariosBy = commonProcess.getKeyValueChangerElement("scenarioForScenariosSelectListNumberInCreatePlan"
+                ,"scenarioForScenariosSelectListNumber1InCreatePlan","1");
+        commonProcess.checkElementVisible(methods.getBy("selectScenariosPanelInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("selectScenarioOrderInCreatePlan"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioForScenariosSelectListInCreatePlan"));
+        commonProcess.checkElementVisible(scenarioNameForScenariosBy);
+        commonProcess.checkElementClickable(scenarioNameForScenariosBy);
         methodsUtil.waitByMilliSeconds(500);
         String scenarioName = methods.getText(scenarioNameForScenariosBy).trim();
-        methods.putValueInTestMap("scenarioNameInEditPlan", scenarioName);
-        if(!methods.getAttribute(methods.getByWithKeySetValue("scenarioKeyValueForScenariosInPlanEdit"
-                ,"!!" + scenarioName),"class").contains("checked")) {
-            methodsUtil.waitByMilliSeconds(300);
-            methods.clickElement(scenarioNameForScenariosBy);
+        methodsUtil.putValueInTestMap("scenarioNameInEditPlan", scenarioName);
+        if(!methods.getAttribute(commonProcess.getKeyValueChangerElement("scenarioKeyValueForScenariosInPlanEdit"
+                ,"scenarioKeyValueForScenarios1InPlanEdit","!!" + scenarioName),"class").contains("checked")) {
+            commonProcess.clickButton(scenarioNameForScenariosBy);
         }
     }
 

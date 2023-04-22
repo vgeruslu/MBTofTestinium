@@ -3,25 +3,31 @@ package com.mbt.testiniumcloud.methods;
 import com.google.common.base.Splitter;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
 import com.mbt.testiniumcloud.driver.Driver;
+import io.restassured.response.Response;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.csv.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.graalvm.polyglot.Context;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.io.*;
+import java.io.Writer;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -31,6 +37,7 @@ import java.nio.file.Paths;
 import java.text.Collator;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -233,6 +240,7 @@ public class MethodsUtil {
         return DateTime.now()//.withZone(DateTimeZone.UTC)
                 .toString();//"dd/MM/yyyy HH:mm:ss,SSS");
     }
+
     public long getTimeMillis(){
 
         DateTime utc = new DateTime();
@@ -250,9 +258,21 @@ public class MethodsUtil {
                 .toDateTime().getMillis();
     }
 
+    public DateTime getDateTimeFromTime(String time, String format, String language, int forOffsetHours){
+
+        return org.joda.time.LocalDateTime.parse(time, DateTimeFormat.forPattern(format).withLocale(Locale.forLanguageTag(language)))
+                .toDateTime(DateTimeZone.forOffsetHours(forOffsetHours));
+    }
+
     public Long getTimeMillisFromTime(String time, String format, int forOffsetHours){
 
         return org.joda.time.LocalDateTime.parse(time, DateTimeFormat.forPattern(format))
+                .toDateTime(DateTimeZone.forOffsetHours(forOffsetHours)).getMillis();
+    }
+
+    public Long getTimeMillisFromTime(String time, String format, String language, int forOffsetHours){
+
+        return org.joda.time.LocalDateTime.parse(time, DateTimeFormat.forPattern(format).withLocale(Locale.forLanguageTag(language)))
                 .toDateTime(DateTimeZone.forOffsetHours(forOffsetHours)).getMillis();
     }
 
@@ -544,18 +564,24 @@ public class MethodsUtil {
         return error;
     }
 
-    public void waitByMilliSeconds(long milliSeconds){
+    public void waitByMilliSeconds(long milliSeconds, Boolean... condition){
 
         try {
             Thread.sleep(milliSeconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if (condition.length == 0) {
+            logger.info(milliSeconds + " milisaniye beklendi");
+        }
     }
 
-    public void waitBySeconds(long seconds){
+    public void waitBySeconds(long seconds, Boolean... condition){
 
-        waitByMilliSeconds(seconds*1000);
+        waitByMilliSeconds(seconds*1000,true);
+        if (condition.length == 0) {
+            logger.info(seconds + " saniye beklendi");
+        }
     }
 
     public String randomString(int stringLength){
@@ -775,7 +801,6 @@ public class MethodsUtil {
 
             default:
                 fail("HATA");
-                break;
         }
         return selectorType;
     }
@@ -786,6 +811,9 @@ public class MethodsUtil {
         switch (condition){
             case "equal":
                 result = actualValue != null && actualValue.equals(expectedValue);
+                break;
+            case "equalsIgnoreCase":
+                result = actualValue != null && actualValue.equalsIgnoreCase(expectedValue);
                 break;
             case "contain":
                 result = actualValue != null && actualValue.contains(expectedValue);
@@ -817,10 +845,35 @@ public class MethodsUtil {
             case "regex":
                 result = actualValue != null && Pattern.matches(expectedValue, actualValue);
                 break;
+            case "doubleEqual":
+                result = actualValue != null && Double.parseDouble(expectedValue) == Double.parseDouble(actualValue);
+                break;
+            case "notDoubleEqual":
+                result = actualValue != null && Double.parseDouble(expectedValue) != Double.parseDouble(actualValue);
+                break;
             default:
                 fail("hatali durum: " + condition);
         }
         return result;
+    }
+
+    public String getJsonValueWithMap(String mapKey){
+
+        String jsonString = mapKey;
+        if(Driver.apiMap.containsKey(mapKey)){
+            jsonString = ((Response)Driver.apiMap.get(mapKey).get("response")).asString();
+        }
+        if(mapKey.endsWith("KeyValue")){
+            jsonString = Driver.TestMap.get(mapKey).toString();
+            JsonElement element = JsonParser.parseString(jsonString);
+            if (element.isJsonArray()){
+                jsonString = element.getAsJsonArray().toString();
+            }
+            if (element.isJsonObject()){
+                jsonString = element.getAsJsonObject().toString();
+            }
+        }
+        return jsonString;
     }
 
     public List<Integer> getRandomNumberList(int number, int count){
@@ -862,6 +915,15 @@ public class MethodsUtil {
                     return collator.compare(s1, s2);
                 }
             }));
+        }
+    }
+
+    public <T extends Comparable<? super T>> void getListSort(List<T> list, boolean asc){
+
+        if (asc) {
+            Collections.sort(list);
+        } else {
+            list.sort(Collections.reverseOrder());
         }
     }
 
@@ -915,6 +977,7 @@ public class MethodsUtil {
         CSVParser csvParser = null;
         try {
             csvParser = CSVFormat.DEFAULT.builder()
+                    .setHeader()
                     .setSkipHeaderRecord(true)
                     .setQuoteMode(QuoteMode.ALL)
                     .setQuote('"')
@@ -926,7 +989,7 @@ public class MethodsUtil {
         }
         List<List<String>> csvList = new ArrayList<List<String>>();
        // System.out.println(csvParser.getHeaderNames());
-        //csvList.add(csvParser.getHeaderNames());
+        csvList.add(csvParser.getHeaderNames());
         for (CSVRecord record : csvParser) {
             List<String> list = new ArrayList<String>();
             for (int k=0; k < record.size(); k++) {
@@ -959,13 +1022,134 @@ public class MethodsUtil {
 
     public Object getMathExpression(String value){
 
-        ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
         try {
-            return engine.eval(value);
-        } catch (ScriptException e) {
+            Context context = Context.create();
+            return context.eval("js", value).as(Object.class);
+        } catch (Throwable e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String readQR(String path) {
+
+        String charset = StandardCharsets.UTF_8.toString();
+        BinaryBitmap binaryBitmap = null;
+        Result result = null;
+        try {
+            binaryBitmap = new BinaryBitmap(new HybridBinarizer(
+                    new BufferedImageLuminanceSource(ImageIO.read(new FileInputStream(path)))));
+            Map<DecodeHintType, String> map = new ConcurrentHashMap<>();
+            map.put(DecodeHintType.CHARACTER_SET, charset);
+            result = new MultiFormatReader().decode(binaryBitmap, map);
+        } catch (IOException | NotFoundException e) {
+            logger.error(getStackTraceLog(e));
+        }
+        return result != null ? result.getText() : null;
+    }
+
+    public void createQR(String data, String path, int width, int height) {
+
+        String charset = StandardCharsets.UTF_8.toString();
+        BitMatrix matrix = null;
+        try {
+            matrix = new MultiFormatWriter().encode(
+                    new String(data.getBytes(charset), charset),
+                    BarcodeFormat.QR_CODE, width, height);
+            MatrixToImageWriter.writeToPath(matrix,
+                    path.substring(path.lastIndexOf('.') + 1),
+                    new File(path).toPath());
+        } catch (IOException | WriterException e) {
+            logger.error(getStackTraceLog(e));
+        }
+    }
+
+    public String getTextByMap(String text){
+
+        if (text.endsWith("KeyValue")) {
+            Object value = Driver.TestMap.get(text);
+            text = value != null ? value.toString() : null;
+        }
+        return text;
+    }
+
+    public String stringTrim(String value, String trimCondition){
+
+        if (value == null){
+            return null;
+        }
+        switch (trimCondition){
+            case "true":
+                value = value.trim();
+                break;
+            case "clearSpace":
+                value = value.replace("\r","").replace("\n","").trim();
+                break;
+            case "false":
+            case "":
+                break;
+            default:
+                fail(trimCondition + " condition hatalı");
+        }
+        return value;
+    }
+
+    public String getKeyValueChangerStringBuilder(String value, String splitValue, String mapKeySuffix){
+
+        if(value.contains(mapKeySuffix)) {
+            String[] values = Splitter.on(splitValue).splitToList(value).toArray(new String[0]);
+            StringBuilder stringBuilder = new StringBuilder();
+            int valuesLength = values.length;
+            for (int i = 0; i < valuesLength; i++) {
+                String text = values[i];
+                if (text.endsWith(mapKeySuffix)) {
+                    text = Driver.TestMap.get(text).toString();
+                }
+                stringBuilder.append(text);
+                if (i != valuesLength - 1) {
+                    stringBuilder.append(splitValue);
+                }
+            }
+            value = stringBuilder.toString();
+        }
+        return value;
+    }
+
+    public void writeFile(String text, String fileName){
+
+        try {
+        BufferedWriter writer3 = createWriter(fileName,false);
+        writer3.append(text);writer3.newLine();
+        Thread.sleep(1000);
+        writer3.close();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Integer> getListSameOrDifference(List<Integer> list1, List<Integer> list2, boolean condition){
+
+        List<Integer> list = new ArrayList<>();
+        for(Integer value: list1){
+            boolean isValueExist = list2.contains(value);
+            if (condition && isValueExist){
+                list.add(value);
+            }
+            if (!condition && !isValueExist){
+                list.add(value);
+            }
+        }
+        return list;
+    }
+
+    public void putValueInTestMap(String key, Object value){
+
+        Driver.TestMap.put(key, value);
+    }
+
+    public Object getValueInTestMap(String key){
+
+        return Driver.TestMap.get(key);
     }
 
 }

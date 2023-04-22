@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
-
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
@@ -78,10 +77,10 @@ public class JsMethods {
     }
 
     //border-bottom-color background-color
-    public String getCssValue(WebElement webElement, String valueName){
+    public Object getCssValue(WebElement webElement, String valueName){
 
         String script = "return getComputedStyle(arguments[0]).getPropertyValue('" + valueName + "');";
-        return jsDriver.executeScript(script,webElement).toString();
+        return jsDriver.executeScript(script,webElement);
     }
 
     public ConcurrentHashMap<String, Object> getLocationValues(WebElement webElement){
@@ -167,6 +166,16 @@ public class JsMethods {
     public void clickByElement(WebElement webElement){
 
         jsDriver.executeScript("arguments[0].click();", webElement);
+    }
+
+    public Boolean isElementDisabled(WebElement webElement){
+
+        return Boolean.valueOf(jsDriver.executeScript("return arguments[0].ariaDisabled;", webElement).toString());
+    }
+
+    public Boolean isElementExpanded(WebElement webElement){
+
+        return Boolean.valueOf(jsDriver.executeScript("return arguments[0].ariaExpanded;", webElement).toString());
     }
 
     public void clickByElement(WebElement webElement, boolean notClickByCoordinate){
@@ -259,12 +268,6 @@ public class JsMethods {
         return jsDriver.executeScript(script,webElement).toString();
     }
 
-    public void sendKeys(WebElement webElement, String value){
-
-        String script = "arguments[0].value=\"" + value + "\";";
-        jsDriver.executeScript(script,webElement);
-    }
-
     public String getText(WebElement webElement, String textType){
 
         String condition = "";
@@ -287,32 +290,59 @@ public class JsMethods {
         return jsDriver.executeScript(script,webElement).toString();
     }
 
-    public String getAttribute(WebElement webElement, String attribute){
+    public Object getAttribute(WebElement webElement, String attribute){
 
         String script = "return arguments[0].getAttribute(\"" + attribute + "\");";
-        return jsDriver.executeScript(script,webElement).toString();
+        return jsDriver.executeScript(script,webElement);
     }
 
-    public String getValue(WebElement webElement){
+    public Object getValue(WebElement webElement){
 
         String script = "return arguments[0].value;";
-        return jsDriver.executeScript(script,webElement).toString();
+        return jsDriver.executeScript(script,webElement);
     }
 
-    public boolean jsImageLoading(WebElement ImageElement, int waitCount) throws InterruptedException{
+    public void setValue(WebElement webElement, String text, boolean isValueString){
 
-        int count = 0;
+        String script = "arguments[0].value = " + (isValueString ? "'arguments[1]'": "arguments[1]");
+        jsDriver.executeScript(script, webElement, text);
+    }
+
+    public Object validationMessage(WebElement webElement){
+
+        String script = "return arguments[0].validationMessage;";
+        return jsDriver.executeScript(script,webElement);
+    }
+
+    public Object checkValidity(WebElement webElement){
+
+        String script = "return arguments[0].checkValidity();";
+        return jsDriver.executeScript(script,webElement);
+    }
+
+    public Object validityValid(WebElement webElement){
+
+        String script = "return arguments[0].validity.valid;";
+        return jsDriver.executeScript(script,webElement);
+    }
+
+    public boolean jsImageLoading(WebElement ImageElement, int count) {
+
+        int actualCount = 0;
         while (true) {
-            count++;
-            Thread.sleep(400);
+            actualCount++;
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             boolean ImagePresent = (Boolean) jsDriver
                     .executeScript("return arguments[0].complete", ImageElement);
-
             // return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0
             if (ImagePresent) {
                 break;
             }
-            if (count == waitCount) {
+            if (actualCount == count) {
                 return false;
             }
 
@@ -378,6 +408,11 @@ public class JsMethods {
         jsDriver.executeScript("window.stop();");
     }
 
+    public void highlightElement(WebElement webElement){
+
+        jsDriver.executeScript("arguments[0].setAttribute('style','background: green; border: 5px solid red;');", webElement);
+        //jsDriver.executeScript("arguments[0].style.border='3px solid red';", webElement);
+    }
 
     public String getjsFindString(String byValue, String selectorType){
 
@@ -517,44 +552,33 @@ public class JsMethods {
     public String getJsCondition(String condition, String value){
 
         String jsCondition = "";
-
         switch (condition){
-
             //not control dataType "1" == 1 true
             case "equal":
                 jsCondition = " == '" + value + "'";
                 break;
-
             //control dataType ===
             case "equals":
                 jsCondition = " === '" + value + "'";
                 break;
-
             case "contain":
                 jsCondition = ".includes('" + value + "')";
                 break;
-
             case "startWith":
                 jsCondition = ".startsWith('" + value + "')";
                 break;
-
             case "endWith":
                 jsCondition = ".endsWith('" + value + "')";
                 break;
-
             case "notEqual":
                 jsCondition = " != '" + value + "'";
                 break;
-
             case "notEquals":
                 jsCondition = " !== '" + value + "'";
                 break;
-
             default:
                 fail("HATA");
-                break;
         }
-
         return jsCondition;
     }
 }

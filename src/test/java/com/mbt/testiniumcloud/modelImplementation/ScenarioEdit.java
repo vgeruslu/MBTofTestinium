@@ -1,5 +1,6 @@
 package com.mbt.testiniumcloud.modelImplementation;
 
+import com.mbt.testiniumcloud.common.CommonProcess;
 import com.mbt.testiniumcloud.driver.Driver;
 import com.mbt.testiniumcloud.methods.Methods;
 import com.mbt.testiniumcloud.methods.MethodsUtil;
@@ -10,7 +11,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.java.annotation.*;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,12 +23,14 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
     private static final Logger logger = LogManager.getLogger(ScenarioEdit.class);
     Methods methods;
     MethodsUtil methodsUtil;
+    CommonProcess commonProcess;
     ExcelMapData excelMapData;
 
     public ScenarioEdit() {
 
         methods = new Methods();
         methodsUtil = new MethodsUtil();
+        commonProcess = new CommonProcess();
         excelMapData = new ExcelMapData();
         Configurator.setLevel(getLogger(ScenarioEdit.class), Level.toLevel(Driver.modelImplLogLevel));
     }
@@ -58,16 +61,15 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
 
     public void v_Control_Apply_Successfull_Message() {
 
-        methods.checkElementVisible(methods.getBy("scenarioSuccessfullyUpdated"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioSuccessfullyUpdated"));
         methods.isElementInVisible(methods.getBy("scenarioSuccessfullyUpdated"),5);
     }
 
     public void v_Verify_New_Scenario_Name() {
 
         By scenarioNameBy = methods.getBy("scenarioNameInScenarioEdit");
-        methods.checkElementVisible(scenarioNameBy);
-        Assert.assertTrue("", methods.getAttribute(scenarioNameBy,"value").trim()
-                .equals(String.valueOf(methods.getValueInTestMap("editedScenarioName"))));
+        commonProcess.checkElementVisible(scenarioNameBy);
+        assertEquals(methods.getAttribute(scenarioNameBy, "value").trim(), String.valueOf(methodsUtil.getValueInTestMap("editedScenarioName")));
     }
 
     public void e_No_Action() {
@@ -77,84 +79,76 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
     public void e_Click_Apply() {
 
         By applyButtonBy = methods.getBy("applyButtonInScenarioEdit");
-        methods.checkElementVisible(applyButtonBy);
-        methods.checkElementClickable(applyButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(applyButtonBy);
+        commonProcess.clickButton(applyButtonBy);
     }
 
     public void e_Click_IDE() {
 
         By ideTabBy = methods.getBy("ideTabInScenarioEdit");
-        methods.checkElementVisible(ideTabBy);
-        methods.checkElementClickable(ideTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(ideTabBy);
+        commonProcess.clickButton(ideTabBy);
     }
 
     public void v_Verify_In_Scenario_Edit_Page_SHARED() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario/edit/",
-                75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/properties",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoTitleWithProjectNameInScenarioEdit"
-                , String.valueOf(methods.getValueInTestMap("currentScenario"))));
-        methods.checkElementVisible(methods.getBy("propertiesTabInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("ideTabInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("copyUrlButtonInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("projectNameInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("scenarioNameInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("scenarioDescriptionInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("selectGroupInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("selectMaxExecutionTimeInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("fileContentPanelInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("selectSourceFilePanelWindowInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("selectTestMethodsPanelWindow1InCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParameterNameInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParameterValueInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParameterDescriptionInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("javaParametersAddButtonInCreateScenario"));
-        methods.checkElementVisible(methods.getBy("cancelButtonInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("applyButtonInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("saveButtonInScenarioEdit"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario/edit/",75,"startWith"));
+        assertTrue(methods.doesUrl("/properties",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoTitleWithProjectNameInScenarioEdit"
+                ,"logoTitleWithProjectName1InScenarioEdit", String.valueOf(methodsUtil.getValueInTestMap("currentScenario"))));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("ideTabInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("copyUrlButtonInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("projectNameInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioNameInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("scenarioDescriptionInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("selectGroupInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("selectMaxExecutionTimeInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("fileContentPanelInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("selectSourceFilePanelWindowInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("selectTestMethodsPanelWindow1InCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterNameInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterValueInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParameterDescriptionInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("javaParametersAddButtonInCreateScenario"));
+        commonProcess.checkElementVisible(methods.getBy("cancelButtonInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("applyButtonInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonInScenarioEdit"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
     }
 
     public void v_Control_IDE_Page() {
 
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario/edit/",
-                75,"startWith"));
-        Assert.assertTrue("", methods.doesUrl("/ide",75,"endWith"));
-        methods.checkElementVisible(methods.getByWithKeySetValue("logoTitleWithProjectNameForIdeTabInScenarioEdit"
-                , String.valueOf(methods.getValueInTestMap("currentScenario"))));
-        methods.checkElementVisible(methods.getBy("propertiesTabInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("ideTabInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("saveButtonForIdeTabInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("explorerPanelForIdeTabInScenarioEdit"));
-        methods.checkElementVisible(methods.getBy("aceEditorForIdeTabInScenarioEdit"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario/edit/",75,"startWith"));
+        assertTrue(methods.doesUrl("/ide",75,"endWith"));
+        commonProcess.checkElementVisible(commonProcess.getKeyValueChangerElement("logoTitleWithProjectNameForIdeTabInScenarioEdit"
+                ,"logoTitleWithProjectNameForIdeTab1InScenarioEdit", String.valueOf(methodsUtil.getValueInTestMap("currentScenario"))));
+        commonProcess.checkElementVisible(methods.getBy("propertiesTabInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("ideTabInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("saveButtonForIdeTabInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("explorerPanelForIdeTabInScenarioEdit"));
+        commonProcess.checkElementVisible(methods.getBy("aceEditorForIdeTabInScenarioEdit"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
     }
 
     public void e_Change_Scenario_Name() {
 
         By scenarioNameBy = methods.getBy("scenarioNameInScenarioEdit");
-        methods.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(scenarioNameBy);
         methods.clearElement(scenarioNameBy);
         methodsUtil.waitByMilliSeconds(200);
         String editedScenarioName = "editedScenario" + methodsUtil.randomString(6);
-        methods.putValueInTestMap("editedScenarioName", editedScenarioName);
+        methodsUtil.putValueInTestMap("editedScenarioName", editedScenarioName);
         methods.sendKeys(scenarioNameBy, editedScenarioName);
         methodsUtil.waitByMilliSeconds(200);
     }
@@ -166,99 +160,84 @@ public class ScenarioEdit extends ExecutionContext implements org.graphwalker.Sc
     public void e_Click_Properties() {
 
         By propertiesTabBy = methods.getBy("propertiesTabInScenarioEdit");
-        methods.checkElementVisible(propertiesTabBy);
-        methods.checkElementClickable(propertiesTabBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(propertiesTabBy);
+        commonProcess.clickButton(propertiesTabBy);
     }
 
     public void v_Verify_Invalid_Edit_Scenario_Blank_Scenario_Name() {
 
         By scenarioNameBy = methods.getBy("scenarioNameInScenarioEdit");
-        methods.checkElementVisible(methods.getBy("projectNameInScenarioEdit"));
-        methods.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(methods.getBy("projectNameInScenarioEdit"));
+        commonProcess.checkElementVisible(scenarioNameBy);
         methodsUtil.waitByMilliSeconds(500);
-        Assert.assertTrue("",methods.getAttribute(scenarioNameBy,"class").contains("ng-invalid"));
-        Assert.assertEquals("","#d0021b"
-                , methods.getHexCssValue(scenarioNameBy,"border-bottom-color"));
+        assertTrue(methods.getAttribute(scenarioNameBy,"class").contains("ng-invalid"));
+        assertEquals("#d0021b", methods.getHexCssValue(scenarioNameBy,"border-bottom-color"));
     }
 
     public void e_Click_Cancel() {
 
         By cancelButtonBy = methods.getBy("cancelButtonInScenarioEdit");
-        methods.checkElementVisible(cancelButtonBy);
-        methods.checkElementClickable(cancelButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(cancelButtonBy);
+        commonProcess.clickButton(cancelButtonBy);
     }
 
     public void e_Click_Save_Blank_Scenario_Name() {
 
         By scenarioNameBy = methods.getBy("scenarioNameInScenarioEdit");
-        methods.checkElementVisible(methods.getBy("projectNameInScenarioEdit"));
-        methods.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(methods.getBy("projectNameInScenarioEdit"));
+        commonProcess.checkElementVisible(scenarioNameBy);
         methods.clearElementWithBackSpace(scenarioNameBy,"a");
-        methods.checkElementVisible(scenarioNameBy);
+        commonProcess.checkElementVisible(scenarioNameBy);
         By saveButtonBy = methods.getBy("saveButtonInScenarioEdit");
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
+        commonProcess.clickButton(saveButtonBy);
     }
 
     public void e_click_Save() {
 
         By saveButtonBy = methods.getBy("saveButtonInScenarioEdit");
-        methods.checkElementVisible(saveButtonBy);
-        methods.checkElementClickable(saveButtonBy);
-        methodsUtil.waitByMilliSeconds(500);
-        methods.clickElement(saveButtonBy);
+        commonProcess.clickButton(saveButtonBy);
     }
 
     public void v_Verify_In_All_Scenarios_Page_SHARED() {
 
         /**
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario",75,"equal"));
-        methods.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("createScenarioInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("syncScenariosInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("createNewGroupInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("exportTableInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableViewModeNormalInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableViewModeFileInAllScenarios"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("createScenarioInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("syncScenariosInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("createNewGroupInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("exportTableInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableViewModeNormalInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableViewModeFileInAllScenarios"));
 
-        methods.checkElementVisible(methods.getBy("dashboardButton"));
-        methods.checkElementVisible(methods.getBy("projectsTab"));
-        methods.checkElementVisible(methods.getBy("allScenariosTab"));
-        methods.checkElementVisible(methods.getBy("allSuitesTab"));
-        methods.checkElementVisible(methods.getBy("reportsTab"));
-        methods.checkElementVisible(methods.getBy("automatedTestTab"));
+        commonProcess.checkElementVisible(methods.getBy("dashboardButton"));
+        commonProcess.checkElementVisible(methods.getBy("projectsTab"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosTab"));
+        commonProcess.checkElementVisible(methods.getBy("allSuitesTab"));
+        commonProcess.checkElementVisible(methods.getBy("reportsTab"));
+        commonProcess.checkElementVisible(methods.getBy("automatedTestTab"));
          */
     }
 
     public void v_Verify_Edited_Scenario() {
 
-        By tableScenarioBy = methods.getByWithKeySetValue("tableScenarioNameKeyValueInAllScenarios"
-                , methods.getValueInTestMap("currentProject") + "!!" + methods.getValueInTestMap("editedScenarioName"));
-        Assert.assertTrue("", methods.doesUrl("https://testinium.io/scenario",75,"equal"));
-        methods.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        By tableScenarioBy = commonProcess.getKeyValueChangerElement("tableScenarioNameKeyValueInAllScenarios"
+                ,"tableScenarioNameKeyValue1InAllScenarios",methodsUtil.getValueInTestMap("currentProject") + "!!" + methodsUtil.getValueInTestMap("editedScenarioName"));
+        assertTrue(methods.doesUrl("https://testinium.io/scenario",75,"equal"));
+        commonProcess.checkElementVisible(methods.getBy("allScenariosLogoTitleInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("projectSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("suiteSelectInAllScenarios"));
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
         By projectSelectBy = methods.getBy("projectSelectInAllScenarios");
         methodsUtil.waitByMilliSeconds(500);
-        methods.selectByVisibleText(projectSelectBy
-                , "All Projects");
+        methods.selectByVisibleText(projectSelectBy,"All Projects");
         methodsUtil.waitBySeconds(1);
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-        methods.selectByVisibleText(projectSelectBy
-                , String.valueOf(methods.getValueInTestMap("currentProject")));
-        methods.checkElementVisible(projectSelectBy);
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        methods.selectByVisibleText(projectSelectBy, String.valueOf(methodsUtil.getValueInTestMap("currentProject")));
+        commonProcess.checkElementVisible(projectSelectBy);
         methodsUtil.waitByMilliSeconds(500);
-        methods.checkElementVisible(methods.getBy("tableInAllScenarios"));
-        methods.checkElementVisible(tableScenarioBy);
+        commonProcess.checkElementVisible(methods.getBy("tableInAllScenarios"));
+        commonProcess.checkElementVisible(tableScenarioBy);
     }
 }
