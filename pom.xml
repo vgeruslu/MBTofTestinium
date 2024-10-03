@@ -22,7 +22,7 @@
     <selenium.version>4.9.0</selenium.version>
     <apache.poi.version>5.2.3</apache.poi.version>
     <apache.xmlbeans.version>5.1.1</apache.xmlbeans.version>
-    <commons-io.version>2.11.0</commons-io.version>
+    <commons-io.version>2.14.0</commons-io.version>
     <joda-time.version>2.12.5</joda-time.version>
     <sun.mail.version>2.0.1</sun.mail.version>
     <gson.version>2.10.1</gson.version>
